@@ -8,10 +8,11 @@ from pathlib import Path
 from ecospec_kg.corpus import extract_standard_code
 from ecospec_kg.evidence import validate_evidence
 from ecospec_kg.experiments import extraction_metrics, ranking_metrics
-from ecospec_kg.extraction import RuleExtractor
+from ecospec_kg.extraction import LLMExtractor, RuleExtractor
 from ecospec_kg.graph import GraphIndex
 from ecospec_kg.io_utils import read_jsonl
 from ecospec_kg.models import DocumentChunk, Relation
+from ecospec_kg.providers import MockProvider
 from ecospec_kg.schema import EntityType, RelationType, validate_relation
 from ecospec_kg.split import group_split
 
@@ -51,6 +52,30 @@ class CoreTests(unittest.TestCase):
                 validate_evidence(relation, chunk_map[relation.evidence.chunk_id])[0]
             )
 
+    def test_llm_extraction_and_evidence(self) -> None:
+        provider = MockProvider(
+            json.dumps(
+                {
+                    "relations": [
+                        {
+                            "head_name": "水源涵养量",
+                            "head_type": "indicator",
+                            "relation_type": "uses_formula",
+                            "tail_name": "水量平衡方程",
+                            "tail_type": "formula",
+                            "evidence_text": "运用水量平衡方程计算水源涵养量",
+                            "confidence": 0.9,
+                        }
+                    ]
+                },
+                ensure_ascii=False,
+            )
+        )
+        result = LLMExtractor(provider).extract([self.chunks[0]])
+        self.assertEqual(len(result.accepted), 1)
+        self.assertEqual(result.accepted[0].extraction_method, "llm_schema")
+        self.assertFalse(result.rejected)
+
     def test_group_split_keeps_paths_together(self) -> None:
         split = group_split(self.relations)
         locations: dict[str, str] = {}
@@ -78,4 +103,3 @@ class CoreTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

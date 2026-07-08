@@ -14,9 +14,10 @@ from .adapters import (
 from .app import launch
 from .corpus import build_corpus
 from .experiments import evaluate_files, write_ablation_plan
-from .extraction import RuleExtractor
+from .extraction import LLMExtractor, RuleExtractor
 from .io_utils import read_jsonl, write_csv, write_json, write_jsonl
 from .models import Relation
+from .providers import MockProvider, OpenAICompatibleProvider, TransformersProvider
 from .reporting import render_report
 from .training import LoRASettings, prepare_training_data, run_lora
 
@@ -88,6 +89,23 @@ def _build_parser() -> argparse.ArgumentParser:
     predict.add_argument("--chunks", type=Path, required=True)
     predict.add_argument("--out", type=Path, required=True)
 
+    extract_llm = sub.add_parser("extract-llm")
+    extract_llm.add_argument("--chunks", type=Path, required=True)
+    extract_llm.add_argument("--out", type=Path, required=True)
+    extract_llm.add_argument(
+        "--provider",
+        choices=["openai", "transformers", "mock"],
+        default=os.environ.get("ECOSPEC_LLM_PROVIDER", "openai"),
+    )
+    extract_llm.add_argument(
+        "--model",
+        default=os.environ.get("ECOSPEC_COMPLETION_MODEL", "Qwen/Qwen3-0.6B"),
+    )
+    extract_llm.add_argument("--limit", type=int)
+    extract_llm.add_argument("--start", type=int, default=0)
+    extract_llm.add_argument("--standards", nargs="*")
+    extract_llm.add_argument("--max-relations-per-chunk", type=int, default=20)
+
     index = sub.add_parser("index")
     index.add_argument("--adapter", choices=["native", "microsoft"], required=True)
     index.add_argument("--chunks", type=Path, required=True)
@@ -123,6 +141,18 @@ def _build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _make_provider(kind: str, model: str):
+    if kind == "openai":
+        provider = OpenAICompatibleProvider.from_env()
+        provider.model = model
+        return provider
+    if kind == "transformers":
+        return TransformersProvider(model)
+    if kind == "mock":
+        return MockProvider()
+    raise ValueError(f"unknown provider: {kind}")
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _build_parser().parse_args(argv)
     if args.command == "corpus":
@@ -134,6 +164,33 @@ def main(argv: list[str] | None = None) -> int:
         write_jsonl(args.out, (item.to_dict() for item in result.accepted))
         write_json(args.out.with_suffix(".rejected.json"), result.rejected)
         print(json.dumps({"accepted": len(result.accepted), "rejected": len(result.rejected)}))
+        return 0
+    if args.command == "extract-llm":
+        chunks = load_chunks(args.chunks)
+        if args.standards:
+            wanted = set(args.standards)
+            chunks = [chunk for chunk in chunks if chunk.standard_code in wanted]
+        if args.start:
+            chunks = chunks[args.start :]
+        if args.limit:
+            chunks = chunks[: args.limit]
+        provider = _make_provider(args.provider, args.model)
+        result = LLMExtractor(
+            provider,
+            max_relations_per_chunk=args.max_relations_per_chunk,
+        ).extract(chunks)
+        write_jsonl(args.out, (item.to_dict() for item in result.accepted))
+        write_json(args.out.with_suffix(".rejected.json"), result.rejected)
+        print(
+            json.dumps(
+                {
+                    "chunks": len(chunks),
+                    "accepted": len(result.accepted),
+                    "rejected": len(result.rejected),
+                },
+                ensure_ascii=False,
+            )
+        )
         return 0
     if args.command == "annotate":
         chunks = load_chunks(args.chunks)
@@ -194,4 +251,3 @@ def main(argv: list[str] | None = None) -> int:
         launch(args.data, args.host, args.port)
         return 0
     raise AssertionError(f"unhandled command: {args.command}")
-

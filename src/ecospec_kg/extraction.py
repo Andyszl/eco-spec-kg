@@ -1,12 +1,21 @@
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass
+from typing import Any
 
 from .evidence import validate_evidence
 from .io_utils import normalize_space, stable_id
 from .models import DocumentChunk, Relation, SourceRef
-from .schema import EntityType, RelationType
+from .providers import CompletionProvider
+from .schema import (
+    ENTITY_LABELS_ZH,
+    RELATION_LABELS_ZH,
+    EntityType,
+    RelationType,
+    schema_rows,
+)
 
 
 @dataclass(slots=True)
@@ -147,3 +156,174 @@ class RuleExtractor:
             confidence=1.0,
         )
 
+
+LLM_SYSTEM_PROMPT = (
+    "你是生态评估技术规范知识抽取助手。只能依据用户提供的规范文本抽取结构化关系，"
+    "不得使用外部知识，不得推断文本中没有明示的关系。输出必须是JSON。"
+)
+
+
+class LLMExtractor:
+    """Schema-constrained candidate extractor backed by an LLM provider."""
+
+    def __init__(
+        self,
+        provider: CompletionProvider,
+        max_relations_per_chunk: int = 20,
+    ) -> None:
+        self._provider = provider
+        self._max_relations_per_chunk = max_relations_per_chunk
+
+    def extract(self, chunks: list[DocumentChunk]) -> ExtractionResult:
+        accepted: list[Relation] = []
+        rejected: list[dict[str, str]] = []
+        for chunk in chunks:
+            prompt = self._build_prompt(chunk)
+            try:
+                response = self._provider.complete(LLM_SYSTEM_PROMPT, prompt)
+                candidates = self._parse_response(response)
+            except Exception as exc:  # pragma: no cover - defensive runtime path
+                rejected.append(
+                    {
+                        "chunk_id": chunk.chunk_id,
+                        "reason": f"provider_or_parse_error: {exc}",
+                    }
+                )
+                continue
+
+            for index, candidate in enumerate(
+                candidates[: self._max_relations_per_chunk], start=1
+            ):
+                try:
+                    relation = self._candidate_to_relation(chunk, candidate, index)
+                except Exception as exc:
+                    rejected.append(
+                        {
+                            "chunk_id": chunk.chunk_id,
+                            "reason": f"candidate_error: {exc}",
+                            "candidate": json.dumps(candidate, ensure_ascii=False),
+                        }
+                    )
+                    continue
+                valid, reason = validate_evidence(relation, chunk)
+                if valid:
+                    accepted.append(relation)
+                else:
+                    rejected.append(
+                        {
+                            "relation_id": relation.relation_id,
+                            "chunk_id": chunk.chunk_id,
+                            "reason": reason,
+                            "candidate": json.dumps(candidate, ensure_ascii=False),
+                        }
+                    )
+        return ExtractionResult(accepted=accepted, rejected=rejected)
+
+    @staticmethod
+    def _build_prompt(chunk: DocumentChunk) -> str:
+        entity_lines = [
+            f"- {entity.value}: {label}"
+            for entity, label in ENTITY_LABELS_ZH.items()
+        ]
+        relation_lines = [
+            f"- {relation.value}: {label}"
+            for relation, label in RELATION_LABELS_ZH.items()
+        ]
+        schema_lines = [
+            f"- {row['head_type']} --{row['relation_type']}--> {row['tail_type']}"
+            for row in schema_rows()
+        ]
+        return (
+            "请从以下生态评估技术规范文本中抽取候选知识图谱关系。\n"
+            "要求：\n"
+            "1. 只抽取文本中明确出现或直接定义的关系，不要补充常识。\n"
+            "2. evidence_text 必须逐字复制原文中的连续片段，不能改写。\n"
+            "3. 每条关系必须符合允许的 Schema 组合。\n"
+            "4. 若没有可抽取关系，返回 {\"relations\":[]}。\n"
+            "5. 不要输出解释、Markdown 或代码块，只输出 JSON。\n\n"
+            "实体类型：\n"
+            + "\n".join(entity_lines)
+            + "\n\n关系类型：\n"
+            + "\n".join(relation_lines)
+            + "\n\n允许的 Schema：\n"
+            + "\n".join(schema_lines)
+            + "\n\n输出格式：\n"
+            '{"relations":[{"head_name":"","head_type":"","relation_type":"",'
+            '"tail_name":"","tail_type":"","evidence_text":"","confidence":0.0}]}\n\n'
+            f"标准编号：{chunk.standard_code}\n"
+            f"页码：{chunk.page}\n"
+            f"章节：{chunk.section}\n"
+            f"chunk_id：{chunk.chunk_id}\n"
+            "规范文本：\n"
+            f"{chunk.text}"
+        )
+
+    @staticmethod
+    def _parse_response(response: str) -> list[dict[str, Any]]:
+        text = response.strip()
+        if text.startswith("```"):
+            text = re.sub(r"^```(?:json)?", "", text).strip()
+            text = re.sub(r"```$", "", text).strip()
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError:
+            start = text.find("{")
+            end = text.rfind("}")
+            if start < 0 or end <= start:
+                raise
+            payload = json.loads(text[start : end + 1])
+        if isinstance(payload, list):
+            return [item for item in payload if isinstance(item, dict)]
+        relations = payload.get("relations", [])
+        if not isinstance(relations, list):
+            raise ValueError("relations must be a list")
+        return [item for item in relations if isinstance(item, dict)]
+
+    @staticmethod
+    def _candidate_to_relation(
+        chunk: DocumentChunk, candidate: dict[str, Any], index: int
+    ) -> Relation:
+        head_name = str(candidate["head_name"]).strip()
+        head_type = str(candidate["head_type"]).strip()
+        relation_type = str(candidate["relation_type"]).strip()
+        tail_name = str(candidate["tail_name"]).strip()
+        tail_type = str(candidate["tail_type"]).strip()
+        evidence_text = str(candidate["evidence_text"]).strip()
+        confidence = float(candidate.get("confidence", 0.8))
+        if not all(
+            [head_name, head_type, relation_type, tail_name, tail_type, evidence_text]
+        ):
+            raise ValueError("empty required field")
+
+        head_id = stable_id(head_type, head_name)
+        tail_id = stable_id(tail_type, tail_name)
+        relation_id = stable_id(
+            chunk.standard_code,
+            chunk.page,
+            chunk.chunk_id,
+            index,
+            head_id,
+            relation_type,
+            tail_id,
+        )
+        return Relation(
+            relation_id=relation_id,
+            path_id=chunk.path_id,
+            head_id=head_id,
+            head_name=head_name,
+            head_type=head_type,
+            relation_type=relation_type,
+            tail_id=tail_id,
+            tail_name=tail_name,
+            tail_type=tail_type,
+            evidence=SourceRef(
+                standard_code=chunk.standard_code,
+                page=chunk.page,
+                section=chunk.section,
+                chunk_id=chunk.chunk_id,
+                evidence_text=evidence_text,
+                source_sha256=chunk.source_sha256,
+            ),
+            extraction_method="llm_schema",
+            confidence=max(0.0, min(confidence, 1.0)),
+        )
