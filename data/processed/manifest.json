@@ -1,0 +1,90 @@
+[
+  {
+    "page_count": 12,
+    "role": "support",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—生态系统遥感解译与野外核查.pdf",
+    "source_sha256": "d28d559dbfc4321794611c612bba6c169551ff0b58e8d2b8edbeed7fdc646f18",
+    "standard_code": "HJ 1166-2021",
+    "title": "生态系统遥感解译与野外核查"
+  },
+  {
+    "page_count": 11,
+    "role": "support",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—森林生态系统野外观测.pdf",
+    "source_sha256": "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21",
+    "standard_code": "HJ 1167-2021",
+    "title": "森林生态系统野外观测"
+  },
+  {
+    "page_count": 12,
+    "role": "support",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—草地生态系统野外观测.pdf",
+    "source_sha256": "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7",
+    "standard_code": "HJ 1168-2021",
+    "title": "草地生态系统野外观测"
+  },
+  {
+    "page_count": 11,
+    "role": "support",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—湿地生态系统野外观测.pdf",
+    "source_sha256": "f72f1017e7e737e0f18a554dfa7c950bb16b9d476aa43b77292b27b136d3db99",
+    "standard_code": "HJ 1169-2021",
+    "title": "湿地生态系统野外观测"
+  },
+  {
+    "page_count": 11,
+    "role": "support",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—荒漠生态系统野外观测.pdf",
+    "source_sha256": "cc2c9b7f28a2175308d6b07bbd4da70442010ec84904d6335cfa21a8dd229d11",
+    "standard_code": "HJ 1170-2021",
+    "title": "荒漠生态系统野外观测"
+  },
+  {
+    "page_count": 8,
+    "role": "external_test",
+    "source_file": "..\\全国生态状况调查评估技术规范\\1.全国生态状况调查评估技术规范—生态系统格局评估.pdf",
+    "source_sha256": "779a996bda30fbe4a714f0d6849be2f1930f9788c26071dc2d12e494714ee66c",
+    "standard_code": "HJ 1171-2021",
+    "title": "生态系统格局评估"
+  },
+  {
+    "page_count": 9,
+    "role": "core",
+    "source_file": "..\\全国生态状况调查评估技术规范\\2.全国生态状况调查评估技术规范—生态系统质量评估.pdf",
+    "source_sha256": "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0",
+    "standard_code": "HJ 1172-2021",
+    "title": "生态系统质量评估"
+  },
+  {
+    "page_count": 11,
+    "role": "core",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范（生态系统服务功能评估）.pdf",
+    "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+    "standard_code": "HJ 1173-2021",
+    "title": "生态系统服务功能评估"
+  },
+  {
+    "page_count": 11,
+    "role": "external_test",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—生态问题评估.pdf",
+    "source_sha256": "6c988e5604b29d2bb8257b90f3c15147099b90cdc3bfaec6290ef4f65abb41c5",
+    "standard_code": "HJ 1174-2021",
+    "title": "生态问题评估"
+  },
+  {
+    "page_count": 13,
+    "role": "external_test",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—项目尺度生态影响评估.pdf",
+    "source_sha256": "be032dc8826c4d6efdf90b3025e040ebbe02fec81e264f7ab3adfeb0258e858c",
+    "standard_code": "HJ 1175-2021",
+    "title": "项目尺度生态影响评估"
+  },
+  {
+    "page_count": 9,
+    "role": "support",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—数据质量控制与集成.pdf",
+    "source_sha256": "a28a64bb686d26ba62b2c3bda1f5baaf60804b1a9721a253d52a45def302f4e5",
+    "standard_code": "HJ 1176-2021",
+    "title": "数据质量控制与集成"
+  }
+]

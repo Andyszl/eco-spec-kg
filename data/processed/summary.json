@@ -1,0 +1,9 @@
+{
+  "chunk_count": 129,
+  "roles": {
+    "core": 2,
+    "external_test": 3,
+    "support": 6
+  },
+  "standard_count": 11
+}

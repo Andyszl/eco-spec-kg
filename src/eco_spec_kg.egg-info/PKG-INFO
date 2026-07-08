@@ -1,0 +1,115 @@
+Metadata-Version: 2.4
+Name: eco-spec-kg
+Version: 0.1.0
+Summary: Traceable knowledge graph construction and completion for Chinese ecological assessment standards.
+Author: EcoSpec-KG contributors
+License: MIT
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pydantic<3,>=2.7
+Requires-Dist: pdfplumber<1,>=0.11
+Requires-Dist: numpy<3,>=1.26
+Provides-Extra: ui
+Requires-Dist: gradio<7,>=5.0; extra == "ui"
+Provides-Extra: graph
+Requires-Dist: networkx<4,>=3.3; extra == "graph"
+Requires-Dist: lancedb<1,>=0.17; extra == "graph"
+Provides-Extra: ml
+Requires-Dist: torch>=2.3; extra == "ml"
+Requires-Dist: transformers>=4.51.0; extra == "ml"
+Requires-Dist: peft>=0.12; extra == "ml"
+Requires-Dist: accelerate>=0.33; extra == "ml"
+Requires-Dist: datasets>=2.20; extra == "ml"
+Requires-Dist: sentence-transformers>=3.0; extra == "ml"
+Provides-Extra: ms-graphrag
+Requires-Dist: graphrag==3.1.0; extra == "ms-graphrag"
+Requires-Dist: pandas>=2.2; extra == "ms-graphrag"
+Requires-Dist: pyarrow>=16; extra == "ms-graphrag"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2; extra == "dev"
+Requires-Dist: pytest-cov>=5; extra == "dev"
+Provides-Extra: all
+Requires-Dist: gradio<7,>=5.0; extra == "all"
+Requires-Dist: networkx<4,>=3.3; extra == "all"
+Requires-Dist: lancedb<1,>=0.17; extra == "all"
+Requires-Dist: torch>=2.3; extra == "all"
+Requires-Dist: transformers>=4.51.0; extra == "all"
+Requires-Dist: peft>=0.12; extra == "all"
+Requires-Dist: accelerate>=0.33; extra == "all"
+Requires-Dist: datasets>=2.20; extra == "all"
+Requires-Dist: sentence-transformers>=3.0; extra == "all"
+Requires-Dist: graphrag==3.1.0; extra == "all"
+Requires-Dist: pandas>=2.2; extra == "all"
+Requires-Dist: pyarrow>=16; extra == "all"
+Dynamic: license-file
+
+# EcoSpec-KG
+
+EcoSpec-KG turns the Chinese `HJ 1166-HJ 1176` ecological assessment
+standards into a traceable, machine-readable knowledge graph. The project
+supports a lightweight native graph-RAG pipeline and an adapter for Microsoft
+GraphRAG 3.1.0.
+
+The project does **not** claim to replace GIS, remote sensing, field surveys,
+or ecosystem process models. It organizes standards knowledge and evaluates
+retrieval, relation extraction, completion, and provenance tracing.
+
+## Data policy
+
+Raw standards are not redistributed. Point the project to a local folder:
+
+```powershell
+$env:ECOSPEC_CORPUS_DIR='D:\else\lky\生态论文重写版本\全国生态状况调查评估技术规范'
+```
+
+Generated annotation records may be released separately. Each record retains
+the standard code, page, section, evidence text, and source file hash.
+
+## Quick start
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -e ".[ui,dev]"
+
+eco-spec-kg corpus --source "$env:ECOSPEC_CORPUS_DIR" --out data/processed
+eco-spec-kg annotate --chunks data/processed/chunks.jsonl --out data/annotations/annotation_template.csv
+eco-spec-kg predict --chunks data/processed/chunks.jsonl --out results/rule_predictions.jsonl
+eco-spec-kg index --adapter native --chunks data/processed/chunks.jsonl --out data/index/native
+eco-spec-kg serve --data data --host 127.0.0.1 --port 7860
+```
+
+All unrun experiment metrics remain JSON `null`. The reporting command renders
+them as `待实验补充`; it never invents values.
+
+## Remote GPU
+
+The primary completion model is `Qwen/Qwen3-0.6B`, with thinking disabled for
+structured extraction. The embedding model is
+`Qwen/Qwen3-Embedding-0.6B`. A remote vLLM endpoint can be configured with:
+
+```powershell
+$env:ECOSPEC_LLM_BASE_URL='http://gpu-server:8000/v1'
+$env:ECOSPEC_LLM_API_KEY='local-token'
+```
+
+LoRA defaults are rank 8, alpha 16, dropout 0.05, learning rate `2e-4`,
+five epochs maximum, and seeds 42, 43, and 44.
+
+## Public commands
+
+- `corpus`: deduplicate official PDFs and extract traceable chunks.
+- `annotate`: create a two-reviewer annotation sheet.
+- `index`: build a native or Microsoft GraphRAG index.
+- `train`: prepare or run LoRA training.
+- `predict`: run the deterministic rule baseline.
+- `evaluate`: calculate extraction and provenance metrics.
+- `ablate`: create the fixed ablation experiment matrix.
+- `report`: render machine-readable results into Markdown.
+- `serve`: launch the Gradio knowledge service.
+
+## Repository status
+
+The included fixture is for software tests only. It is not an experimental
+result and must not be counted in the paper dataset.
+

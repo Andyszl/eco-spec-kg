@@ -1,0 +1,115 @@
+{
+  "experiments": [
+    {
+      "experiment_id": "full_method",
+      "metrics": null,
+      "overrides": {}
+    },
+    {
+      "experiment_id": "without_schema",
+      "metrics": null,
+      "overrides": {
+        "schema": false
+      }
+    },
+    {
+      "experiment_id": "without_graphrag",
+      "metrics": null,
+      "overrides": {
+        "graphrag": false
+      }
+    },
+    {
+      "experiment_id": "without_lora",
+      "metrics": null,
+      "overrides": {
+        "lora": false
+      }
+    },
+    {
+      "experiment_id": "without_few_shot",
+      "metrics": null,
+      "overrides": {
+        "few_shot": false
+      }
+    },
+    {
+      "experiment_id": "without_evidence",
+      "metrics": null,
+      "overrides": {
+        "evidence_validation": false
+      }
+    },
+    {
+      "experiment_id": "chunk_150",
+      "metrics": null,
+      "overrides": {
+        "chunk_tokens": 150
+      }
+    },
+    {
+      "experiment_id": "chunk_300",
+      "metrics": null,
+      "overrides": {
+        "chunk_tokens": 300
+      }
+    },
+    {
+      "experiment_id": "chunk_600",
+      "metrics": null,
+      "overrides": {
+        "chunk_tokens": 600
+      }
+    },
+    {
+      "experiment_id": "shot_0",
+      "metrics": null,
+      "overrides": {
+        "shots": 0
+      }
+    },
+    {
+      "experiment_id": "shot_1",
+      "metrics": null,
+      "overrides": {
+        "shots": 1
+      }
+    },
+    {
+      "experiment_id": "shot_3",
+      "metrics": null,
+      "overrides": {
+        "shots": 3
+      }
+    },
+    {
+      "experiment_id": "shot_5",
+      "metrics": null,
+      "overrides": {
+        "shots": 5
+      }
+    },
+    {
+      "experiment_id": "threshold_0.65",
+      "metrics": null,
+      "overrides": {
+        "candidate_threshold": 0.65
+      }
+    },
+    {
+      "experiment_id": "threshold_0.75",
+      "metrics": null,
+      "overrides": {
+        "candidate_threshold": 0.75
+      }
+    },
+    {
+      "experiment_id": "threshold_0.85",
+      "metrics": null,
+      "overrides": {
+        "candidate_threshold": 0.85
+      }
+    }
+  ],
+  "status": "not_run"
+}

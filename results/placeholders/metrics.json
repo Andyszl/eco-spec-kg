@@ -1,0 +1,21 @@
+{
+  "status": "not_run",
+  "main_results": {
+    "rule": null,
+    "zero_shot": null,
+    "few_shot": null,
+    "vector_rag": null,
+    "microsoft_graphrag": null,
+    "native_graphrag": null,
+    "schema_graphrag": null,
+    "full_method": null
+  },
+  "expert_validation": {
+    "sample_size": 120,
+    "reviewer_count": 2,
+    "acceptance_rate": null,
+    "agreement": null
+  },
+  "note": "All null values must be replaced only by measured results."
+}
+

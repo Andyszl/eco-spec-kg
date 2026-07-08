@@ -1,0 +1,2 @@
+record_id,path_id,head_name,head_type,relation_type,tail_name,tail_type,standard_code,page,section,evidence_text,source_chunk_id,source_sha256,extraction_method,confidence,reviewer_1_decision,reviewer_1_comment,reviewer_2_decision,reviewer_2_comment,consensus_decision,review_status
+

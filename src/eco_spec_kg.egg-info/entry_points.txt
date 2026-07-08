@@ -1,0 +1,2 @@
+[console_scripts]
+eco-spec-kg = ecospec_kg.cli:main

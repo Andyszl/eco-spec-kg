@@ -1,0 +1,27 @@
+{
+  "project_name": "EcoSpec-KG",
+  "completion_model": "Qwen/Qwen3-0.6B",
+  "embedding_model": "Qwen/Qwen3-Embedding-0.6B",
+  "enable_thinking": false,
+  "chunk_chars": 1400,
+  "chunk_overlap_chars": 150,
+  "candidate_top_k": 10,
+  "candidate_threshold": 0.75,
+  "split": {
+    "train": 0.7,
+    "validation": 0.15,
+    "test": 0.15,
+    "external_test_standards": ["HJ 1171-2021", "HJ 1174-2021", "HJ 1175-2021"]
+  },
+  "lora": {
+    "rank": 8,
+    "alpha": 16,
+    "dropout": 0.05,
+    "learning_rate": 0.0002,
+    "max_epochs": 5,
+    "early_stopping_patience": 2,
+    "seeds": [42, 43, 44],
+    "max_sequence_length": 2048
+  }
+}
+

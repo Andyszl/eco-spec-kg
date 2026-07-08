@@ -1,0 +1,6 @@
+{
+  "adapter": "microsoft_graphrag",
+  "chunk_count": 129,
+  "status": "prepared",
+  "version": "3.1.0"
+}

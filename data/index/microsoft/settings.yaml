@@ -1,0 +1,37 @@
+completion_models:
+  default_completion_model:
+    model_provider: openai
+    model: ${ECOSPEC_COMPLETION_MODEL}
+    api_base: ${ECOSPEC_LLM_BASE_URL}
+    api_key: ${ECOSPEC_LLM_API_KEY}
+embedding_models:
+  default_embedding_model:
+    model_provider: openai
+    model: ${ECOSPEC_EMBEDDING_MODEL}
+    api_base: ${ECOSPEC_LLM_BASE_URL}
+    api_key: ${ECOSPEC_LLM_API_KEY}
+input:
+  type: file
+  file_type: csv
+  base_dir: input
+  file_pattern: ".*\\.csv$"
+  text_column: text
+  title_column: id
+chunks:
+  size: 300
+  overlap: 40
+extract_graph:
+  prompt: prompts/extract_graph.txt
+  entity_types:
+    - indicator
+    - formula
+    - parameter
+    - unit
+    - data_source
+    - method
+    - ecosystem_type
+    - spatial_scope
+    - temporal_scope
+    - quality_requirement
+    - standard_clause
+  max_gleanings: 1
