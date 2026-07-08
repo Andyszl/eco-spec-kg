@@ -407,6 +407,8 @@ eco-spec-kg extract-llm \
 --limit                    # 限定处理多少个 chunk，先小批量试跑
 --start                    # 从第几个 chunk 开始，便于断点分批
 --max-relations-per-chunk  # 每个 chunk 最多保留多少条关系
+--retries                  # 单个 chunk 解析失败时的重试次数，默认 2
+--retry-sleep              # 重试间隔秒数，默认 1.0
 ```
 
 `--standards "HJ 1172-2021" "HJ 1173-2021"` 表示只处理 HJ 1172 和 HJ 1173 两个核心标准。这样做是为了先围绕生态系统质量评估和生态系统服务功能评估构建核心训练候选，同时避免把 HJ 1171、HJ 1174、HJ 1175 这些跨规范测试集提前混入训练候选。
@@ -469,6 +471,61 @@ results/llm_candidates_core.jsonl
 ```
 
 注意：LLM 输出仍然只是候选关系，不能直接作为训练集，必须进入专家审核。
+
+如果拒绝原因是：
+
+```text
+provider_or_parse_error: Expecting value: line 1 column 1 (char 0)
+```
+
+说明线上模型返回为空或返回内容不是 JSON。新版命令会在 rejected 文件中记录：
+
+```text
+response_preview
+raw_response_preview
+attempts
+```
+
+可用以下命令查看：
+
+```bash
+python - <<'PY'
+import json
+from pathlib import Path
+
+rows = json.loads(Path("results/online_candidates_core.rejected.json").read_text(encoding="utf-8"))
+for row in rows[:5]:
+    print("=" * 80)
+    print("chunk:", row.get("chunk_id"))
+    print("reason:", row.get("reason"))
+    print("response_preview:", row.get("response_preview", "")[:500])
+    print("raw_response_preview:", row.get("raw_response_preview", "")[:1000])
+PY
+```
+
+如果是偶发空返回，可提高重试次数：
+
+```bash
+eco-spec-kg extract-llm \
+  --provider openai \
+  --chunks data/processed/chunks.jsonl \
+  --standards "HJ 1172-2021" "HJ 1173-2021" \
+  --out results/online_candidates_core.jsonl \
+  --retries 4 \
+  --retry-sleep 2
+```
+
+默认不向线上模型追加 `/no_think`。如果使用 Qwen 类本地或 vLLM 模型，且确实需要关闭思考模式，可设置：
+
+```bash
+export ECOSPEC_LLM_APPEND_NO_THINK=1
+```
+
+普通 DeepSeek/OpenAI-compatible 线上抽取阶段建议保持默认：
+
+```bash
+unset ECOSPEC_LLM_APPEND_NO_THINK
+```
 
 ## 8. 生成专家审核表
 

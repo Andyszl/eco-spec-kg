@@ -4,6 +4,7 @@ import json
 import os
 import urllib.request
 from dataclasses import dataclass
+from typing import Any
 from typing import Protocol
 
 
@@ -26,6 +27,9 @@ class OpenAICompatibleProvider:
     api_key: str
     model: str = "Qwen/Qwen3-0.6B"
     timeout: int = 120
+    max_tokens: int = 4096
+    append_no_think: bool = False
+    last_raw_response: dict[str, Any] | None = None
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleProvider":
@@ -33,17 +37,21 @@ class OpenAICompatibleProvider:
             base_url=os.environ.get("ECOSPEC_LLM_BASE_URL", "http://127.0.0.1:8000/v1"),
             api_key=os.environ.get("ECOSPEC_LLM_API_KEY", "local-token"),
             model=os.environ.get("ECOSPEC_COMPLETION_MODEL", "Qwen/Qwen3-0.6B"),
+            max_tokens=int(os.environ.get("ECOSPEC_LLM_MAX_TOKENS", "4096")),
+            append_no_think=os.environ.get("ECOSPEC_LLM_APPEND_NO_THINK", "0")
+            in {"1", "true", "True", "yes"},
         )
 
     def complete(self, system: str, prompt: str) -> str:
+        user_content = prompt + "\n/no_think" if self.append_no_think else prompt
         payload = {
             "model": self.model,
             "messages": [
                 {"role": "system", "content": system},
-                {"role": "user", "content": prompt + "\n/no_think"},
+                {"role": "user", "content": user_content},
             ],
             "temperature": 0,
-            "max_tokens": 1024,
+            "max_tokens": self.max_tokens,
         }
         request = urllib.request.Request(
             self.base_url.rstrip("/") + "/chat/completions",
@@ -56,7 +64,12 @@ class OpenAICompatibleProvider:
         )
         with urllib.request.urlopen(request, timeout=self.timeout) as response:
             result = json.loads(response.read().decode("utf-8"))
-        return result["choices"][0]["message"]["content"]
+        self.last_raw_response = result
+        message = result["choices"][0]["message"]
+        content = message.get("content")
+        if content:
+            return content
+        return message.get("reasoning_content") or ""
 
 
 class TransformersProvider:
@@ -85,4 +98,3 @@ class TransformersProvider:
         output = self._model.generate(**inputs, max_new_tokens=1024, do_sample=False)
         generated = output[0][inputs.input_ids.shape[-1] :]
         return self._tokenizer.decode(generated, skip_special_tokens=True)
-

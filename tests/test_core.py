@@ -76,6 +76,15 @@ class CoreTests(unittest.TestCase):
         self.assertEqual(result.accepted[0].extraction_method, "llm_schema")
         self.assertFalse(result.rejected)
 
+    def test_llm_parse_error_records_response(self) -> None:
+        result = LLMExtractor(MockProvider("not-json"), retries=0).extract(
+            [self.chunks[0]]
+        )
+        self.assertEqual(len(result.accepted), 0)
+        self.assertEqual(len(result.rejected), 1)
+        self.assertIn("provider_or_parse_error", result.rejected[0]["reason"])
+        self.assertEqual(result.rejected[0]["response_preview"], "not-json")
+
     def test_group_split_keeps_paths_together(self) -> None:
         split = group_split(self.relations)
         locations: dict[str, str] = {}

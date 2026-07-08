@@ -106,6 +106,8 @@ def _build_parser() -> argparse.ArgumentParser:
     extract_llm.add_argument("--start", type=int, default=0)
     extract_llm.add_argument("--standards", nargs="*")
     extract_llm.add_argument("--max-relations-per-chunk", type=int, default=20)
+    extract_llm.add_argument("--retries", type=int, default=2)
+    extract_llm.add_argument("--retry-sleep", type=float, default=1.0)
     extract_llm.add_argument(
         "--quiet",
         action="store_true",
@@ -225,13 +227,15 @@ def main(argv: list[str] | None = None) -> int:
         if not args.quiet:
             print(
                 "extract-llm start: provider={provider} model={model} chunks={chunks} "
-                "standards={standards} start={start} limit={limit} out={out}".format(
+                "standards={standards} start={start} limit={limit} retries={retries} "
+                "out={out}".format(
                     provider=args.provider,
                     model=args.model,
                     chunks=len(chunks),
                     standards=",".join(args.standards or ["ALL"]),
                     start=args.start,
                     limit=args.limit if args.limit is not None else "ALL",
+                    retries=args.retries,
                     out=args.out,
                 ),
                 file=sys.stderr,
@@ -240,6 +244,8 @@ def main(argv: list[str] | None = None) -> int:
         result = LLMExtractor(
             provider,
             max_relations_per_chunk=args.max_relations_per_chunk,
+            retries=args.retries,
+            retry_sleep_seconds=args.retry_sleep,
         ).extract(
             chunks,
             on_progress=None if args.quiet else _llm_progress_logger,

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from dataclasses import dataclass
 from typing import Any, Callable
 
@@ -176,9 +177,13 @@ class LLMExtractor:
         self,
         provider: CompletionProvider,
         max_relations_per_chunk: int = 20,
+        retries: int = 2,
+        retry_sleep_seconds: float = 1.0,
     ) -> None:
         self._provider = provider
         self._max_relations_per_chunk = max_relations_per_chunk
+        self._retries = retries
+        self._retry_sleep_seconds = retry_sleep_seconds
 
     def extract(
         self,
@@ -192,14 +197,31 @@ class LLMExtractor:
             accepted_before = len(accepted)
             rejected_before = len(rejected)
             prompt = self._build_prompt(chunk)
-            try:
-                response = self._provider.complete(LLM_SYSTEM_PROMPT, prompt)
-                candidates = self._parse_response(response)
-            except Exception as exc:  # pragma: no cover - defensive runtime path
+            response = ""
+            candidates: list[dict[str, Any]] = []
+            last_error: Exception | None = None
+            raw_preview = ""
+            attempts = max(1, self._retries + 1)
+            for attempt in range(1, attempts + 1):
+                try:
+                    response = self._provider.complete(LLM_SYSTEM_PROMPT, prompt)
+                    candidates = self._parse_response(response)
+                    last_error = None
+                    break
+                except Exception as exc:  # pragma: no cover - defensive runtime path
+                    last_error = exc
+                    raw_preview = self._raw_response_preview()
+                    if attempt < attempts:
+                        time.sleep(self._retry_sleep_seconds)
+                    continue
+            if last_error is not None:
                 rejected.append(
                     {
                         "chunk_id": chunk.chunk_id,
-                        "reason": f"provider_or_parse_error: {exc}",
+                        "reason": f"provider_or_parse_error: {last_error}",
+                        "response_preview": response[:1200],
+                        "raw_response_preview": raw_preview,
+                        "attempts": str(attempts),
                     }
                 )
                 if on_progress:
@@ -253,6 +275,15 @@ class LLMExtractor:
                     len(rejected),
                 )
         return ExtractionResult(accepted=accepted, rejected=rejected)
+
+    def _raw_response_preview(self) -> str:
+        raw = getattr(self._provider, "last_raw_response", None)
+        if raw is None:
+            return ""
+        try:
+            return json.dumps(raw, ensure_ascii=False)[:2000]
+        except TypeError:
+            return str(raw)[:2000]
 
     @staticmethod
     def _build_prompt(chunk: DocumentChunk) -> str:
