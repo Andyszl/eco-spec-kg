@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 
 from .adapters import (
@@ -16,7 +17,7 @@ from .corpus import build_corpus
 from .experiments import evaluate_files, write_ablation_plan
 from .extraction import LLMExtractor, RuleExtractor
 from .io_utils import read_jsonl, write_csv, write_json, write_jsonl
-from .models import Relation
+from .models import DocumentChunk, Relation
 from .providers import MockProvider, OpenAICompatibleProvider, TransformersProvider
 from .reporting import render_report
 from .training import LoRASettings, prepare_training_data, run_lora
@@ -105,6 +106,11 @@ def _build_parser() -> argparse.ArgumentParser:
     extract_llm.add_argument("--start", type=int, default=0)
     extract_llm.add_argument("--standards", nargs="*")
     extract_llm.add_argument("--max-relations-per-chunk", type=int, default=20)
+    extract_llm.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Disable per-chunk progress logs for LLM extraction.",
+    )
 
     index = sub.add_parser("index")
     index.add_argument("--adapter", choices=["native", "microsoft"], required=True)
@@ -153,6 +159,47 @@ def _make_provider(kind: str, model: str):
     raise ValueError(f"unknown provider: {kind}")
 
 
+def _progress_bar(done: int, total: int, width: int = 28) -> str:
+    if total <= 0:
+        return "-" * width
+    filled = min(width, max(0, round(width * done / total)))
+    return "#" * filled + "-" * (width - filled)
+
+
+def _llm_progress_logger(
+    index: int,
+    total: int,
+    chunk: DocumentChunk,
+    accepted_delta: int,
+    rejected_delta: int,
+    accepted_total: int,
+    rejected_total: int,
+) -> None:
+    percent = (index / total * 100) if total else 100.0
+    section = chunk.section or "-"
+    print(
+        "[{bar}] {index}/{total} {percent:5.1f}% "
+        "chunk={chunk_id} standard={standard} page={page} section={section} "
+        "+accepted={accepted_delta} +rejected={rejected_delta} "
+        "accepted={accepted_total} rejected={rejected_total}".format(
+            bar=_progress_bar(index, total),
+            index=index,
+            total=total,
+            percent=percent,
+            chunk_id=chunk.chunk_id,
+            standard=chunk.standard_code,
+            page=chunk.page,
+            section=section,
+            accepted_delta=accepted_delta,
+            rejected_delta=rejected_delta,
+            accepted_total=accepted_total,
+            rejected_total=rejected_total,
+        ),
+        file=sys.stderr,
+        flush=True,
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _build_parser().parse_args(argv)
     if args.command == "corpus":
@@ -175,10 +222,28 @@ def main(argv: list[str] | None = None) -> int:
         if args.limit:
             chunks = chunks[: args.limit]
         provider = _make_provider(args.provider, args.model)
+        if not args.quiet:
+            print(
+                "extract-llm start: provider={provider} model={model} chunks={chunks} "
+                "standards={standards} start={start} limit={limit} out={out}".format(
+                    provider=args.provider,
+                    model=args.model,
+                    chunks=len(chunks),
+                    standards=",".join(args.standards or ["ALL"]),
+                    start=args.start,
+                    limit=args.limit if args.limit is not None else "ALL",
+                    out=args.out,
+                ),
+                file=sys.stderr,
+                flush=True,
+            )
         result = LLMExtractor(
             provider,
             max_relations_per_chunk=args.max_relations_per_chunk,
-        ).extract(chunks)
+        ).extract(
+            chunks,
+            on_progress=None if args.quiet else _llm_progress_logger,
+        )
         write_jsonl(args.out, (item.to_dict() for item in result.accepted))
         write_json(args.out.with_suffix(".rejected.json"), result.rejected)
         print(

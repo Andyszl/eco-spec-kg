@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Callable
 
 from .evidence import validate_evidence
 from .io_utils import normalize_space, stable_id
@@ -22,6 +22,12 @@ from .schema import (
 class ExtractionResult:
     accepted: list[Relation]
     rejected: list[dict[str, str]]
+
+
+ProgressCallback = Callable[
+    [int, int, DocumentChunk, int, int, int, int],
+    None,
+]
 
 
 class RuleExtractor:
@@ -174,10 +180,17 @@ class LLMExtractor:
         self._provider = provider
         self._max_relations_per_chunk = max_relations_per_chunk
 
-    def extract(self, chunks: list[DocumentChunk]) -> ExtractionResult:
+    def extract(
+        self,
+        chunks: list[DocumentChunk],
+        on_progress: ProgressCallback | None = None,
+    ) -> ExtractionResult:
         accepted: list[Relation] = []
         rejected: list[dict[str, str]] = []
-        for chunk in chunks:
+        total = len(chunks)
+        for index, chunk in enumerate(chunks, start=1):
+            accepted_before = len(accepted)
+            rejected_before = len(rejected)
             prompt = self._build_prompt(chunk)
             try:
                 response = self._provider.complete(LLM_SYSTEM_PROMPT, prompt)
@@ -189,13 +202,25 @@ class LLMExtractor:
                         "reason": f"provider_or_parse_error: {exc}",
                     }
                 )
+                if on_progress:
+                    on_progress(
+                        index,
+                        total,
+                        chunk,
+                        len(accepted) - accepted_before,
+                        len(rejected) - rejected_before,
+                        len(accepted),
+                        len(rejected),
+                    )
                 continue
 
-            for index, candidate in enumerate(
+            for candidate_index, candidate in enumerate(
                 candidates[: self._max_relations_per_chunk], start=1
             ):
                 try:
-                    relation = self._candidate_to_relation(chunk, candidate, index)
+                    relation = self._candidate_to_relation(
+                        chunk, candidate, candidate_index
+                    )
                 except Exception as exc:
                     rejected.append(
                         {
@@ -217,6 +242,16 @@ class LLMExtractor:
                             "candidate": json.dumps(candidate, ensure_ascii=False),
                         }
                     )
+            if on_progress:
+                on_progress(
+                    index,
+                    total,
+                    chunk,
+                    len(accepted) - accepted_before,
+                    len(rejected) - rejected_before,
+                    len(accepted),
+                    len(rejected),
+                )
         return ExtractionResult(accepted=accepted, rejected=rejected)
 
     @staticmethod

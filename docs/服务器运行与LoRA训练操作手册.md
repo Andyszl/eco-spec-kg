@@ -30,10 +30,15 @@
 推荐服务器目录如下：
 
 ```text
-/root/Desktop/project/eco-spec-kg      # 项目代码目录
-/data/corpus/eco_specs                 # 原始 PDF 语料目录
-/data/projects                         # 可选：Git 项目统一目录
+/home/ecospec/project/eco-spec-kg      # 项目代码目录，推荐放在 /home
+/home/ecospec/venvs/ecospec            # Python 虚拟环境或 conda 环境
+/home/ecospec/cache/pip                # pip 缓存
+/work/ecospec/corpus                   # 原始 PDF 语料目录，推荐放在 /work
+/work/ecospec/hf-cache                 # Hugging Face 模型缓存
+/work/ecospec/tmp                      # pip、模型下载和训练临时目录
 ```
+
+不建议把项目、虚拟环境、模型缓存或 PDF 语料放在 `/root`、`/tmp` 或根分区 `/` 下。当前服务器根分区约 70G，容易被 PyTorch、CUDA 包、Docker 缓存和 pip 临时文件占满；`/home` 和 `/work` 空间更充足。
 
 如果你的服务器目录不同，把后续命令中的路径替换成实际路径即可。
 
@@ -42,7 +47,8 @@
 如果 GitHub 可以访问，优先使用 Git：
 
 ```bash
-cd /root/Desktop/project
+mkdir -p /home/ecospec/project
+cd /home/ecospec/project
 git clone https://github.com/Andyszl/eco-spec-kg.git
 cd eco-spec-kg
 ```
@@ -54,16 +60,50 @@ cd eco-spec-kg
 ```powershell
 Set-Location 'D:\else\lky\生态论文重写版本\eco-spec-kg'
 git bundle create eco-spec-kg-main.bundle main
-scp .\eco-spec-kg-main.bundle root@服务器IP:/root/Desktop/project/
+scp .\eco-spec-kg-main.bundle root@服务器IP:/home/ecospec/project/
 ```
 
 服务器解包：
 
 ```bash
-cd /root/Desktop/project
+cd /home/ecospec/project
 git clone eco-spec-kg-main.bundle eco-spec-kg
 cd eco-spec-kg
 ```
+
+### 3.1 服务器更新代码
+
+服务器已有仓库时，更新代码：
+
+```bash
+cd /home/ecospec/project/eco-spec-kg
+git pull
+```
+
+如果 `git pull` 报错，提示以下文件会被覆盖：
+
+```text
+src/ecospec_kg/__pycache__/cli.cpython-311.pyc
+src/ecospec_kg/__pycache__/extraction.cpython-311.pyc
+```
+
+这是 Python 自动生成的缓存文件，不是源码。可以丢弃后再拉取：
+
+```bash
+git checkout -- src/ecospec_kg/__pycache__/cli.cpython-311.pyc
+git checkout -- src/ecospec_kg/__pycache__/extraction.cpython-311.pyc
+git pull
+```
+
+拉取后重新安装 editable 包，确保新命令生效：
+
+```bash
+conda activate ecospec
+pip install -e ".[ml,ui,dev]"
+eco-spec-kg --help
+```
+
+如果命令列表中出现 `extract-llm`，说明 LLM 抽取入口已更新成功。
 
 ## 4. 创建 Python 环境
 
@@ -78,7 +118,7 @@ python3 --version
 ### 4.1 推荐方式：使用 conda
 
 ```bash
-cd /root/Desktop/project/eco-spec-kg
+cd /home/ecospec/project/eco-spec-kg
 
 conda create -n ecospec python=3.11 -y
 conda activate ecospec
@@ -104,11 +144,11 @@ apt install -y python3.11 python3.11-venv python3.11-dev
 创建虚拟环境：
 
 ```bash
-cd /root/Desktop/project/eco-spec-kg
-rm -rf .venv
+cd /home/ecospec/project/eco-spec-kg
+mkdir -p /home/ecospec/venvs
 
-python3.11 -m venv .venv
-source .venv/bin/activate
+python3.11 -m venv /home/ecospec/venvs/ecospec
+source /home/ecospec/venvs/ecospec/bin/activate
 
 python -m pip install --upgrade pip setuptools wheel
 pip install -e ".[ml,ui,dev]"
@@ -154,25 +194,31 @@ D:\else\lky\生态论文重写版本\全国生态状况调查评估技术规范
 从本机 PowerShell 上传到服务器：
 
 ```powershell
-scp -r "D:\else\lky\生态论文重写版本\全国生态状况调查评估技术规范" root@服务器IP:/data/corpus/eco_specs
+scp -r "D:\else\lky\生态论文重写版本\全国生态状况调查评估技术规范" root@服务器IP:/work/ecospec/corpus
 ```
 
 服务器检查：
 
 ```bash
-ls -lh /data/corpus/eco_specs
+ls -lh /work/ecospec/corpus
 ```
 
 设置环境变量：
 
 ```bash
-export ECOSPEC_CORPUS_DIR=/data/corpus/eco_specs
+export ECOSPEC_CORPUS_DIR=/work/ecospec/corpus
 ```
 
 如果希望每次登录自动生效：
 
 ```bash
-echo 'export ECOSPEC_CORPUS_DIR=/data/corpus/eco_specs' >> ~/.bashrc
+cat >> ~/.bashrc <<'EOF'
+export PIP_CACHE_DIR=/home/ecospec/cache/pip
+export HF_HOME=/work/ecospec/hf-cache
+export TRANSFORMERS_CACHE=/work/ecospec/hf-cache
+export TMPDIR=/work/ecospec/tmp
+export ECOSPEC_CORPUS_DIR=/work/ecospec/corpus
+EOF
 source ~/.bashrc
 ```
 
@@ -181,15 +227,15 @@ source ~/.bashrc
 进入项目目录并激活环境：
 
 ```bash
-cd /root/Desktop/project/eco-spec-kg
+cd /home/ecospec/project/eco-spec-kg
 conda activate ecospec
 ```
 
 如果使用 venv：
 
 ```bash
-cd /root/Desktop/project/eco-spec-kg
-source .venv/bin/activate
+cd /home/ecospec/project/eco-spec-kg
+source /home/ecospec/venvs/ecospec/bin/activate
 ```
 
 执行 PDF 解析：
@@ -283,16 +329,72 @@ src/ecospec_kg/evidence.py
 
 ### 7.2 LLM Schema 约束抽取
 
-正式扩充三元组时，使用 LLM 抽取：
+正式扩充三元组时，使用 LLM 抽取。当前阶段的目标是生成“候选三元组”，不要求必须使用本地模型；可以优先接入 DeepSeek、通义千问、智谱等 OpenAI-compatible 线上模型。线上模型负责候选生成，本地代码负责 Schema 校验、证据原文匹配和输出文件管理。
+
+推荐优先级：
+
+```text
+线上强模型/OpenAI-compatible API  # 当前候选抽取阶段优先使用
+本地 Transformers Qwen3-0.6B       # 后续本地基线、LoRA 前后对比使用
+本地 vLLM OpenAI-compatible 服务   # 需要批量加速或统一服务接口时使用
+```
+
+#### 7.2.1 使用线上 DeepSeek/OpenAI-compatible 模型
+
+先设置 API 环境变量。以下以 DeepSeek 兼容接口为例，模型名以你的服务商控制台实际可用模型为准：
+
+```bash
+export ECOSPEC_LLM_BASE_URL=https://api.deepseek.com
+export ECOSPEC_LLM_API_KEY=你的API_KEY
+export ECOSPEC_COMPLETION_MODEL=你的线上模型名
+```
+
+如果服务商要求 base URL 带 `/v1`，则设置为：
+
+```bash
+export ECOSPEC_LLM_BASE_URL=https://服务商域名/v1
+```
+
+先小批量试跑 5 个 chunk：
 
 ```bash
 eco-spec-kg extract-llm \
-  --provider transformers \
-  --model Qwen/Qwen3-0.6B \
+  --provider openai \
   --chunks data/processed/chunks.jsonl \
   --standards "HJ 1172-2021" "HJ 1173-2021" \
-  --out results/llm_candidates_core.jsonl \
+  --out results/online_candidates_core_test.jsonl \
   --limit 5
+```
+
+`extract-llm` 默认会在终端打印逐 chunk 进度日志，格式类似：
+
+```text
+extract-llm start: provider=openai model=... chunks=5 standards=HJ 1172-2021,HJ 1173-2021 start=0 limit=5 out=...
+[######----------------------] 1/5  20.0% chunk=HJ1172_2021-p2-c2 standard=HJ 1172-2021 page=2 section=- +accepted=2 +rejected=0 accepted=2 rejected=0
+```
+
+如果需要关闭进度日志，可加：
+
+```bash
+--quiet
+```
+
+检查候选数量和拒绝原因：
+
+```bash
+wc -l results/online_candidates_core_test.jsonl
+cat results/online_candidates_core_test.rejected.json
+head -n 3 results/online_candidates_core_test.jsonl
+```
+
+确认输出正常后，去掉 `--limit` 跑完整核心标准：
+
+```bash
+eco-spec-kg extract-llm \
+  --provider openai \
+  --chunks data/processed/chunks.jsonl \
+  --standards "HJ 1172-2021" "HJ 1173-2021" \
+  --out results/online_candidates_core.jsonl
 ```
 
 参数说明：
@@ -300,14 +402,20 @@ eco-spec-kg extract-llm \
 ```text
 --provider transformers    # 在当前服务器上直接加载本地 Transformers 模型
 --provider openai          # 调用 vLLM/OpenAI-compatible 服务
---model Qwen/Qwen3-0.6B    # 使用的抽取模型
+--model                    # provider=transformers 时指定本地模型；provider=openai 时通常由 ECOSPEC_COMPLETION_MODEL 指定
 --standards                # 限定处理哪些标准
 --limit                    # 限定处理多少个 chunk，先小批量试跑
 --start                    # 从第几个 chunk 开始，便于断点分批
 --max-relations-per-chunk  # 每个 chunk 最多保留多少条关系
 ```
 
-小批量确认正常后，再去掉 `--limit` 跑核心标准：
+`--standards "HJ 1172-2021" "HJ 1173-2021"` 表示只处理 HJ 1172 和 HJ 1173 两个核心标准。这样做是为了先围绕生态系统质量评估和生态系统服务功能评估构建核心训练候选，同时避免把 HJ 1171、HJ 1174、HJ 1175 这些跨规范测试集提前混入训练候选。
+
+可以不跳过目录、附录标题和规范性引用文件。完整抽取保留这些候选有利于记录模型行为，后续在 `annotation_candidates.csv` 中将低价值或不适合训练的目录型关系标记为 `rejected` 即可。正式训练和测试只使用专家审核通过的 `accepted` 或 `consensus_accepted` 关系。
+
+#### 7.2.2 使用本地 Transformers 模型
+
+如果希望不用线上 API，也可以直接在 A100 服务器上加载本地模型：
 
 ```bash
 eco-spec-kg extract-llm \
@@ -317,6 +425,16 @@ eco-spec-kg extract-llm \
   --standards "HJ 1172-2021" "HJ 1173-2021" \
   --out results/llm_candidates_core.jsonl
 ```
+
+本地模型首次运行会下载模型文件，应提前设置缓存目录，避免占用根分区：
+
+```bash
+export HF_HOME=/work/ecospec/hf-cache
+export TRANSFORMERS_CACHE=/work/ecospec/hf-cache
+export TMPDIR=/work/ecospec/tmp
+```
+
+#### 7.2.3 使用本地 vLLM 服务
 
 如果用 vLLM 服务，先启动 OpenAI-compatible endpoint，然后设置：
 
@@ -336,15 +454,17 @@ eco-spec-kg extract-llm \
   --out results/llm_candidates_core.jsonl
 ```
 
-LLM 抽取会自动执行 Schema 校验和证据校验。证据无法在原 chunk 中精确匹配的关系会写入：
+LLM 抽取会自动执行 Schema 校验和证据校验。证据无法在原 chunk 中精确匹配的关系会写入与 `--out` 同名的拒绝文件。例如：
 
 ```text
+results/online_candidates_core.rejected.json
 results/llm_candidates_core.rejected.json
 ```
 
 通过校验的候选关系会写入：
 
 ```text
+results/online_candidates_core.jsonl
 results/llm_candidates_core.jsonl
 ```
 
@@ -352,12 +472,20 @@ results/llm_candidates_core.jsonl
 
 ## 8. 生成专家审核表
 
-生成 CSV 审核表：
+建议先合并规则基线和 LLM 候选，再生成 CSV 审核表：
+
+```bash
+cat results/rule_predictions.jsonl results/online_candidates_core.jsonl > results/candidates_all.jsonl
+```
+
+如果使用的是本地模型输出文件，则把 `results/online_candidates_core.jsonl` 替换为实际文件名，例如 `results/llm_candidates_core.jsonl`。
+
+生成审核表：
 
 ```bash
 eco-spec-kg annotate \
   --chunks data/processed/chunks.jsonl \
-  --relations results/llm_candidates_core.jsonl \
+  --relations results/candidates_all.jsonl \
   --out data/annotations/annotation_candidates.csv
 ```
 
@@ -370,13 +498,13 @@ data/annotations/annotation_candidates.csv
 如果需要下载到本地用 Excel 审核：
 
 ```powershell
-scp root@服务器IP:/root/Desktop/project/eco-spec-kg/data/annotations/annotation_candidates.csv "D:\else\lky\生态论文重写版本\annotation_candidates.csv"
+scp root@服务器IP:/home/ecospec/project/eco-spec-kg/data/annotations/annotation_candidates.csv "D:\else\lky\生态论文重写版本\annotation_candidates.csv"
 ```
 
 审核完成后再传回服务器：
 
 ```powershell
-scp "D:\else\lky\生态论文重写版本\annotation_candidates.csv" root@服务器IP:/root/Desktop/project/eco-spec-kg/data/annotations/annotation_candidates.csv
+scp "D:\else\lky\生态论文重写版本\annotation_candidates.csv" root@服务器IP:/home/ecospec/project/eco-spec-kg/data/annotations/annotation_candidates.csv
 ```
 
 ## 9. 人工审核规则
@@ -425,14 +553,14 @@ consensus_accepted
 在服务器执行：
 
 ```bash
-cd /root/Desktop/project/eco-spec-kg
+cd /home/ecospec/project/eco-spec-kg
 conda activate ecospec
 ```
 
 如果使用 venv：
 
 ```bash
-source .venv/bin/activate
+source /home/ecospec/venvs/ecospec/bin/activate
 ```
 
 执行转换脚本：
@@ -443,9 +571,9 @@ import csv
 import json
 from pathlib import Path
 
-base = Path("/root/Desktop/project/eco-spec-kg")
+base = Path("/home/ecospec/project/eco-spec-kg")
 csv_path = base / "data/annotations/annotation_candidates.csv"
-pred_path = base / "results/rule_predictions.jsonl"
+pred_path = base / "results/candidates_all.jsonl"
 out_path = base / "data/annotations/reviewed_relations.jsonl"
 
 review = {}
@@ -522,7 +650,7 @@ from ecospec_kg.io_utils import read_jsonl, write_jsonl
 from ecospec_kg.models import Relation
 from ecospec_kg.split import group_split
 
-base = Path("/root/Desktop/project/eco-spec-kg")
+base = Path("/home/ecospec/project/eco-spec-kg")
 relations = [
     Relation.from_dict(row)
     for row in read_jsonl(base / "data/annotations/reviewed_relations.jsonl")
@@ -681,7 +809,7 @@ gradient_accumulation_steps=16
 eco-spec-kg index \
   --adapter native \
   --chunks data/processed/chunks.jsonl \
-  --relations results/rule_predictions.jsonl \
+  --relations results/candidates_all.jsonl \
   --out data/index/native
 ```
 
@@ -831,7 +959,7 @@ ls -lh "$ECOSPEC_CORPUS_DIR"
 如果为空：
 
 ```bash
-export ECOSPEC_CORPUS_DIR=/data/corpus/eco_specs
+export ECOSPEC_CORPUS_DIR=/work/ecospec/corpus
 ```
 
 ### 20.3 eco-spec-kg 命令不存在
@@ -839,7 +967,7 @@ export ECOSPEC_CORPUS_DIR=/data/corpus/eco_specs
 说明环境未激活或项目未安装。
 
 ```bash
-cd /root/Desktop/project/eco-spec-kg
+cd /home/ecospec/project/eco-spec-kg
 conda activate ecospec
 pip install -e ".[ml,ui,dev]"
 eco-spec-kg --help
@@ -876,6 +1004,67 @@ at least two reviewed training records are required
 
 说明 `reviewed_relations.jsonl` 中审核通过样本不足。需要继续补充人工标注和审核。
 
+### 20.7 git pull 被 __pycache__ 阻塞
+
+如果出现：
+
+```text
+Your local changes to the following files would be overwritten by merge:
+src/ecospec_kg/__pycache__/cli.cpython-311.pyc
+src/ecospec_kg/__pycache__/extraction.cpython-311.pyc
+```
+
+执行：
+
+```bash
+cd /home/ecospec/project/eco-spec-kg
+git checkout -- src/ecospec_kg/__pycache__/cli.cpython-311.pyc
+git checkout -- src/ecospec_kg/__pycache__/extraction.cpython-311.pyc
+git pull
+pip install -e ".[ml,ui,dev]"
+```
+
+### 20.8 extract-llm 命令没有出现
+
+说明服务器代码还没有更新到包含 LLM 抽取入口的版本，或 editable 安装没有刷新。
+
+```bash
+cd /home/ecospec/project/eco-spec-kg
+git pull
+pip install -e ".[ml,ui,dev]"
+eco-spec-kg --help
+```
+
+命令列表中应包含：
+
+```text
+extract-llm
+```
+
+### 20.9 根分区空间不足
+
+如果 pip 安装报错：
+
+```text
+OSError: [Errno 28] No space left on device
+```
+
+先检查：
+
+```bash
+df -h
+du -xhd1 / 2>/dev/null | sort -h
+```
+
+不要把模型、虚拟环境和 PDF 放在 `/root` 或 `/tmp`。推荐：
+
+```bash
+export PIP_CACHE_DIR=/home/ecospec/cache/pip
+export HF_HOME=/work/ecospec/hf-cache
+export TRANSFORMERS_CACHE=/work/ecospec/hf-cache
+export TMPDIR=/work/ecospec/tmp
+```
+
 ## 21. 不应提交到 Git 的内容
 
 以下内容不要提交到公开 Git 仓库：
@@ -887,8 +1076,12 @@ data/index/
 data/training/
 runs/
 results/rule_predictions*
+results/*candidates*.jsonl
+results/*.rejected.json
 .env
 .venv/
+__pycache__/
+*.pyc
 ```
 
 这些内容应保留在服务器本地或通过内部数据盘管理。
@@ -908,14 +1101,17 @@ results/rule_predictions*
 如果只想从 PDF 到演示先跑通，执行：
 
 ```bash
-cd /root/Desktop/project/eco-spec-kg
+cd /home/ecospec/project/eco-spec-kg
 conda activate ecospec
-export ECOSPEC_CORPUS_DIR=/data/corpus/eco_specs
+export ECOSPEC_CORPUS_DIR=/work/ecospec/corpus
 
 eco-spec-kg corpus --source "$ECOSPEC_CORPUS_DIR" --out data/processed
 eco-spec-kg predict --chunks data/processed/chunks.jsonl --out results/rule_predictions.jsonl
-eco-spec-kg annotate --chunks data/processed/chunks.jsonl --relations results/rule_predictions.jsonl --out data/annotations/annotation_candidates.csv
-eco-spec-kg index --adapter native --chunks data/processed/chunks.jsonl --relations results/rule_predictions.jsonl --out data/index/native
+eco-spec-kg extract-llm --provider openai --chunks data/processed/chunks.jsonl --standards "HJ 1172-2021" "HJ 1173-2021" --out results/online_candidates_core_test.jsonl --limit 5
+eco-spec-kg extract-llm --provider openai --chunks data/processed/chunks.jsonl --standards "HJ 1172-2021" "HJ 1173-2021" --out results/online_candidates_core.jsonl
+cat results/rule_predictions.jsonl results/online_candidates_core.jsonl > results/candidates_all.jsonl
+eco-spec-kg annotate --chunks data/processed/chunks.jsonl --relations results/candidates_all.jsonl --out data/annotations/annotation_candidates.csv
+eco-spec-kg index --adapter native --chunks data/processed/chunks.jsonl --relations results/candidates_all.jsonl --out data/index/native
 eco-spec-kg serve --data data --host 0.0.0.0 --port 7860
 ```
 
