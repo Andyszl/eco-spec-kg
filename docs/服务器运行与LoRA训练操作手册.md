@@ -472,6 +472,8 @@ results/llm_candidates_core.jsonl
 
 注意：LLM 输出仍然只是候选关系，不能直接作为训练集，必须进入专家审核。
 
+PDF 解析可能把连续词拆成带空格的形式，例如 `能力` 被解析为 `能 力`，或英文术语被解析为 `vegetat ion`。证据校验会先做严格 normalized substring 匹配；严格匹配失败后，再做去空白的 PDF-normalized 匹配。该兜底只用于处理 PDF 断行/断词空白，不跳过 Schema 校验，也不代替专家审核。
+
 如果拒绝原因是：
 
 ```text

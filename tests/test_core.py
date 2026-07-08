@@ -52,6 +52,30 @@ class CoreTests(unittest.TestCase):
                 validate_evidence(relation, chunk_map[relation.evidence.chunk_id])[0]
             )
 
+    def test_pdf_compact_evidence_match(self) -> None:
+        chunk = DocumentChunk(
+            chunk_id="chunk_pdf_space",
+            standard_code="HJ 1172-2021",
+            document_title="生态系统质量评估",
+            page=4,
+            section="3",
+            block_type="paragraph",
+            text="3.4 总初级生产力 gross primary productivity 主要表征植被光合作用能 力强弱。",
+            source_file="fixture.pdf",
+            source_sha256="fixture",
+            path_id="gpp",
+        )
+        relation = RuleExtractor._relation(
+            chunk,
+            head_name="总初级生产力",
+            head_type=EntityType.INDICATOR,
+            relation_type=RelationType.DEFINED_IN,
+            tail_name="3.4",
+            tail_type=EntityType.STANDARD_CLAUSE,
+            evidence_text="3.4 总初级生产力 gross primary productivity 主要表征植被光合作用能力强弱。",
+        )
+        self.assertTrue(validate_evidence(relation, chunk)[0])
+
     def test_llm_extraction_and_evidence(self) -> None:
         provider = MockProvider(
             json.dumps(
