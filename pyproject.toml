@@ -27,7 +27,7 @@ ml = [
   "datasets>=2.20",
   "sentence-transformers>=3.0",
 ]
-qwen35 = ["ms-swift"]
+qwen35 = ["ms-swift>=4.1,<5"]
 ms-graphrag = ["graphrag==3.1.0", "pandas>=2.2", "pyarrow>=16"]
 dev = ["pytest>=8.2", "pytest-cov>=5"]
 all = [

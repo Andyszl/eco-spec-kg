@@ -123,12 +123,23 @@ python -m pip install -U pip
 pip install -e ".[ml,qwen35,dev]"
 ```
 
+安装后 `ms-swift` 必须是 4.x。若镜像源错误地安装了 1.x，使用官方 PyPI
+重新安装：
+
+```bash
+pip uninstall -y ms-swift
+pip install --no-cache-dir --index-url https://pypi.org/simple \
+  "ms-swift>=4.1,<5"
+pip install -e ".[ml,qwen35,dev]"
+```
+
 验收命令入口：
 
 ```bash
 eco-spec-kg --help
 eco-spec-kg-v2 --help
 swift sft --help >/dev/null && echo "ms-swift OK"
+python -c "from importlib.metadata import version; print('ms-swift', version('ms-swift'))"
 python -m pytest
 git status --short
 ```
