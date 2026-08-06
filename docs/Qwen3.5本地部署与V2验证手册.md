@@ -70,8 +70,8 @@ git push origin main
 冻结包包含训练标注和测试金标，不能推送到公开 Git。使用 SCP 单独传输：
 
 ```powershell
-ssh hello@服务器IP "mkdir -p /work/ecospec/data/frozen"
-scp -r '.\data\frozen\v2.1' hello@服务器IP:/work/ecospec/data/frozen/
+ssh hello@服务器IP "mkdir -p /home/hello/szl/eco-spec-data/frozen"
+scp -r '.\data\frozen\v2.1' hello@服务器IP:/home/hello/szl/eco-spec-data/frozen/
 ```
 
 测试金标仅供最后的 `evaluate-v2` 进程读取，不得复制到模型服务目录、GraphRAG
@@ -80,12 +80,14 @@ scp -r '.\data\frozen\v2.1' hello@服务器IP:/work/ecospec/data/frozen/
 ## 3. 服务器拉取代码
 
 ```bash
-export PROJECT=/home/hello/project/eco-spec-kg
-export DATA_PACKAGE=/work/ecospec/data/frozen/v2.1
-export QWEN_LLM=/home/hello/models/Qwen/Qwen3.5-9B
-export QWEN_EMBED=/home/hello/models/Qwen/Qwen3-Embedding-0.6B
+export PROJECT=/home/hello/szl/eco-spec-kg
+export DATA_PACKAGE=/home/hello/szl/eco-spec-data/frozen/v2.1
+export QWEN_LLM=/home/hello/szl/models/Qwen3.5-9B
+export QWEN_EMBED=/home/hello/szl/models/Qwen3-Embedding-0.6B
+export ECOSPEC_RUNS=/home/hello/szl/eco-spec-runs
+export ECOSPEC_LOGS=/home/hello/szl/eco-spec-logs
 
-mkdir -p /home/hello/project /work/ecospec/data/training /work/ecospec/runs
+mkdir -p /home/hello/szl/eco-spec-data/training "$ECOSPEC_RUNS" "$ECOSPEC_LOGS"
 if [ -d "$PROJECT/.git" ]; then
   git -C "$PROJECT" pull --ff-only origin main
 else
@@ -184,7 +186,6 @@ PY
 
 ```bash
 conda activate ecospec-vllm
-mkdir -p /work/ecospec/logs
 CUDA_VISIBLE_DEVICES=0 nohup vllm serve "$QWEN_LLM" \
   --served-model-name Qwen3.5-9B \
   --host 127.0.0.1 \
@@ -192,14 +193,14 @@ CUDA_VISIBLE_DEVICES=0 nohup vllm serve "$QWEN_LLM" \
   --tensor-parallel-size 1 \
   --max-model-len 8192 \
   --language-model-only \
-  > /work/ecospec/logs/qwen35-vllm.log 2>&1 &
-echo $! > /work/ecospec/logs/qwen35-vllm.pid
+  > "$ECOSPEC_LOGS/qwen35-vllm.log" 2>&1 &
+echo $! > "$ECOSPEC_LOGS/qwen35-vllm.pid"
 ```
 
 查看启动日志和模型列表：
 
 ```bash
-tail -n 50 /work/ecospec/logs/qwen35-vllm.log
+tail -n 50 "$ECOSPEC_LOGS/qwen35-vllm.log"
 curl -s http://127.0.0.1:8000/v1/models | python -m json.tool
 ```
 
@@ -232,13 +233,13 @@ unset ECOSPEC_LLM_APPEND_NO_THINK
 python -m ecospec_kg.cli_v2 extract-v2 \
   --units "$DATA_PACKAGE/blind/dev_units.jsonl" \
   --config config/experiments_v2/qwen35_9b_zero_shot.json \
-  --out /work/ecospec/runs/v2.1/qwen35_zero_shot/dev_seed_42
+  --out "$ECOSPEC_RUNS/v2.1/qwen35_zero_shot/dev_seed_42"
 
 python -m ecospec_kg.cli_v2 validate-predictions-v2 \
   --units "$DATA_PACKAGE/blind/dev_units.jsonl" \
-  --predictions /work/ecospec/runs/v2.1/qwen35_zero_shot/dev_seed_42/predictions.jsonl \
+  --predictions "$ECOSPEC_RUNS/v2.1/qwen35_zero_shot/dev_seed_42/predictions.jsonl" \
   --schema "$DATA_PACKAGE/schema_v2.json" \
-  --out /work/ecospec/runs/v2.1/qwen35_zero_shot/dev_seed_42/validation
+  --out "$ECOSPEC_RUNS/v2.1/qwen35_zero_shot/dev_seed_42/validation"
 ```
 
 `validation_report.json` 中必须为 `"passed": true`，且失败数为 0。
@@ -248,13 +249,13 @@ python -m ecospec_kg.cli_v2 validate-predictions-v2 \
 ```bash
 python -m ecospec_kg.cli_v2 evaluate-v2 \
   --gold "$DATA_PACKAGE/gold/dev_annotations.jsonl" \
-  --predictions /work/ecospec/runs/v2.1/qwen35_zero_shot/dev_seed_42/validation/validated_predictions.jsonl \
+  --predictions "$ECOSPEC_RUNS/v2.1/qwen35_zero_shot/dev_seed_42/validation/validated_predictions.jsonl" \
   --units "$DATA_PACKAGE/blind/dev_units.jsonl" \
-  --validation-report /work/ecospec/runs/v2.1/qwen35_zero_shot/dev_seed_42/validation/validation_report.json \
-  --out /work/ecospec/runs/v2.1/qwen35_zero_shot/dev_seed_42/evaluation
+  --validation-report "$ECOSPEC_RUNS/v2.1/qwen35_zero_shot/dev_seed_42/validation/validation_report.json" \
+  --out "$ECOSPEC_RUNS/v2.1/qwen35_zero_shot/dev_seed_42/evaluation"
 
 python -m json.tool \
-  /work/ecospec/runs/v2.1/qwen35_zero_shot/dev_seed_42/evaluation/metrics.json
+  "$ECOSPEC_RUNS/v2.1/qwen35_zero_shot/dev_seed_42/evaluation/metrics.json"
 ```
 
 该命令只用于开发集调试。测试集评测必须等方法、Prompt、阈值和模型版本全部冻结后
@@ -266,10 +267,10 @@ python -m json.tool \
 python -m ecospec_kg.cli_v2 prepare-lora-v2 \
   --units "$DATA_PACKAGE/blind/train_units.jsonl" \
   --annotations "$DATA_PACKAGE/gold/train_annotations.jsonl" \
-  --out /work/ecospec/data/training/qwen35_v2_train.jsonl
+  --out /home/hello/szl/eco-spec-data/training/qwen35_v2_train.jsonl
 
 python -m json.tool \
-  /work/ecospec/data/training/qwen35_v2_train.manifest.json
+  /home/hello/szl/eco-spec-data/training/qwen35_v2_train.manifest.json
 ```
 
 命令只接受明确标记为 `split=train` 的标注。当前包预期为 693 条训练记录；
@@ -280,7 +281,7 @@ python -m json.tool \
 运行训练前停止 vLLM，释放 GPU 0：
 
 ```bash
-kill "$(cat /work/ecospec/logs/qwen35-vllm.pid)"
+kill "$(cat "$ECOSPEC_LOGS/qwen35-vllm.pid")"
 nvidia-smi
 ```
 
@@ -291,8 +292,8 @@ conda activate ecospec-train
 cd "$PROJECT"
 CUDA_VISIBLE_DEVICES=0 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
 eco-spec-kg train \
-  --prepared /work/ecospec/data/training/qwen35_v2_train.jsonl \
-  --out /work/ecospec/runs/lora/qwen35-9b/seed_42_smoke \
+  --prepared /home/hello/szl/eco-spec-data/training/qwen35_v2_train.jsonl \
+  --out "$ECOSPEC_RUNS/lora/qwen35-9b/seed_42_smoke" \
   --model "$QWEN_LLM" \
   --trainer swift \
   --precision bf16 \
@@ -314,8 +315,8 @@ eco-spec-kg train \
 
 ```bash
 python -m json.tool \
-  /work/ecospec/runs/lora/qwen35-9b/seed_42_smoke/run_manifest.json
-find /work/ecospec/runs/lora/qwen35-9b/seed_42_smoke \
+  "$ECOSPEC_RUNS/lora/qwen35-9b/seed_42_smoke/run_manifest.json"
+find "$ECOSPEC_RUNS/lora/qwen35-9b/seed_42_smoke" \
   -name adapter_config.json -o -name adapter_model.safetensors
 nvidia-smi
 ```
