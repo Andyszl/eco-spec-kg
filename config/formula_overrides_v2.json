@@ -1,0 +1,240 @@
+{
+  "schema_version": "formula-override-v2.0",
+  "overrides": [
+    {
+      "standard_code": "HJ 1171-2021",
+      "document_title": "生态系统格局评估",
+      "page": 8,
+      "printed_page": "5",
+      "section": "6.7",
+      "heading_chain": [
+        "6 评估技术方法",
+        "6.7 各类生态系统变化方向"
+      ],
+      "formula_number": "7",
+      "expression_text": "A_ij = a_ij / Σ(i=1..n, a_ij) × 100%; B_ij = a_ij / Σ(j=1..n, a_ij) × 100%",
+      "bbox": [
+        250.0,
+        124.0,
+        531.7,
+        174.0
+      ],
+      "line_ids": [
+        "6f0ea58d3519f9ac",
+        "4f9d29bd1a467df9",
+        "e1198386031ae9f5",
+        "4036d5ff2cf617d0",
+        "5ff6d7e5cfaa14a1",
+        "05779ba102d6ef61",
+        "c6dcd2d43ae3acb4",
+        "cd220920adb42b39",
+        "68edd277e351374b",
+        "e0e98b5495ccf28d"
+      ],
+      "variables": [
+        {
+          "symbol": "A_ij",
+          "definition": "期初第 i 种生态系统类型转变为期末第 j 种生态系统类型的比例",
+          "role": "output",
+          "unit": "%"
+        },
+        {
+          "symbol": "B_ij",
+          "definition": "期末第 j 种生态系统类型中由期初第 i 种生态系统类型转变而来的比例",
+          "role": "output",
+          "unit": "%"
+        },
+        {
+          "symbol": "a_ij",
+          "definition": "生态系统类型的面积",
+          "role": "input",
+          "unit": ""
+        }
+      ],
+      "transcription_method": "manual_visual_transcription",
+      "review_status": "ai_expert_verified"
+    },
+    {
+      "standard_code": "HJ 1176-2021",
+      "document_title": "数据质量控制与集成",
+      "page": 7,
+      "printed_page": "4",
+      "section": "8.3",
+      "heading_chain": [
+        "8 数据质量评价方法",
+        "8.3 生态参数数据质量评价"
+      ],
+      "formula_number": "1",
+      "expression_text": "REE = sqrt(Σ[((实测值 - 反演值) / 反演值)^2] / 验证点数)",
+      "bbox": [
+        190.0,
+        700.0,
+        532.0,
+        805.0
+      ],
+      "line_ids": [
+        "50588d34e11a5c69",
+        "c3ab8e3e3bf4a8e5"
+      ],
+      "variables": [
+        {
+          "symbol": "REE",
+          "definition": "平均相对误差",
+          "role": "output",
+          "unit": "量纲一"
+        },
+        {
+          "symbol": "实测值",
+          "definition": "验证点的生态参数实测值",
+          "role": "input",
+          "unit": ""
+        },
+        {
+          "symbol": "反演值",
+          "definition": "验证点的生态参数反演值",
+          "role": "input",
+          "unit": ""
+        },
+        {
+          "symbol": "验证点数",
+          "definition": "参与平均相对误差计算的验证点数量",
+          "role": "input",
+          "unit": "个"
+        }
+      ],
+      "replace_existing": true,
+      "transcription_method": "manual_visual_transcription",
+      "review_status": "ai_expert_verified"
+    },
+    {
+      "standard_code": "HJ 1175-2021",
+      "document_title": "项目尺度生态影响评估",
+      "page": 9,
+      "printed_page": "6",
+      "section": "附录 A",
+      "heading_chain": [
+        "附录 A"
+      ],
+      "formula_number": "A.1",
+      "expression_text": "K_T = ((U_b - U_a) / U_a) × (1 / T) × 100%",
+      "bbox": [
+        63.864,
+        211.178,
+        531.7,
+        315.457
+      ],
+      "line_ids": [
+        "f75a398663bfd4ba",
+        "2533a2727ffacdd0",
+        "06fdf25378460762",
+        "1da5cc41538a46a6",
+        "ef12dc73e9515a2f",
+        "d43bb2c2f0263864",
+        "f880a0eb940e0c62",
+        "1497213ba1c916d6",
+        "b7a121fb5f8898ff",
+        "7d476233395d583d",
+        "09f50b9afce2042e",
+        "6ecdacec3160d4db"
+      ],
+      "variables": [
+        {
+          "symbol": "K_T",
+          "definition": "单一生态系统动态度",
+          "role": "output",
+          "unit": "%"
+        },
+        {
+          "symbol": "U_a",
+          "definition": "研究期初某类生态系统面积",
+          "role": "input",
+          "unit": ""
+        },
+        {
+          "symbol": "U_b",
+          "definition": "研究期末某类生态系统面积",
+          "role": "input",
+          "unit": ""
+        },
+        {
+          "symbol": "T",
+          "definition": "研究时段长",
+          "role": "input",
+          "unit": ""
+        }
+      ],
+      "replace_existing": true,
+      "transcription_method": "manual_visual_transcription",
+      "review_status": "ai_expert_verified"
+    },
+    {
+      "standard_code": "HJ 1175-2021",
+      "document_title": "项目尺度生态影响评估",
+      "page": 9,
+      "printed_page": "6",
+      "section": "附录 A",
+      "heading_chain": [
+        "附录 A"
+      ],
+      "formula_number": "A.2",
+      "expression_text": "R_T = (ΔLU_i / LU_i) / (ΔLU_0 / LU_0)",
+      "bbox": [
+        63.864,
+        304.945,
+        531.7,
+        410.413
+      ],
+      "line_ids": [
+        "6ecdacec3160d4db",
+        "3174fe72ca1f765b",
+        "64ebaa4d40e05ca4",
+        "3002276c273aba3a",
+        "3a9b782b4fff0f2f",
+        "817b4d76e0f2f8f2",
+        "f7c16f1e0ee5f395",
+        "05207969bac58823",
+        "4238ed31671399e6",
+        "7ac64078f1cd0214",
+        "e76902d57f1ed043",
+        "897f2315b48ac1c7",
+        "0e0b9be8b3de205f",
+        "6a87b1f2250c242a"
+      ],
+      "variables": [
+        {
+          "symbol": "R_T",
+          "definition": "生态系统转出强度",
+          "role": "output",
+          "unit": ""
+        },
+        {
+          "symbol": "ΔLU_i",
+          "definition": "研究期内 i 类生态系统转出面积",
+          "role": "input",
+          "unit": ""
+        },
+        {
+          "symbol": "LU_i",
+          "definition": "初始期 i 类生态系统面积",
+          "role": "input",
+          "unit": ""
+        },
+        {
+          "symbol": "ΔLU_0",
+          "definition": "评价区总转出面积",
+          "role": "input",
+          "unit": ""
+        },
+        {
+          "symbol": "LU_0",
+          "definition": "初始期评价区总面积",
+          "role": "input",
+          "unit": ""
+        }
+      ],
+      "replace_existing": true,
+      "transcription_method": "manual_visual_transcription",
+      "review_status": "ai_expert_verified"
+    }
+  ]
+}

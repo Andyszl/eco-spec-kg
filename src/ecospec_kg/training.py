@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import Callable
 
 from .io_utils import read_jsonl, write_json, write_jsonl
 from .models import Relation
@@ -10,14 +12,19 @@ from .models import Relation
 
 @dataclass(slots=True)
 class LoRASettings:
-    model_name: str = "Qwen/Qwen3-0.6B"
+    model_name: str = "Qwen/Qwen3.5-9B"
+    trainer: str = "transformers"
+    precision: str = "bf16"
     rank: int = 8
     alpha: int = 16
     dropout: float = 0.05
     learning_rate: float = 2e-4
     max_epochs: int = 5
     early_stopping_patience: int = 2
-    max_sequence_length: int = 2048
+    max_sequence_length: int = 4096
+    per_device_train_batch_size: int = 1
+    per_device_eval_batch_size: int = 1
+    gradient_accumulation_steps: int = 16
     seed: int = 42
 
 
@@ -27,7 +34,7 @@ SYSTEM_PROMPT = (
 )
 
 
-def relation_to_example(relation: Relation) -> dict[str, str]:
+def relation_to_example(relation: Relation) -> dict[str, object]:
     prompt = (
         f"标准：{relation.evidence.standard_code}\n"
         f"章节：{relation.evidence.section}\n"
@@ -44,7 +51,16 @@ def relation_to_example(relation: Relation) -> dict[str, str]:
         },
         ensure_ascii=False,
     )
-    return {"system": SYSTEM_PROMPT, "prompt": prompt, "completion": completion}
+    return {
+        "system": SYSTEM_PROMPT,
+        "prompt": prompt,
+        "completion": completion,
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+            {"role": "assistant", "content": completion},
+        ],
+    }
 
 
 def prepare_training_data(relations_path: Path, output_path: Path) -> int:
@@ -64,6 +80,12 @@ def run_lora(
     settings: LoRASettings,
     smoke_limit: int | None = None,
 ) -> dict[str, object]:
+    if settings.trainer == "swift":
+        return run_swift_lora(training_path, output_dir, settings, smoke_limit)
+    if settings.trainer != "transformers":
+        raise ValueError("trainer must be 'transformers' or 'swift'")
+    if settings.precision not in {"bf16", "fp16"}:
+        raise ValueError("precision must be 'bf16' or 'fp16'")
     try:
         from datasets import Dataset
         from peft import LoraConfig, get_peft_model
@@ -85,8 +107,11 @@ def run_lora(
         raise RuntimeError("at least two reviewed training records are required")
 
     tokenizer = AutoTokenizer.from_pretrained(settings.model_name)
+    import torch
+
+    dtype = torch.bfloat16 if settings.precision == "bf16" else torch.float16
     model = AutoModelForCausalLM.from_pretrained(
-        settings.model_name, torch_dtype="auto", device_map="auto"
+        settings.model_name, torch_dtype=dtype
     )
     model = get_peft_model(
         model,
@@ -129,9 +154,9 @@ def run_lora(
         output_dir=str(output_dir),
         learning_rate=settings.learning_rate,
         num_train_epochs=settings.max_epochs,
-        per_device_train_batch_size=4,
-        per_device_eval_batch_size=4,
-        gradient_accumulation_steps=8,
+        per_device_train_batch_size=settings.per_device_train_batch_size,
+        per_device_eval_batch_size=settings.per_device_eval_batch_size,
+        gradient_accumulation_steps=settings.gradient_accumulation_steps,
         warmup_ratio=0.1,
         logging_steps=5,
         eval_strategy="epoch",
@@ -139,7 +164,8 @@ def run_lora(
         load_best_model_at_end=True,
         seed=settings.seed,
         report_to=[],
-        fp16=True,
+        bf16=settings.precision == "bf16",
+        fp16=settings.precision == "fp16",
     )
     trainer = Trainer(
         model=model,
@@ -165,3 +191,104 @@ def run_lora(
     write_json(output_dir / "run_manifest.json", manifest)
     return manifest
 
+
+def build_swift_command(
+    training_path: Path,
+    output_dir: Path,
+    settings: LoRASettings,
+) -> list[str]:
+    if settings.precision not in {"bf16", "fp16"}:
+        raise ValueError("precision must be 'bf16' or 'fp16'")
+    return [
+        "swift",
+        "sft",
+        "--model",
+        settings.model_name,
+        "--dataset",
+        str(training_path),
+        "--tuner_type",
+        "lora",
+        "--torch_dtype",
+        "bfloat16" if settings.precision == "bf16" else "float16",
+        "--num_train_epochs",
+        str(settings.max_epochs),
+        "--per_device_train_batch_size",
+        str(settings.per_device_train_batch_size),
+        "--per_device_eval_batch_size",
+        str(settings.per_device_eval_batch_size),
+        "--gradient_accumulation_steps",
+        str(settings.gradient_accumulation_steps),
+        "--learning_rate",
+        str(settings.learning_rate),
+        "--lora_rank",
+        str(settings.rank),
+        "--lora_alpha",
+        str(settings.alpha),
+        "--lora_dropout",
+        str(settings.dropout),
+        "--target_modules",
+        "all-linear",
+        "--freeze_vit",
+        "true",
+        "--freeze_aligner",
+        "true",
+        "--add_non_thinking_prefix",
+        "true",
+        "--split_dataset_ratio",
+        "0.1",
+        "--max_length",
+        str(settings.max_sequence_length),
+        "--seed",
+        str(settings.seed),
+        "--save_total_limit",
+        "2",
+        "--output_dir",
+        str(output_dir),
+    ]
+
+
+def run_swift_lora(
+    training_path: Path,
+    output_dir: Path,
+    settings: LoRASettings,
+    smoke_limit: int | None = None,
+    runner: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run,
+) -> dict[str, object]:
+    rows = read_jsonl(training_path)
+    if smoke_limit:
+        rows = rows[:smoke_limit]
+    if len(rows) < 2:
+        raise RuntimeError("at least two reviewed training records are required")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    effective_training_path = training_path
+    if smoke_limit:
+        effective_training_path = output_dir / "smoke_training.jsonl"
+        write_jsonl(effective_training_path, rows)
+
+    command = build_swift_command(effective_training_path, output_dir, settings)
+    manifest: dict[str, object] = {
+        "settings": asdict(settings),
+        "training_records": len(rows),
+        "smoke_limit": smoke_limit,
+        "backend": "ms-swift",
+        "command": command,
+        "status": "running",
+    }
+    write_json(output_dir / "run_manifest.json", manifest)
+    try:
+        runner(command, check=True, text=True)
+    except FileNotFoundError as exc:
+        manifest["status"] = "failed"
+        manifest["error"] = "swift command not found; install ms-swift"
+        write_json(output_dir / "run_manifest.json", manifest)
+        raise RuntimeError(str(manifest["error"])) from exc
+    except subprocess.CalledProcessError as exc:
+        manifest["status"] = "failed"
+        manifest["returncode"] = exc.returncode
+        write_json(output_dir / "run_manifest.json", manifest)
+        raise
+
+    manifest["status"] = "complete"
+    write_json(output_dir / "run_manifest.json", manifest)
+    return manifest

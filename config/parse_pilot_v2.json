@@ -1,0 +1,224 @@
+{
+  "schema_version": "parse-pilot-v2.0",
+  "description": "15-page manual acceptance set covering prose, false-table rejection, merged cells, cross-page tables, numbered formulas, variable definitions and quality requirements.",
+  "cases": [
+    {
+      "case_id": "hj1172-p5-mixed-prose-formula",
+      "standard_code": "HJ 1172-2021",
+      "pdf_page": 5,
+      "expected_heading_sections": ["4", "5", "6"],
+      "expected_formula_numbers": ["1"],
+      "expected_table_count": 0,
+      "text_fragments": ["生态系统质量评估指标与方法", "RVI"]
+    },
+    {
+      "case_id": "hj1172-p6-formulas-classification-table",
+      "standard_code": "HJ 1172-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": ["7"],
+      "expected_formula_numbers": ["2", "3"],
+      "expected_table_count": 1,
+      "text_fragments": ["生态系统质量分级", "EQI"],
+      "formula_expression_assertions": [
+        {
+          "formula_number": "3",
+          "required_fragments": ["LAI + FVC + GPP", "EQI =", "×100"]
+        }
+      ],
+      "table_assertions": [
+        {
+          "match": {"级别": "生态系统质量"},
+          "expect": {"优": "EQI≥75"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1172-p7-merged-classification-table",
+      "standard_code": "HJ 1172-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": ["附录 A"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "table_title_contains": "全国生态系统分类体系表",
+      "text_fragments": ["Ⅰ级代码", "针阔混交林"],
+      "table_assertions": [
+        {
+          "match": {"Ⅱ级分类": "针阔混交林"},
+          "expect": {"Ⅰ级分类": "森林生态系统"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1172-p8-multi-formula",
+      "standard_code": "HJ 1172-2021",
+      "pdf_page": 8,
+      "expected_heading_sections": ["附录 B", "B.1", "B.2"],
+      "expected_formula_numbers": ["B.1", "B.2", "B.3"],
+      "expected_table_count": 0,
+      "text_fragments": ["叶面积指数", "植被覆盖度"]
+    },
+    {
+      "case_id": "hj1172-p9-formula-continuation",
+      "standard_code": "HJ 1172-2021",
+      "pdf_page": 9,
+      "expected_heading_sections": ["B.3"],
+      "expected_formula_numbers": ["B.4"],
+      "expected_table_count": 0,
+      "text_fragments": ["总初级生产力", "NDVI"]
+    },
+    {
+      "case_id": "hj1173-p5-figure-not-table",
+      "standard_code": "HJ 1173-2021",
+      "pdf_page": 5,
+      "expected_heading_sections": ["4", "4.1", "4.2", "5", "6"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 0,
+      "text_fragments": ["生态系统服务功能评估总体技术流程图"]
+    },
+    {
+      "case_id": "hj1173-p6-indicator-table-and-sections",
+      "standard_code": "HJ 1173-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": ["7", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "8"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "text_fragments": ["生态系统服务功能评估指标体系", "物种丰富度"],
+      "table_assertions": [
+        {
+          "match": {"评估指标": "物种丰富度"},
+          "expect": {"评估科目": "生物多样性维护"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1173-p7-formula-package-and-variables",
+      "standard_code": "HJ 1173-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": ["附录 A", "A.1", "A.2"],
+      "expected_formula_numbers": ["A.1", "A.2", "A.3", "A.4"],
+      "expected_table_count": 0,
+      "text_fragments": ["水量平衡方程", "式中"],
+      "formula_expression_assertions": [
+        {
+          "formula_number": "A.1",
+          "required_fragments": ["Q = ∑A ×", "P − R − ET", "×10−3"]
+        }
+      ],
+      "formula_variable_assertions": [
+        {
+          "formula_number": "A.1",
+          "required_symbols": ["Q_wr", "A_i", "P_i", "R_i", "ET_i"]
+        }
+      ]
+    },
+    {
+      "case_id": "hj1173-p8-dense-multi-formula",
+      "standard_code": "HJ 1173-2021",
+      "pdf_page": 8,
+      "expected_heading_sections": [],
+      "expected_formula_numbers": ["A.5", "A.6", "A.7", "A.8", "A.9", "A.10", "A.11", "A.12"],
+      "expected_table_count": 0,
+      "text_fragments": ["降雨侵蚀力", "土壤可蚀性因子"],
+      "formula_expression_assertions": [
+        {
+          "formula_number": "A.7",
+          "required_fragments": ["K = {0.2 + 0.3exp", "orgC + exp"]
+        },
+        {
+          "formula_number": "A.12",
+          "required_fragments": ["S = ⎨", "10.20° ≤θ＜28.81°"]
+        }
+      ],
+      "formula_variable_assertions": [
+        {
+          "formula_number": "A.6",
+          "required_symbols": ["R_半月k", "P_i,j,k", "α"]
+        }
+      ]
+    },
+    {
+      "case_id": "hj1173-p9-table-and-formulas",
+      "standard_code": "HJ 1173-2021",
+      "pdf_page": 9,
+      "expected_heading_sections": ["A.3"],
+      "expected_formula_numbers": ["A.13", "A.14", "A.15", "A.16"],
+      "expected_table_count": 1,
+      "table_title_contains": "不同植被覆盖的 C 值",
+      "text_fragments": ["防风固沙量", "实际风力侵蚀量"],
+      "formula_expression_assertions": [
+        {
+          "formula_number": "A.16",
+          "required_fragments": ["e−(z/s)2", "WF × EF × SCF", "K′× C"]
+        }
+      ]
+    },
+    {
+      "case_id": "hj1173-p10-formula-continuation",
+      "standard_code": "HJ 1173-2021",
+      "pdf_page": 10,
+      "expected_heading_sections": [],
+      "expected_formula_numbers": ["A.17", "A.18", "A.19", "A.20", "A.21"],
+      "expected_table_count": 0,
+      "text_fragments": ["气候因子", "土壤结皮因子"]
+    },
+    {
+      "case_id": "hj1173-p11-final-formulas",
+      "standard_code": "HJ 1173-2021",
+      "pdf_page": 11,
+      "expected_heading_sections": ["A.4"],
+      "expected_formula_numbers": ["A.22", "A.23"],
+      "expected_table_count": 0,
+      "text_fragments": ["生境不可替代性指数", "Cost"]
+    },
+    {
+      "case_id": "hj1167-p6-cross-page-table-start",
+      "standard_code": "HJ 1167-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": ["7.1.3", "7.1.4", "7.2", "7.2.1", "7.2.2", "7.2.3", "7.2.4", "8"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "table_title_contains": "森林生态系统野外观测指标",
+      "text_fragments": ["观测时间", "观测频度"],
+      "table_assertions": [
+        {
+          "match": {"观测指标": "坡度"},
+          "expect": {"观测内容": "基本情况", "观测频度": "五年一次"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1167-p7-cross-page-table-continuation",
+      "standard_code": "HJ 1167-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": ["9", "9.1", "9.2", "9.3"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "require_continued_table": true,
+      "required_unit_types": ["procedure_clause"],
+      "text_fragments": ["树高", "一年一次"],
+      "table_assertions": [
+        {
+          "match": {"观测指标": "树高"},
+          "expect": {"观测时间": "7—9月", "观测频度": "一年一次"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1176-p6-quality-table",
+      "standard_code": "HJ 1176-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": [],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "required_unit_types": ["quality_clause"],
+      "table_title_contains": "数据质量控制指标体系",
+      "text_fragments": ["具体要求", "验证精度"],
+      "table_assertions": [
+        {
+          "match": {"二级指标": "验证精度"},
+          "expect_contains": {"具体要求": "大于等于80%"}
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "experiment_id": "rule_baseline_v2",
+  "backend": "rule",
+  "model": "deterministic-v2-rule",
+  "seed": 42,
+  "temperature": 0,
+  "candidate_generator": "structure-aware-rule-v2",
+  "use_schema": true,
+  "use_layout": true,
+  "use_evidence": true
+}

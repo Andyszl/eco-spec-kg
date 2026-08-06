@@ -29,10 +29,22 @@ class OpenAICompatibleProvider:
     timeout: int = 120
     max_tokens: int = 4096
     append_no_think: bool = False
+    enable_thinking: bool | None = None
     last_raw_response: dict[str, Any] | None = None
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleProvider":
+        thinking_value = os.environ.get("ECOSPEC_LLM_ENABLE_THINKING", "auto")
+        if thinking_value.lower() in {"1", "true", "yes"}:
+            enable_thinking: bool | None = True
+        elif thinking_value.lower() in {"0", "false", "no"}:
+            enable_thinking = False
+        elif thinking_value.lower() == "auto":
+            enable_thinking = None
+        else:
+            raise ValueError(
+                "ECOSPEC_LLM_ENABLE_THINKING must be auto, true, or false"
+            )
         return cls(
             base_url=os.environ.get("ECOSPEC_LLM_BASE_URL", "http://127.0.0.1:8000/v1"),
             api_key=os.environ.get("ECOSPEC_LLM_API_KEY", "local-token"),
@@ -40,6 +52,7 @@ class OpenAICompatibleProvider:
             max_tokens=int(os.environ.get("ECOSPEC_LLM_MAX_TOKENS", "4096")),
             append_no_think=os.environ.get("ECOSPEC_LLM_APPEND_NO_THINK", "0")
             in {"1", "true", "True", "yes"},
+            enable_thinking=enable_thinking,
         )
 
     def complete(self, system: str, prompt: str) -> str:
@@ -53,6 +66,10 @@ class OpenAICompatibleProvider:
             "temperature": 0,
             "max_tokens": self.max_tokens,
         }
+        if self.enable_thinking is not None:
+            payload["chat_template_kwargs"] = {
+                "enable_thinking": self.enable_thinking
+            }
         request = urllib.request.Request(
             self.base_url.rstrip("/") + "/chat/completions",
             data=json.dumps(payload).encode("utf-8"),

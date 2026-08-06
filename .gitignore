@@ -1,0 +1,16 @@
+.codex/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+models/
+tmp/
+data/frozen/
+data/processed/
+data/training/
+outputs/
+results/
+runs/
+src/*.egg-info/

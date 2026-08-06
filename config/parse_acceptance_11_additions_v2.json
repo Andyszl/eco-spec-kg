@@ -1,0 +1,256 @@
+{
+  "schema_version": "parse-acceptance-v2.1",
+  "description": "Additional manually specified representative pages. Combined with parse_pilot_v2.json, the acceptance set covers all 11 HJ standards.",
+  "cases": [
+    {
+      "case_id": "hj1166-p6-procedure-hierarchy",
+      "standard_code": "HJ 1166-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": [
+        "6.1.2",
+        "6.2",
+        "6.3",
+        "6.4",
+        "6.4.1",
+        "6.4.1.1",
+        "6.4.1.2",
+        "6.4.1.3",
+        "6.4.2",
+        "6.4.3",
+        "6.4.4",
+        "6.4.5",
+        "6.4.5.1",
+        "6.4.5.2",
+        "6.4.5.3"
+      ],
+      "expected_formula_numbers": [],
+      "expected_table_count": 0,
+      "required_unit_types": ["procedure_clause"],
+      "text_fragments": ["数据预处理", "建立分类体系", "人机交互解译"]
+    },
+    {
+      "case_id": "hj1166-p7-field-check-table",
+      "standard_code": "HJ 1166-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": [
+        "7",
+        "7.1",
+        "7.1.1",
+        "7.1.2",
+        "7.1.3",
+        "7.1.4",
+        "7.1.4.1",
+        "7.1.4.2",
+        "7.1.5",
+        "7.2",
+        "7.3",
+        "7.3.1"
+      ],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "required_unit_types": ["table_record", "procedure_clause"],
+      "table_title_contains": "生态系统类型野外核查和参数验证指标",
+      "text_fragments": ["野外核查步骤", "定位信息"],
+      "table_assertions": [
+        {
+          "match": {"核查指标": "生态系统类型"},
+          "expect": {"核查内容": "生态系统类型野外核查"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1168-p6-grassland-merged-table",
+      "standard_code": "HJ 1168-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": ["7.1.3", "7.1.4", "7.2", "7.2.1", "7.2.2", "7.2.3", "8"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "required_unit_types": ["table_record", "procedure_clause"],
+      "table_title_contains": "草地生态系统野外观测指标",
+      "text_fragments": ["样方布设", "野外观测指标体系"],
+      "table_assertions": [
+        {
+          "match": {"观测指标": "草地优势种"},
+          "expect": {"观测内容": "生物指标", "观测时间": "7—9月", "观测频度": "一年一次"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1168-p7-grassland-table-continuation",
+      "standard_code": "HJ 1168-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": ["9", "9.1", "9.2", "9.3", "9.4", "9.5", "9.6", "9.7", "9.7.1", "9.7.2", "9.8"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "require_continued_table": true,
+      "required_unit_types": ["table_record", "procedure_clause"],
+      "text_fragments": ["草地优势种", "地下水位"],
+      "table_assertions": [
+        {
+          "match": {"观测指标": "草原灾害"},
+          "expect": {"观测内容": "灾害指标", "观测频度": "一年一次"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1169-p6-wetland-merged-table",
+      "standard_code": "HJ 1169-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": ["7.1.3", "7.2", "7.2.1", "7.2.2", "7.2.3", "7.2.4", "8"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "required_unit_types": ["table_record", "procedure_clause"],
+      "table_title_contains": "湿地生态系统野外观测指标",
+      "text_fragments": ["湿地不同植被类型", "野外观测指标体系"],
+      "table_assertions": [
+        {
+          "match": {"观测指标": "底栖动物群落特征"},
+          "expect": {"观测内容": "生物指标", "观测时间": "3—10月", "观测频度": "一年两次"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1169-p7-wetland-table-continuation",
+      "standard_code": "HJ 1169-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": ["9", "9.1", "9.2", "9.3", "9.4", "9.5", "9.6", "9.6.1"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "require_continued_table": true,
+      "required_unit_types": ["table_record", "procedure_clause"],
+      "text_fragments": ["湿地类型", "木本生物量"],
+      "table_assertions": [
+        {
+          "match": {"观测指标": "土壤湿度"},
+          "expect": {"观测内容": "土壤指标", "观测时间": "1—12月", "观测频度": "一季度一次"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1170-p6-desert-merged-table",
+      "standard_code": "HJ 1170-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": ["7.1.4", "7.2", "7.2.1", "7.2.2", "7.2.3", "7.2.4", "8"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "required_unit_types": ["table_record", "procedure_clause"],
+      "table_title_contains": "荒漠生态系统野外观测指标",
+      "text_fragments": ["荒漠不同植被类型", "野外观测指标体系"],
+      "table_assertions": [
+        {
+          "match": {"观测指标": "光合有效辐射 （PAR）"},
+          "expect": {"观测内容": "气象指标", "观测时间": "1—12月", "观测频度": "连续"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1170-p7-desert-procedures",
+      "standard_code": "HJ 1170-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": ["9", "9.1", "9.2", "9.3", "9.4", "9.5", "9.5.1", "9.5.2", "9.6", "9.6.1", "9.6.2"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 0,
+      "required_unit_types": ["procedure_clause"],
+      "text_fragments": ["荒漠类型", "木本生物量", "草本生物量"]
+    },
+    {
+      "case_id": "hj1171-p5-flow-figure-not-table",
+      "standard_code": "HJ 1171-2021",
+      "pdf_page": 5,
+      "expected_heading_sections": ["3", "3.1", "3.2", "3.2.1", "3.2.2", "4"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 0,
+      "required_unit_types": ["procedure_clause"],
+      "text_fragments": ["原则", "目标和范围", "技术流程"]
+    },
+    {
+      "case_id": "hj1171-p8-vector-formula-override",
+      "standard_code": "HJ 1171-2021",
+      "pdf_page": 8,
+      "expected_heading_sections": ["6.8", "7"],
+      "expected_formula_numbers": ["8"],
+      "expected_manual_formula_numbers": ["7"],
+      "expected_table_count": 0,
+      "required_unit_types": ["formula_package", "procedure_clause"],
+      "text_fragments": ["综合生态系统动态度", "评估结果"]
+    },
+    {
+      "case_id": "hj1174-p6-problem-indicator-table",
+      "standard_code": "HJ 1174-2021",
+      "pdf_page": 6,
+      "expected_heading_sections": ["6", "7", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "required_unit_types": ["table_record", "procedure_clause"],
+      "table_title_contains": "生态问题评估指标体系",
+      "text_fragments": ["水土流失程度", "湿地退化程度"],
+      "table_assertions": [
+        {
+          "match": {"评估指标": "水土流失程度"},
+          "expect": {"评估内容": "水土流失"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1174-p9-formulas-and-two-tables",
+      "standard_code": "HJ 1174-2021",
+      "pdf_page": 9,
+      "expected_heading_sections": ["A.3", "A.4"],
+      "expected_formula_numbers": ["A.2", "A.3"],
+      "expected_table_count": 2,
+      "required_unit_types": ["formula_package", "table_record"],
+      "text_fragments": ["石漠化程度", "森林退化程度"],
+      "table_assertions": [
+        {
+          "match": {"石漠化等级": "无石漠化"},
+          "expect": {"坡度/（°）": "＜5", "植被覆盖/%": "＞80"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1175-p7-project-indicator-table",
+      "standard_code": "HJ 1175-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": ["9", "9.1", "9.2", "9.3", "9.4", "9.5", "9.6"],
+      "expected_formula_numbers": [],
+      "expected_table_count": 1,
+      "required_unit_types": ["table_record", "procedure_clause"],
+      "table_title_contains": "项目尺度生态影响评估指标体系",
+      "text_fragments": ["生态系统类型转移", "防风固沙量损失"],
+      "table_assertions": [
+        {
+          "match": {"调查评估指标": "土壤保持量损失"},
+          "expect": {"调查评估内容": "生态系统服务 损失"}
+        }
+      ]
+    },
+    {
+      "case_id": "hj1175-p11-dense-formulas",
+      "standard_code": "HJ 1175-2021",
+      "pdf_page": 11,
+      "expected_heading_sections": ["B.3"],
+      "expected_formula_numbers": ["B.5", "B.6", "B.7", "B.8", "B.9"],
+      "expected_table_count": 0,
+      "required_unit_types": ["formula_package"],
+      "text_fragments": ["防风固沙"]
+    },
+    {
+      "case_id": "hj1176-p7-quality-table-and-formula",
+      "standard_code": "HJ 1176-2021",
+      "pdf_page": 7,
+      "expected_heading_sections": ["8", "8.1", "8.2", "8.3"],
+      "expected_formula_numbers": ["1"],
+      "expected_manual_formula_numbers": ["1"],
+      "expected_table_count": 1,
+      "required_unit_types": ["formula_package", "table_record", "quality_clause"],
+      "table_title_contains": "数据质量控制指标体系",
+      "text_fragments": ["生态参数数据质量评价", "平均相对误差模型"],
+      "table_assertions": [
+        {
+          "match": {"二级指标": "时间"},
+          "expect_contains": {"具体要求": "间隔小于1年"}
+        }
+      ]
+    }
+  ]
+}

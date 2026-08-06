@@ -27,6 +27,7 @@ ml = [
   "datasets>=2.20",
   "sentence-transformers>=3.0",
 ]
+qwen35 = ["ms-swift"]
 ms-graphrag = ["graphrag==3.1.0", "pandas>=2.2", "pyarrow>=16"]
 dev = ["pytest>=8.2", "pytest-cov>=5"]
 all = [
@@ -46,6 +47,7 @@ all = [
 
 [project.scripts]
 eco-spec-kg = "ecospec_kg.cli:main"
+eco-spec-kg-v2 = "ecospec_kg.cli_v2:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -53,4 +55,3 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
-

@@ -122,11 +122,28 @@ def _build_parser() -> argparse.ArgumentParser:
     index.add_argument("--run", action="store_true")
 
     train = sub.add_parser("train")
-    train.add_argument("--relations", type=Path, required=True)
+    train.add_argument("--relations", type=Path)
     train.add_argument("--prepared", type=Path, required=True)
     train.add_argument("--out", type=Path, required=True)
     train.add_argument("--seed", type=int, default=42)
     train.add_argument("--smoke-limit", type=int)
+    train.add_argument(
+        "--model",
+        default=os.environ.get("ECOSPEC_BASE_MODEL", "Qwen/Qwen3.5-9B"),
+    )
+    train.add_argument(
+        "--trainer", choices=("transformers", "swift"), default="transformers"
+    )
+    train.add_argument("--precision", choices=("bf16", "fp16"), default="bf16")
+    train.add_argument("--max-length", type=int, default=4096)
+    train.add_argument("--train-batch-size", type=int, default=1)
+    train.add_argument("--eval-batch-size", type=int, default=1)
+    train.add_argument("--gradient-accumulation-steps", type=int, default=16)
+    train.add_argument("--lora-rank", type=int, default=8)
+    train.add_argument("--lora-alpha", type=int, default=16)
+    train.add_argument("--lora-dropout", type=float, default=0.05)
+    train.add_argument("--learning-rate", type=float, default=2e-4)
+    train.add_argument("--epochs", type=int, default=5)
     train.add_argument("--run", action="store_true")
 
     evaluate = sub.add_parser("evaluate")
@@ -291,7 +308,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
     if args.command == "train":
-        count = prepare_training_data(args.relations, args.prepared)
+        if args.relations:
+            count = prepare_training_data(args.relations, args.prepared)
+        elif args.prepared.exists():
+            count = len(read_jsonl(args.prepared))
+        else:
+            raise ValueError("--relations is required unless --prepared already exists")
         if not args.run:
             write_json(
                 args.out / "run_manifest.json",
@@ -302,7 +324,21 @@ def main(argv: list[str] | None = None) -> int:
         manifest = run_lora(
             args.prepared,
             args.out,
-            LoRASettings(seed=args.seed),
+            LoRASettings(
+                model_name=args.model,
+                trainer=args.trainer,
+                precision=args.precision,
+                rank=args.lora_rank,
+                alpha=args.lora_alpha,
+                dropout=args.lora_dropout,
+                learning_rate=args.learning_rate,
+                max_epochs=args.epochs,
+                max_sequence_length=args.max_length,
+                per_device_train_batch_size=args.train_batch_size,
+                per_device_eval_batch_size=args.eval_batch_size,
+                gradient_accumulation_steps=args.gradient_accumulation_steps,
+                seed=args.seed,
+            ),
             smoke_limit=args.smoke_limit,
         )
         print(json.dumps(manifest))

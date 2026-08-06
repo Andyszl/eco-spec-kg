@@ -67,3 +67,13 @@ five epochs maximum, and seeds 42, 43, and 44.
 The included fixture is for software tests only. It is not an experimental
 result and must not be counted in the paper dataset.
 
+## V2 experiment chain
+
+The leakage-controlled V2 workflow separates blind extraction, prediction
+validation, and strict evaluation. See
+[`docs/V2正式实验命令链.md`](docs/V2正式实验命令链.md) for the frozen dataset
+layout, commands, output manifests, and publication boundary.
+
+For the local Qwen3.5-9B service, V2-aligned LoRA data, and server validation
+steps, see
+[`docs/Qwen3.5本地部署与V2验证手册.md`](docs/Qwen3.5本地部署与V2验证手册.md).

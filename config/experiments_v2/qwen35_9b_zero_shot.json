@@ -1,0 +1,12 @@
+{
+  "experiment_id": "qwen35_9b_zero_shot_v2",
+  "backend": "llm",
+  "model": "Qwen3.5-9B",
+  "seed": 42,
+  "temperature": 0,
+  "candidate_generator": "structure-aware-rule-v2",
+  "use_schema": true,
+  "use_layout": true,
+  "use_evidence": true,
+  "enable_thinking": false
+}
