@@ -339,7 +339,7 @@ eco-spec-kg train \
   --model "$QWEN_LLM" \
   --trainer swift \
   --precision bf16 \
-  --max-length 4096 \
+  --max-length 8192 \
   --train-batch-size 1 \
   --eval-batch-size 1 \
   --gradient-accumulation-steps 16 \
@@ -366,6 +366,12 @@ nvidia-smi
 只有运行清单为 `complete`、适配器文件存在、训练日志没有 NaN/OOM，才进入三随机
 种子正式训练。当前候选覆盖上限不足，因此完成烟雾训练后应先改进候选生成器，不能
 直接把结果写入论文正式实验表。
+
+当前 693 条 V2.1 训练记录的实测长度分布为：P95=1034、P99=3447、最大值=7293；
+其中 5 条超过 4096，没有记录超过 8192。因此训练统一使用 `max-length 8192`，不能
+以 4096 静默截断最长样本。使用 20 份最长样本进行的 8192-token 压力测试已完成
+2 个训练 step，峰值显存约 23.04 GiB，未出现 OOM 或 NaN。该重复样本运行只用于
+容量验收，不作为模型效果实验。
 
 若训练在第一个 step 前出现
 `Qwen3.5 linear attention padding free/sequence parallel requires flash-linear-attention`，
