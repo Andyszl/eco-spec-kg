@@ -18,6 +18,10 @@ class CompletionHTTPError(RuntimeError):
     pass
 
 
+class CompletionTruncatedError(RuntimeError):
+    pass
+
+
 @dataclass(slots=True)
 class MockProvider:
     response: str = '{"relations":[]}'
@@ -101,7 +105,14 @@ class OpenAICompatibleProvider:
                 f"HTTP {exc.code} {exc.reason}: {preview}"
             ) from exc
         self.last_raw_response = result
-        message = result["choices"][0]["message"]
+        choice = result["choices"][0]
+        if choice.get("finish_reason") == "length":
+            usage = result.get("usage", {})
+            raise CompletionTruncatedError(
+                "completion was truncated at the configured output limit "
+                f"(completion_tokens={usage.get('completion_tokens', 'unknown')})"
+            )
+        message = choice["message"]
         content = message.get("content")
         if content:
             return content

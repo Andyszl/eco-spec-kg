@@ -10,7 +10,11 @@ from unittest.mock import MagicMock, patch
 from urllib.error import HTTPError
 
 from ecospec_kg.io_utils import read_json, write_jsonl
-from ecospec_kg.providers import CompletionHTTPError, OpenAICompatibleProvider
+from ecospec_kg.providers import (
+    CompletionHTTPError,
+    CompletionTruncatedError,
+    OpenAICompatibleProvider,
+)
 from ecospec_kg.training import LoRASettings, build_swift_command, run_swift_lora
 
 
@@ -58,6 +62,32 @@ class QwenRuntimeTests(unittest.TestCase):
         self.assertIn(
             "context length exceeded", provider.last_raw_response["error_body"]
         )
+
+    def test_openai_provider_reports_truncated_completion(self) -> None:
+        result = {
+            "choices": [
+                {
+                    "finish_reason": "length",
+                    "message": {"content": '{"selected_entity_ids": ['},
+                }
+            ],
+            "usage": {"completion_tokens": 1024},
+        }
+        response = MagicMock()
+        response.read.return_value = json.dumps(result).encode("utf-8")
+        response.__enter__.return_value = response
+        provider = OpenAICompatibleProvider(
+            base_url="http://127.0.0.1:8000/v1",
+            api_key="local-token",
+            model="Qwen3.5-9B",
+        )
+
+        with patch("urllib.request.urlopen", return_value=response):
+            with self.assertRaisesRegex(
+                CompletionTruncatedError, "completion_tokens=1024"
+            ):
+                provider.complete("system", "prompt")
+        self.assertEqual(provider.last_raw_response, result)
 
     def test_swift_command_uses_text_only_qwen35_settings(self) -> None:
         settings = LoRASettings(

@@ -931,7 +931,8 @@ def build_llm_selection_messages(
 ) -> tuple[str, str]:
     system = (
         "你是生态评估技术规范关系抽取器。只能从候选实体和候选关系中选择，"
-        "不得改写名称、类型、关系或证据。只输出JSON。"
+        "不得改写名称、类型、关系或证据。只输出单行紧凑JSON，不得输出Markdown、"
+        "解释、换行或缩进。"
     )
     source_fields = (
         "clause_text",

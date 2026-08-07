@@ -150,7 +150,8 @@ class ExperimentChainV2Tests(unittest.TestCase):
             relation_keys,
         )
 
-        _, prompt = build_llm_selection_messages(unit, prediction)
+        system, prompt = build_llm_selection_messages(unit, prediction)
+        self.assertIn("只输出单行紧凑JSON", system)
         payload = json.loads(prompt)
         self.assertNotIn("provenance", payload["source_unit"])
         self.assertNotIn("evidence_span_ids", payload["candidate_entities"][0])
