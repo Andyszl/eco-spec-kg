@@ -26,6 +26,7 @@ class LoRASettings:
     per_device_eval_batch_size: int = 1
     gradient_accumulation_steps: int = 16
     seed: int = 42
+    data_seed: int = 42
 
 
 SYSTEM_PROMPT = (
@@ -262,6 +263,8 @@ def build_swift_command(
         str(settings.max_sequence_length),
         "--seed",
         str(settings.seed),
+        "--data_seed",
+        str(settings.data_seed),
         "--save_total_limit",
         "2",
         "--output_dir",

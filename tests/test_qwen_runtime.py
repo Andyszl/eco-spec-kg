@@ -94,6 +94,8 @@ class QwenRuntimeTests(unittest.TestCase):
             model_name="/work/models/Qwen3.5-9B",
             trainer="swift",
             precision="bf16",
+            seed=123,
+            data_seed=42,
         )
         command = build_swift_command(
             Path("train.jsonl"), Path("runs/smoke"), settings
@@ -115,6 +117,8 @@ class QwenRuntimeTests(unittest.TestCase):
         self.assertIn("--early_stop_interval 2", rendered)
         self.assertIn("--warmup_ratio 0.1", rendered)
         self.assertIn("--truncation_strategy delete", rendered)
+        self.assertIn("--seed 123", rendered)
+        self.assertIn("--data_seed 42", rendered)
 
     def test_swift_smoke_run_writes_limited_data_and_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

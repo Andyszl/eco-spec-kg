@@ -126,6 +126,7 @@ def _build_parser() -> argparse.ArgumentParser:
     train.add_argument("--prepared", type=Path, required=True)
     train.add_argument("--out", type=Path, required=True)
     train.add_argument("--seed", type=int, default=42)
+    train.add_argument("--data-seed", type=int, default=42)
     train.add_argument("--smoke-limit", type=int)
     train.add_argument(
         "--model",
@@ -338,6 +339,7 @@ def main(argv: list[str] | None = None) -> int:
                 per_device_eval_batch_size=args.eval_batch_size,
                 gradient_accumulation_steps=args.gradient_accumulation_steps,
                 seed=args.seed,
+                data_seed=args.data_seed,
             ),
             smoke_limit=args.smoke_limit,
         )
