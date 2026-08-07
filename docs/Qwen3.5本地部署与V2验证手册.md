@@ -106,12 +106,18 @@ vLLM 与训练框架分别安装，避免它们对 PyTorch、Transformers 的版
 推理环境：
 
 ```bash
-conda create -n ecospec-vllm python=3.12 -y
-conda activate ecospec-vllm
+conda create -n ecospec-vllm-cu130 python=3.12 -y
+conda activate ecospec-vllm-cu130
 python -m pip install -U pip uv
-uv pip install vllm --torch-backend=auto \
-  --extra-index-url https://wheels.vllm.ai/nightly
+uv pip install "vllm==0.20.1" --torch-backend=cu130
+
+python -c "import torch, vllm; print(vllm.__version__, torch.__version__, torch.version.cuda)"
+python -c "import vllm._C; print('vLLM CUDA extension OK')"
 ```
+
+该组合应输出 vLLM 0.20.1、PyTorch `2.11.0+cu130` 和 CUDA `13.0`。
+不要使用 `--torch-backend=auto`；它可能选择 cu129，而 vLLM 0.20.1 的默认扩展
+是按 cu130 构建的，混用会导致缺少 `libcudart.so.13`。
 
 训练和项目环境：
 
@@ -196,7 +202,7 @@ PY
 ## 7. 启动 Qwen3.5-9B
 
 ```bash
-conda activate ecospec-vllm
+conda activate ecospec-vllm-cu130
 CUDA_VISIBLE_DEVICES=0 nohup vllm serve "$QWEN_LLM" \
   --served-model-name Qwen3.5-9B \
   --host 127.0.0.1 \
