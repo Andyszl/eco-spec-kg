@@ -1,0 +1,13 @@
+{
+  "experiment_id": "qwen35_9b_lora_v2",
+  "backend": "llm",
+  "model": "Qwen3.5-9B-lora",
+  "seed": 42,
+  "temperature": 0,
+  "max_tokens": 3072,
+  "candidate_generator": "structure-aware-rule-v2.1",
+  "use_schema": true,
+  "use_layout": true,
+  "use_evidence": true,
+  "enable_thinking": false
+}

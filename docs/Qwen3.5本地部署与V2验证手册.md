@@ -384,6 +384,10 @@ nvidia-smi
 2 个训练 step，峰值显存约 23.04 GiB，未出现 OOM 或 NaN。该重复样本运行只用于
 容量验收，不作为模型效果实验。
 
+LoRA 开发集评测使用 `config/experiments_v2/qwen35_9b_lora.json`，并通过 CLI 的
+`--model` 指定 vLLM 中实际挂载的适配器名称。不能复用 zero-shot 配置，否则运行
+清单中的 `experiment_id` 会错误地将 LoRA 结果标记为零样本实验。
+
 若训练在第一个 step 前出现
 `Qwen3.5 linear attention padding free/sequence parallel requires flash-linear-attention`，
 先执行本节的 FLA 导入验证。不要通过开启 packing 或 sequence parallel 绕过该错误。
