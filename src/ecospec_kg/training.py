@@ -6,7 +6,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Callable
 
-from .io_utils import read_jsonl, write_json, write_jsonl
+from .io_utils import read_jsonl, sha256_file, write_json, write_jsonl
 from .models import Relation
 
 
@@ -242,6 +242,22 @@ def build_swift_command(
         "1",
         "--split_dataset_ratio",
         "0.1",
+        "--eval_strategy",
+        "epoch",
+        "--save_strategy",
+        "epoch",
+        "--load_best_model_at_end",
+        "true",
+        "--metric_for_best_model",
+        "loss",
+        "--greater_is_better",
+        "false",
+        "--early_stop_interval",
+        str(settings.early_stopping_patience),
+        "--warmup_ratio",
+        "0.1",
+        "--truncation_strategy",
+        "delete",
         "--max_length",
         str(settings.max_sequence_length),
         "--seed",
@@ -275,6 +291,12 @@ def run_swift_lora(
     command = build_swift_command(effective_training_path, output_dir, settings)
     manifest: dict[str, object] = {
         "settings": asdict(settings),
+        "input": {
+            "source_path": str(training_path),
+            "source_sha256": sha256_file(training_path),
+            "effective_path": str(effective_training_path),
+            "effective_sha256": sha256_file(effective_training_path),
+        },
         "training_records": len(rows),
         "smoke_limit": smoke_limit,
         "backend": "ms-swift",

@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 from urllib.error import HTTPError
 
-from ecospec_kg.io_utils import read_json, write_jsonl
+from ecospec_kg.io_utils import read_json, sha256_file, write_jsonl
 from ecospec_kg.providers import (
     CompletionHTTPError,
     CompletionTruncatedError,
@@ -107,6 +107,14 @@ class QwenRuntimeTests(unittest.TestCase):
         self.assertIn("--padding_free false", rendered)
         self.assertIn("--packing false", rendered)
         self.assertIn("--sequence_parallel_size 1", rendered)
+        self.assertIn("--eval_strategy epoch", rendered)
+        self.assertIn("--save_strategy epoch", rendered)
+        self.assertIn("--load_best_model_at_end true", rendered)
+        self.assertIn("--metric_for_best_model loss", rendered)
+        self.assertIn("--greater_is_better false", rendered)
+        self.assertIn("--early_stop_interval 2", rendered)
+        self.assertIn("--warmup_ratio 0.1", rendered)
+        self.assertIn("--truncation_strategy delete", rendered)
 
     def test_swift_smoke_run_writes_limited_data_and_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -136,7 +144,17 @@ class QwenRuntimeTests(unittest.TestCase):
 
             self.assertEqual(manifest["status"], "complete")
             self.assertEqual(manifest["training_records"], 2)
-            self.assertTrue((output_dir / "smoke_training.jsonl").exists())
+            smoke_path = output_dir / "smoke_training.jsonl"
+            self.assertTrue(smoke_path.exists())
+            self.assertEqual(
+                manifest["input"],
+                {
+                    "source_path": str(training_path),
+                    "source_sha256": sha256_file(training_path),
+                    "effective_path": str(smoke_path),
+                    "effective_sha256": sha256_file(smoke_path),
+                },
+            )
             self.assertEqual(read_json(output_dir / "run_manifest.json")["status"], "complete")
             self.assertEqual(len(calls), 1)
 

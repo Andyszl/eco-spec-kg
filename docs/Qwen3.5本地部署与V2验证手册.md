@@ -320,6 +320,13 @@ PY
 `sequence_parallel_size=1`。这符合当前单卡文本 LoRA 实验设计，也避免未声明地切换
 训练语义；FLA 仍用于 Qwen3.5 线性注意力的高效实现。
 
+正式训练命令同时固定 `eval_strategy=epoch`、`save_strategy=epoch`、
+`load_best_model_at_end=true`、`metric_for_best_model=loss`、
+`greater_is_better=false` 和 `early_stop_interval=2`。每轮使用训练集内部固定的 10%
+验证划分评估并保存，最终恢复验证损失最优 checkpoint；运行清单记录原始训练文件和
+实际训练文件的路径及 SHA-256。`truncation_strategy=delete` 用于禁止静默截断，按
+当前长度验收不应删除任何样本。
+
 运行训练前停止 vLLM，释放 GPU 0：
 
 ```bash
