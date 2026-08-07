@@ -295,6 +295,23 @@ python -m json.tool \
 
 ## 10. LoRA 烟雾训练
 
+Qwen3.5 包含线性注意力层。训练环境先安装并验证官方建议的 FLA 内核：
+
+```bash
+conda activate ecospec-train
+python -m pip install -U "flash-linear-attention>=0.4.2" --no-build-isolation
+
+python - <<'PY'
+from fla.modules.convolution import causal_conv1d
+from fla.ops.gated_delta_rule import chunk_gated_delta_rule
+print("flash-linear-attention OK")
+PY
+```
+
+项目生成的 `swift sft` 命令会显式设置 `padding_free=false`、`packing=false` 和
+`sequence_parallel_size=1`。这符合当前单卡文本 LoRA 实验设计，也避免未声明地切换
+训练语义；FLA 仍用于 Qwen3.5 线性注意力的高效实现。
+
 运行训练前停止 vLLM，释放 GPU 0：
 
 ```bash
@@ -341,3 +358,7 @@ nvidia-smi
 只有运行清单为 `complete`、适配器文件存在、训练日志没有 NaN/OOM，才进入三随机
 种子正式训练。当前候选覆盖上限不足，因此完成烟雾训练后应先改进候选生成器，不能
 直接把结果写入论文正式实验表。
+
+若训练在第一个 step 前出现
+`Qwen3.5 linear attention padding free/sequence parallel requires flash-linear-attention`，
+先执行本节的 FLA 导入验证。不要通过开启 packing 或 sequence parallel 绕过该错误。

@@ -74,6 +74,9 @@ class QwenRuntimeTests(unittest.TestCase):
         self.assertIn("--freeze_aligner true", rendered)
         self.assertIn("--add_non_thinking_prefix true", rendered)
         self.assertIn("--target_modules all-linear", rendered)
+        self.assertIn("--padding_free false", rendered)
+        self.assertIn("--packing false", rendered)
+        self.assertIn("--sequence_parallel_size 1", rendered)
 
     def test_swift_smoke_run_writes_limited_data_and_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
