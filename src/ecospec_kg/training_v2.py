@@ -5,7 +5,11 @@ from pathlib import Path
 from typing import Any
 
 from .experiment_io_v2 import assert_blind_records, sha256_path, utc_now
-from .extractor_v2 import RuleCandidateExtractorV2, build_llm_selection_messages
+from .extractor_v2 import (
+    CANDIDATE_GENERATOR_VERSION,
+    RuleCandidateExtractorV2,
+    build_llm_selection_messages,
+)
 from .io_utils import read_jsonl, write_json, write_jsonl
 
 
@@ -138,6 +142,7 @@ def prepare_lora_training_v2(
     write_jsonl(output_path, rows)
     manifest = {
         "schema_version": "ecospec-lora-training-v2.0",
+        "candidate_generator": CANDIDATE_GENERATOR_VERSION,
         "created_at": utc_now(),
         "source_units": str(units_path),
         "source_units_sha256": sha256_path(units_path),

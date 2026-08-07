@@ -4,7 +4,7 @@
   "model": "deterministic-v2-rule",
   "seed": 42,
   "temperature": 0,
-  "candidate_generator": "structure-aware-rule-v2",
+  "candidate_generator": "structure-aware-rule-v2.1",
   "use_schema": true,
   "use_layout": true,
   "use_evidence": true

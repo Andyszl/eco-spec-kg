@@ -24,6 +24,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.1"
 
 OBSERVATION_CODES = {
     "HJ 1166-2021",
@@ -64,8 +65,18 @@ DATA_SOURCE_TERMS = (
     "数字高程模型（DEM）",
     "数字高程模型",
     "DEM",
+    "光学数据",
+    "观测数据",
+    "训练样本",
+    "已有水文观测站点",
+    "已有观测站点",
+    "监测站",
+    "通量站",
+    "高空间分辨率数据",
+    "分类结果",
 )
 ECOSYSTEM_TERMS = (
+    "陆地生态系统",
     "森林生态系统",
     "灌丛生态系统",
     "草地生态系统",
@@ -87,6 +98,14 @@ ECOSYSTEM_TERMS = (
     "沙漠",
     "沙地",
     "盐碱地",
+    "森林",
+    "灌丛",
+    "草地",
+    "农田",
+    "裸地",
+    "耕地",
+    "城市绿地",
+    "冰川/永久积雪",
 )
 SPATIAL_TERMS = (
     "全国",
@@ -95,12 +114,41 @@ SPATIAL_TERMS = (
     "评估区",
     "生态功能区",
     "项目区",
+    "评估区域",
 )
 METHOD_RE = re.compile(
-    r"([\u4e00-\u9fffA-Za-z0-9（）()·—\-]{2,24}"
+    r"([\u4e00-\u9fffA-Za-z0-9（）()·—\-]{2,36}"
     r"(?:调查法|观测法|测量法|测定法|计算法|估算法|分析法|"
     r"插值法|抽样法|样方法|观察法|照相法|烘干法|"
-    r"模型法|机器学习法|回归法|方程|模型|算法))"
+    r"模型法|机器学习法|回归法|方程|模型|算法|方法))"
+)
+GENERIC_METHODS = {
+    "方法",
+    "具体方法",
+    "计算方法",
+    "评估方法",
+    "观测方法",
+    "调查方法",
+}
+COMMON_METHOD_TERMS = (
+    "统计法",
+    "经验模型法",
+    "冠层模型",
+    "参数模型",
+    "几何光学模型",
+    "混合介质模型",
+    "计算机模拟模型",
+    "查找表方法",
+    "回归（统计）模型法",
+    "机器学习法",
+    "神经网络",
+    "决策树",
+    "支持向量机",
+    "涡度相关法",
+    "计数法",
+    "像元分解模型",
+    "线性像元分解法",
+    "归一化处理",
 )
 FORMULA_INDICATORS = {
     ("HJ 1172-2021", "1"): "生态系统参数相对密度",
@@ -149,7 +197,7 @@ def _heading_title(unit: dict[str, Any]) -> str:
     if not chain:
         return ""
     title = re.sub(
-        r"^(?:附录\s*[A-Z]|[A-Z]?\d+(?:\.\d+)*)\s*",
+        r"^(?:附录\s*[A-Z]|[A-Z](?:\.\d+)+|\d+(?:\.\d+)*)\s*",
         "",
         str(chain[-1]),
     )
@@ -178,6 +226,125 @@ def _terms(text: str, terms: tuple[str, ...]) -> list[str]:
     ]
 
 
+def _candidate_terms(text: str, terms: tuple[str, ...]) -> list[str]:
+    """Keep nested terms because V2 selection needs recall-oriented candidates."""
+    return [term for term in terms if term in text]
+
+
+def _method_candidates(text: str) -> list[str]:
+    methods: list[str] = [term for term in COMMON_METHOD_TERMS if term in text]
+    for match in METHOD_RE.finditer(text):
+        name = re.sub(
+            r"^(?:目前|主要|具体|利用|采用|通过|运用|根据|一类是|另一类是)",
+            "",
+            _clean(match.group(1)),
+        )
+        if name and name not in GENERIC_METHODS:
+            methods.append(name)
+            if name.endswith("的方法"):
+                methods.append(name[: -len("的方法")])
+
+    clauses = re.split(r"[。；;]", text)
+    for clause in clauses:
+        for match in re.finditer(
+            r"(基于[^，。；;]{2,60}?(?:获取|估算|反演)[^，。；;]{0,30}?)"
+            r"(?=常采用|主要包括|的方法主要|[，。；;]|$)",
+            clause,
+        ):
+            methods.append(_clean(match.group(1)).removesuffix("的"))
+        for match in re.finditer(
+            r"(?:一类是|另一类是|常用的是|常采用|采用|主要有|包括)"
+            r"([^，。；;]{2,80})",
+            clause,
+        ):
+            value = re.sub(r"(?:等)?方法$", "方法", _clean(match.group(1)))
+            for item in re.split(r"[、，]|以及|及|和", value):
+                item = _clean(item)
+                if (
+                    2 <= len(item) <= 50
+                    and re.search(
+                        r"(?:方法|法|模型|算法|技术|关系|拟合|观测|测量|测定|"
+                        r"计算|估测|估算|提取|训练|调查|检尺)$",
+                        item,
+                    )
+                    and item not in GENERIC_METHODS
+                ):
+                    methods.append(item)
+        for match in re.finditer(
+            r"(基于[^，。；;]{2,60}?(?:获取|估算|反演)[^，。；;]{0,30}?(?:方法)?)"
+            r"(?=主要|[，。；;]|$)",
+            clause,
+        ):
+            methods.append(_clean(match.group(1)).removesuffix("的"))
+        for match in re.finditer(
+            r"(?:使用|利用|采用|通过|依据|根据|依托|将)"
+            r"([^，。；;：:]{2,36}?)(?:进行|来)?"
+            r"(拟合|测量|测定|计算|估算|估测|提取|训练|模拟|重采样|"
+            r"分类|聚合|处理|判断|称量|烘干)",
+            clause,
+        ):
+            methods.append(_clean("".join(match.groups())))
+        for match in re.finditer(r"([\u4e00-\u9fff]{2,12}模型)\1", clause):
+            methods.append(match.group(1))
+
+    for match in re.finditer(
+        r"(?:划分为[^：:]{0,16}[：:]|常采用|主要有|包括)"
+        r"([^。；;]{2,160}?)(?:等(?:方法)?|[。；;]|$)",
+        text,
+    ):
+        for item in re.split(r"[、，]|以及|及|和", match.group(1)):
+            item = _clean(item)
+            item = re.sub(r"^(?:一类是|另一类是|常用的是)", "", item)
+            if (
+                2 <= len(item) <= 50
+                and re.search(
+                    r"(?:方法|法|模型|算法|技术|网络|决策树|向量机|观测|"
+                    r"测量|测定|计算|估算|估测|训练|分类|处理)$",
+                    item,
+                )
+                and item not in GENERIC_METHODS
+            ):
+                methods.append(item)
+
+    for match in re.finditer(
+        r"([\u4e00-\u9fff（）()]{2,30}(?:野外观测|连续观测|生物量观测))",
+        text,
+    ):
+        methods.append(_clean(match.group(1)))
+
+    if "采用仪器测量" in text or "仪器直接观测" in text:
+        methods.append("仪器测量")
+    if "现场调查" in text:
+        methods.append("现场调查")
+    return _unique(methods)
+
+
+def _quality_candidates(text: str) -> list[str]:
+    rules: list[str] = []
+    for match in re.finditer(
+        r"(?:可)?根据([^，。；;]{2,20}?)(?:和所具备的)?实际条件"
+        r"选择合适的模型和方法",
+        text,
+    ):
+        scope = re.sub(r"和所具备的$", "", _clean(match.group(1)))
+        rules.append(f"根据{scope}和实际条件选择合适的模型和方法")
+    return _unique(rules)
+
+
+def _indicator_heading(unit: dict[str, Any]) -> str:
+    title = _heading_title(unit)
+    return _clean(re.sub(r"[（(][A-Za-z][A-Za-z0-9_-]*[）)]$", "", title))
+
+
+def _dynamic_ecosystems(text: str) -> list[str]:
+    values = _candidate_terms(text, ECOSYSTEM_TERMS)
+    values.extend(
+        re.sub(r"\s+", "", match.group(0))
+        for match in re.finditer(r"第\s*[A-Za-z0-9\u4e00-\u9fff]+\s*类植被生态系统", text)
+    )
+    return _unique(values)
+
+
 def _formula_lhs_symbols(expression: str) -> list[str]:
     symbols: list[str] = []
     for match in re.finditer("=", expression):
@@ -197,11 +364,11 @@ def _symbol_base(symbol: str) -> str:
 
 
 def _symbol_occurs(symbol: str, expression: str) -> bool:
-    compact_symbol = re.sub(r"[\s_{}]", "", symbol)
-    compact_expression = re.sub(r"[\s_{}]", "", expression)
+    compact_symbol = re.sub(r"[\s_{}]", "", symbol).casefold()
+    compact_expression = re.sub(r"[\s_{}]", "", expression).casefold()
     if compact_symbol and compact_symbol in compact_expression:
         return True
-    base = re.sub(r"[\s_{}]", "", _symbol_base(symbol))
+    base = re.sub(r"[\s_{}]", "", _symbol_base(symbol)).casefold()
     return bool(base and base in compact_expression)
 
 
@@ -395,7 +562,8 @@ class RuleCandidateExtractorV2:
             ]
             if "=" not in expression or not matched:
                 matched = list(variables) if len(unit.get("formulas", [])) == 1 else matched
-            variable_entities: list[dict[str, Any]] = []
+            sourced_variable_entities: list[tuple[dict[str, Any], str]] = []
+            output_variable_entities: list[dict[str, Any]] = []
             for variable in matched:
                 symbol = str(variable.get("symbol", ""))
                 variable_span = variable.get("evidence_span", {}).get("span_id")
@@ -404,7 +572,9 @@ class RuleCandidateExtractorV2:
                     symbol, EntityTypeV2.MODEL_VARIABLE, variable_spans
                 )
                 if entity is not None:
-                    variable_entities.append(entity)
+                    sourced_variable_entities.append(
+                        (entity, str(variable.get("definition", "")))
+                    )
                 role = role_overrides.get(symbol)
                 relation = (
                     RelationTypeV2.HAS_OUTPUT
@@ -419,6 +589,15 @@ class RuleCandidateExtractorV2:
                     entity,
                     formula_spans + variable_spans,
                 )
+                if relation == RelationTypeV2.HAS_OUTPUT:
+                    if entity is not None:
+                        output_variable_entities.append(entity)
+                    builder.add_relation(
+                        entity,
+                        RelationTypeV2.CALCULATED_BY,
+                        formula_entity,
+                        formula_spans + variable_spans,
+                    )
                 unit_name = _clean(str(variable.get("unit", "")))
                 if unit_name:
                     unit_entity = builder.add_entity(
@@ -430,18 +609,28 @@ class RuleCandidateExtractorV2:
                         unit_entity,
                         variable_spans,
                     )
-            for source in _terms(package_text, DATA_SOURCE_TERMS):
+            for method_name in _method_candidates(package_text):
+                method = builder.add_entity(method_name, EntityTypeV2.METHOD, formula_spans)
+                for variable_entity in output_variable_entities:
+                    builder.add_relation(
+                        variable_entity,
+                        RelationTypeV2.OBTAINED_BY,
+                        method,
+                        formula_spans,
+                    )
+            for source in _candidate_terms(package_text, DATA_SOURCE_TERMS):
                 source_entity = builder.add_entity(
                     source, EntityTypeV2.DATA_SOURCE, formula_spans
                 )
-                for variable_entity in variable_entities:
-                    builder.add_relation(
-                        variable_entity,
-                        RelationTypeV2.SOURCED_FROM,
-                        source_entity,
-                        formula_spans,
-                    )
-            for ecosystem in _terms(package_text, ECOSYSTEM_TERMS):
+                for variable_entity, definition in sourced_variable_entities:
+                    if source in definition:
+                        builder.add_relation(
+                            variable_entity,
+                            RelationTypeV2.SOURCED_FROM,
+                            source_entity,
+                            formula_spans,
+                        )
+            for ecosystem in _dynamic_ecosystems(package_text):
                 target = builder.add_entity(
                     ecosystem, EntityTypeV2.ECOSYSTEM_TYPE, formula_spans
                 )
@@ -465,6 +654,27 @@ class RuleCandidateExtractorV2:
         cells = unit.get("cells", {})
         spans = _span_ids(unit)
         code = unit["provenance"]["standard_code"]
+        self._subject(builder)
+        context = " ".join(
+            [
+                str(unit.get("table_title", "")),
+                str(unit.get("provenance", {}).get("document_title", "")),
+                *[str(value) for value in cells.values() if value],
+            ]
+        )
+        for ecosystem in _dynamic_ecosystems(context):
+            builder.add_entity(ecosystem, EntityTypeV2.ECOSYSTEM_TYPE, spans)
+
+        classification_values = [
+            _clean(value)
+            for key, value in cells.items()
+            if re.fullmatch(r"[ⅠⅡⅢ一二三]级分类|分类依据", str(key)) and value
+        ]
+        if classification_values:
+            for value in classification_values:
+                builder.add_entity(value, EntityTypeV2.ECOSYSTEM_TYPE, spans)
+            return
+
         if code == "HJ 1176-2021" and cells.get("具体要求"):
             target_name = re.sub(r"质量$", "", _clean(cells.get("内容", "数据"))) or "数据"
             target = builder.add_entity(target_name, EntityTypeV2.DATA_SOURCE, spans)
@@ -489,9 +699,19 @@ class RuleCandidateExtractorV2:
                 target = builder.add_entity(frequency, EntityTypeV2.FREQUENCY, spans)
                 builder.add_relation(variable, RelationTypeV2.OBSERVED_EVERY, target, spans)
             text = " ".join(str(value) for value in cells.values() if value)
-            for instrument in _terms(text, INSTRUMENT_TERMS):
+            for instrument in _candidate_terms(text, INSTRUMENT_TERMS):
                 target = builder.add_entity(instrument, EntityTypeV2.INSTRUMENT, spans)
                 builder.add_relation(variable, RelationTypeV2.MEASURED_WITH, target, spans)
+            method_names = _method_candidates(text)
+            observation_content = _clean(cells.get("观测内容", ""))
+            if re.search(r"(?:观测|调查|测量|测定|检尺)$", observation_content):
+                method_names.append(observation_content)
+            for method_name in _unique(method_names):
+                target = builder.add_entity(method_name, EntityTypeV2.METHOD, spans)
+                builder.add_relation(variable, RelationTypeV2.OBTAINED_BY, target, spans)
+            for source in _candidate_terms(text, DATA_SOURCE_TERMS):
+                target = builder.add_entity(source, EntityTypeV2.DATA_SOURCE, spans)
+                builder.add_relation(variable, RelationTypeV2.SOURCED_FROM, target, spans)
             return
 
         title = str(unit.get("table_title", ""))
@@ -504,23 +724,39 @@ class RuleCandidateExtractorV2:
                     r"^(?:表\s*[A-Z]?\d+(?:\.\d+)?)\s*", "", title
                 )
                 indicator_name = re.sub(
-                    r"(?:分级标准表?|等级划分表?)$", "", indicator_name
+                    r"(?:分级标准表?|分级|等级划分表?)$", "", indicator_name
                 )
                 indicator_name = _clean(indicator_name)
                 if indicator_name == "生态系统质量":
-                    indicator_name = "生态系统质量指数（EQI）"
-                indicator = builder.add_entity(
-                    indicator_name, EntityTypeV2.ASSESSMENT_INDICATOR, spans
+                    indicator_names = ["生态系统质量指数（EQI）", "EQI"]
+                else:
+                    indicator_names = [indicator_name]
+                level_order = ["优", "良", "中", "低", "差"]
+                canonical_rule = "；".join(
+                    f"{level}：{_clean(cells[level])}"
+                    for level in level_order
+                    if cells.get(level)
                 )
-                rule = builder.add_entity(
-                    text[:240], EntityTypeV2.CLASSIFICATION_RULE, spans
-                )
-                builder.add_relation(
-                    self._subject(builder), RelationTypeV2.HAS_INDICATOR, indicator, spans
-                )
-                builder.add_relation(
-                    indicator, RelationTypeV2.CLASSIFIED_BY, rule, spans
-                )
+                rule_names = _unique([canonical_rule, text[:240]])
+                for current_indicator_name in indicator_names:
+                    indicator = builder.add_entity(
+                        current_indicator_name,
+                        EntityTypeV2.ASSESSMENT_INDICATOR,
+                        spans,
+                    )
+                    builder.add_relation(
+                        self._subject(builder),
+                        RelationTypeV2.HAS_INDICATOR,
+                        indicator,
+                        spans,
+                    )
+                    for rule_name in rule_names:
+                        rule = builder.add_entity(
+                            rule_name, EntityTypeV2.CLASSIFICATION_RULE, spans
+                        )
+                        builder.add_relation(
+                            indicator, RelationTypeV2.CLASSIFIED_BY, rule, spans
+                        )
                 return
 
         indicator_name = (
@@ -536,7 +772,7 @@ class RuleCandidateExtractorV2:
                 self._subject(builder), RelationTypeV2.HAS_INDICATOR, indicator, spans
             )
             text = " ".join(str(value) for value in cells.values() if value)
-            for ecosystem in _terms(text, ECOSYSTEM_TERMS):
+            for ecosystem in _dynamic_ecosystems(text):
                 target = builder.add_entity(ecosystem, EntityTypeV2.ECOSYSTEM_TYPE, spans)
                 builder.add_relation(
                     indicator, RelationTypeV2.APPLIES_TO_ECOSYSTEM, target, spans
@@ -549,6 +785,33 @@ class RuleCandidateExtractorV2:
             return
         code = unit["provenance"]["standard_code"]
         spans = _span_ids(unit)
+        method_names = _method_candidates(text)
+        method_entities = [
+            method
+            for method_name in method_names
+            if (method := builder.add_entity(method_name, EntityTypeV2.METHOD, spans))
+            is not None
+        ]
+        quality_entities = [
+            rule
+            for rule_name in _quality_candidates(text)
+            if (rule := builder.add_entity(rule_name, EntityTypeV2.QUALITY_RULE, spans))
+            is not None
+        ]
+        for method in method_entities:
+            for rule in quality_entities:
+                builder.add_relation(
+                    method, RelationTypeV2.CONSTRAINED_BY, rule, spans
+                )
+        for source in _candidate_terms(text, DATA_SOURCE_TERMS):
+            builder.add_entity(source, EntityTypeV2.DATA_SOURCE, spans)
+        ecosystems = _dynamic_ecosystems(text)
+        ecosystem_entities = [
+            target
+            for ecosystem in ecosystems
+            if (target := builder.add_entity(ecosystem, EntityTypeV2.ECOSYSTEM_TYPE, spans))
+            is not None
+        ]
         if code in OBSERVATION_CODES:
             match = re.search(r"观测指标[：:]\s*([^；;，,]+)", text)
             section = unit["provenance"].get("section", "")
@@ -560,19 +823,19 @@ class RuleCandidateExtractorV2:
                 if name and name not in {"野外观测技术方法", "野外核查"}
                 else None
             )
-            for method_match in METHOD_RE.finditer(text):
-                method_name = re.sub(
-                    r"^(?:主要|具体|利用|采用|通过|运用|根据)",
-                    "",
-                    _clean(method_match.group(1)),
-                )
-                if method_name not in {"方法", "具体方法", "观测方法", "调查方法"}:
-                    target = builder.add_entity(method_name, EntityTypeV2.METHOD, spans)
-                    builder.add_relation(variable, RelationTypeV2.OBTAINED_BY, target, spans)
-            for instrument in _terms(text, INSTRUMENT_TERMS):
+            for method in method_entities:
+                builder.add_relation(variable, RelationTypeV2.OBTAINED_BY, method, spans)
+                for ecosystem in ecosystem_entities:
+                    builder.add_relation(
+                        method,
+                        RelationTypeV2.APPLIES_TO_ECOSYSTEM,
+                        ecosystem,
+                        spans,
+                    )
+            for instrument in _candidate_terms(text, INSTRUMENT_TERMS):
                 target = builder.add_entity(instrument, EntityTypeV2.INSTRUMENT, spans)
                 builder.add_relation(variable, RelationTypeV2.MEASURED_WITH, target, spans)
-            for source in _terms(text, DATA_SOURCE_TERMS):
+            for source in _candidate_terms(text, DATA_SOURCE_TERMS):
                 target = builder.add_entity(source, EntityTypeV2.DATA_SOURCE, spans)
                 builder.add_relation(variable, RelationTypeV2.SOURCED_FROM, target, spans)
             for temporal in unit.get("temporal_mentions", []):
@@ -585,27 +848,50 @@ class RuleCandidateExtractorV2:
 
         if _assessment_subject_name(unit):
             section = unit["provenance"].get("section", "")
-            title = _heading_title(unit)
-            indicator = None
+            title = _indicator_heading(unit)
+            indicator_names: list[str] = []
             if (
                 title
                 and re.match(r"(?:6|7|9|A|B)(?:\.|$)", section)
                 and title not in {"评估技术方法", "评估结果"}
             ):
-                indicator = builder.add_entity(
-                    title, EntityTypeV2.ASSESSMENT_INDICATOR, spans
+                indicator_names.append(title)
+                chain = unit.get("provenance", {}).get("heading_chain", [])
+                if chain:
+                    indicator_names.append(_clean(chain[-1]))
+            for match in re.finditer(r"[（(]([^）)]{2,100})[）)]作为指标", text):
+                indicator_names.extend(
+                    _clean(item) for item in re.split(r"[、，]|以及|及|和", match.group(1))
                 )
+            indicators = [
+                indicator
+                for indicator_name in _unique(indicator_names)
+                if (
+                    indicator := builder.add_entity(
+                        indicator_name, EntityTypeV2.ASSESSMENT_INDICATOR, spans
+                    )
+                )
+                is not None
+            ]
+            for indicator in indicators:
                 builder.add_relation(
                     self._subject(builder), RelationTypeV2.HAS_INDICATOR, indicator, spans
                 )
-            for ecosystem in _terms(text, ECOSYSTEM_TERMS):
-                target = builder.add_entity(ecosystem, EntityTypeV2.ECOSYSTEM_TYPE, spans)
-                builder.add_relation(
-                    indicator, RelationTypeV2.APPLIES_TO_ECOSYSTEM, target, spans
-                )
+            for target in ecosystem_entities:
+                for indicator in indicators:
+                    builder.add_relation(
+                        indicator, RelationTypeV2.APPLIES_TO_ECOSYSTEM, target, spans
+                    )
             for space in _terms(text, SPATIAL_TERMS):
                 target = builder.add_entity(space, EntityTypeV2.SPATIAL_SCOPE, spans)
-                builder.add_relation(indicator, RelationTypeV2.APPLIES_TO_SPACE, target, spans)
+                for indicator in indicators:
+                    builder.add_relation(
+                        indicator, RelationTypeV2.APPLIES_TO_SPACE, target, spans
+                    )
+                for method in method_entities:
+                    builder.add_relation(
+                        method, RelationTypeV2.APPLIES_TO_SPACE, target, spans
+                    )
 
     def _quality(self, builder: PredictionBuilder) -> None:
         unit = builder.unit
@@ -618,7 +904,7 @@ class RuleCandidateExtractorV2:
             or not re.search(r"精度|完整|质量|误差|小于|大于|不少于|不低于|应|要求", text)
         ):
             return
-        sources = _terms(text, DATA_SOURCE_TERMS)
+        sources = _candidate_terms(text, DATA_SOURCE_TERMS)
         if not sources:
             return
         spans = _span_ids(unit)
@@ -647,15 +933,55 @@ def build_llm_selection_messages(
         "你是生态评估技术规范关系抽取器。只能从候选实体和候选关系中选择，"
         "不得改写名称、类型、关系或证据。只输出JSON。"
     )
+    source_fields = (
+        "clause_text",
+        "cells",
+        "table_title",
+        "formulas",
+        "variable_definitions",
+        "manual_variable_roles",
+        "introduction",
+        "interstitial_text",
+        "adjacent_source_text",
+        "temporal_mentions",
+        "frequency_mentions",
+        "instrument_mentions",
+        "trigger_terms",
+    )
+    source_unit = {
+        "unit_id": unit["unit_id"],
+        "unit_type": unit["unit_type"],
+        "standard_code": unit.get("provenance", {}).get("standard_code", ""),
+        "section": unit.get("provenance", {}).get("section", ""),
+        "heading_chain": unit.get("provenance", {}).get("heading_chain", []),
+        **{key: unit[key] for key in source_fields if unit.get(key)},
+    }
+    candidate_entities = [
+        {
+            "id": item["entity_id"],
+            "name": item["name"],
+            "type": item["entity_type"],
+        }
+        for item in candidates["entities"]
+    ]
+    candidate_relations = [
+        {
+            "id": item["relation_id"],
+            "head": item["head_id"],
+            "type": item["relation_type"],
+            "tail": item["tail_id"],
+        }
+        for item in candidates["relations"]
+    ]
     prompt = json.dumps(
         {
             "task": (
                 "返回 selected_relation_ids 和 selected_entity_ids。仅选择原文明确支持的候选；"
                 "被关系使用的实体无需重复放入 selected_entity_ids。"
             ),
-            "source_unit": unit,
-            "candidate_entities": candidates["entities"],
-            "candidate_relations": candidates["relations"],
+            "source_unit": source_unit,
+            "candidate_entities": candidate_entities,
+            "candidate_relations": candidate_relations,
             "output_schema": {
                 "selected_entity_ids": ["entity_id"],
                 "selected_relation_ids": ["relation_id"],
@@ -727,7 +1053,7 @@ def extract_v2(
         "seed": 42,
         "temperature": 0,
         "max_tokens": 1024,
-        "candidate_generator": "structure-aware-rule-v2",
+        "candidate_generator": CANDIDATE_GENERATOR_VERSION,
         "use_schema": True,
         "use_layout": True,
         "use_evidence": True,

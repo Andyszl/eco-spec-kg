@@ -284,14 +284,17 @@ python -m json.tool \
 python -m ecospec_kg.cli_v2 prepare-lora-v2 \
   --units "$DATA_PACKAGE/blind/train_units.jsonl" \
   --annotations "$DATA_PACKAGE/gold/train_annotations.jsonl" \
-  --out /home/hello/szl/eco-spec-data/training/qwen35_v2_train.jsonl
+  --out /home/hello/szl/eco-spec-data/training/qwen35_v21_train.jsonl
 
 python -m json.tool \
-  /home/hello/szl/eco-spec-data/training/qwen35_v2_train.manifest.json
+  /home/hello/szl/eco-spec-data/training/qwen35_v21_train.manifest.json
 ```
 
-命令只接受明确标记为 `split=train` 的标注。当前包预期为 693 条训练记录；
-候选关系召回上限约 0.7622。若结果差异明显，先核对冻结包哈希和 Git 版本。
+命令只接受明确标记为 `split=train` 的标注。当前包预期为 693 条训练记录。
+`structure-aware-rule-v2.1` 在当前冻结训练包上的候选实体召回上限约为 0.9019，
+关系召回上限约为 0.8148；开发集两项候选召回均为 1.0。若结果差异明显，先核对
+冻结包哈希、候选生成器版本和 Git 版本。关系候选上限仍未达到 0.9，因此正式训练
+结果必须同时报告该上限，不能将模型漏检与候选缺失混为一项误差。
 
 ## 10. LoRA 烟雾训练
 
@@ -326,7 +329,7 @@ conda activate ecospec-train
 cd "$PROJECT"
 CUDA_VISIBLE_DEVICES=0 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
 eco-spec-kg train \
-  --prepared /home/hello/szl/eco-spec-data/training/qwen35_v2_train.jsonl \
+  --prepared /home/hello/szl/eco-spec-data/training/qwen35_v21_train.jsonl \
   --out "$ECOSPEC_RUNS/lora/qwen35-9b/seed_42_smoke" \
   --model "$QWEN_LLM" \
   --trainer swift \

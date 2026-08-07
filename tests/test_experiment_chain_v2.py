@@ -7,7 +7,11 @@ from pathlib import Path
 
 from ecospec_kg.evaluation_v2 import evaluate_v2
 from ecospec_kg.experiment_data_v2 import prepare_experiment_package_v2
-from ecospec_kg.extractor_v2 import extract_v2
+from ecospec_kg.extractor_v2 import (
+    RuleCandidateExtractorV2,
+    build_llm_selection_messages,
+    extract_v2,
+)
 from ecospec_kg.io_utils import read_json, read_jsonl, stable_id, write_jsonl
 from ecospec_kg.ontology_v2 import ONTOLOGY_VERSION
 from ecospec_kg.prediction_validation_v2 import validate_predictions_v2
@@ -92,6 +96,105 @@ def empty_annotation(unit_id: str) -> dict:
 
 
 class ExperimentChainV2Tests(unittest.TestCase):
+    def test_rule_candidates_cover_assessment_methods_and_nested_context(self) -> None:
+        unit = {
+            "schema_version": "source-unit-v2.0",
+            "unit_id": "unit-assessment-methods",
+            "unit_type": "procedure_clause",
+            "provenance": {
+                "standard_code": "HJ 1172-2021",
+                "document_title": "生态系统质量评估",
+                "pages": [10],
+                "section": "B.1",
+                "heading_chain": ["B.1 叶面积指数"],
+                "evidence_spans": [
+                    {
+                        "span_id": "span-methods",
+                        "page": 10,
+                        "bbox": [10.0, 20.0, 200.0, 80.0],
+                    }
+                ],
+            },
+            "clause_text": (
+                "叶面积指数反映陆地生态系统。目前基于光学数据获取叶面积指数的方法"
+                "主要包括两类，一类是统计方法，常用的是建立叶面积指数与植被指数之间"
+                "经验或半经验关系；一类是基于辐射传输模型的遥感反演方法。"
+            ),
+        }
+
+        prediction = RuleCandidateExtractorV2().predict_unit(unit)
+        entity_keys = {
+            (entity["name"], entity["entity_type"])
+            for entity in prediction["entities"]
+        }
+        for method in (
+            "基于光学数据获取叶面积指数的方法",
+            "统计方法",
+            "建立叶面积指数与植被指数之间经验或半经验关系",
+            "基于辐射传输模型的遥感反演方法",
+        ):
+            self.assertIn((method, "method"), entity_keys)
+        self.assertIn(("光学数据", "data_source"), entity_keys)
+        self.assertIn(("陆地生态系统", "ecosystem_type"), entity_keys)
+        self.assertIn(("叶面积指数", "assessment_indicator"), entity_keys)
+        relation_keys = {
+            (
+                relation["head_name"],
+                relation["relation_type"],
+                relation["tail_name"],
+            )
+            for relation in prediction["relations"]
+        }
+        self.assertIn(
+            ("叶面积指数", "applies_to_ecosystem", "陆地生态系统"),
+            relation_keys,
+        )
+
+        _, prompt = build_llm_selection_messages(unit, prediction)
+        payload = json.loads(prompt)
+        self.assertNotIn("provenance", payload["source_unit"])
+        self.assertNotIn("evidence_span_ids", payload["candidate_entities"][0])
+        self.assertEqual(
+            set(payload["candidate_relations"][0]), {"id", "head", "type", "tail"}
+        )
+
+    def test_rule_candidates_read_ecosystem_classification_columns(self) -> None:
+        unit = {
+            "schema_version": "source-unit-v2.0",
+            "unit_id": "unit-ecosystem-table",
+            "unit_type": "table_record",
+            "provenance": {
+                "standard_code": "HJ 1166-2021",
+                "document_title": "生态系统分类",
+                "pages": [8],
+                "section": "附录 A",
+                "heading_chain": ["附录 A"],
+                "evidence_spans": [
+                    {
+                        "span_id": "span-table",
+                        "page": 8,
+                        "bbox": [10.0, 20.0, 200.0, 80.0],
+                    }
+                ],
+            },
+            "cells": {
+                "Ⅰ级分类": "森林生态系统",
+                "Ⅱ级分类": "阔叶林",
+                "分类依据": "H=3～30 m，C≥0.2，阔叶",
+            },
+        }
+
+        prediction = RuleCandidateExtractorV2().predict_unit(unit)
+        names = {
+            entity["name"]
+            for entity in prediction["entities"]
+            if entity["entity_type"] == "ecosystem_type"
+        }
+        self.assertTrue(
+            {"森林生态系统", "阔叶林", "H=3～30 m，C≥0.2，阔叶"}
+            <= names
+        )
+
     def test_prepare_lora_v2_matches_selector_task_and_rejects_test_gold(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -122,6 +225,9 @@ class ExperimentChainV2Tests(unittest.TestCase):
             self.assertEqual(
                 manifest["candidate_coverage"]["relation_recall_upper_bound"],
                 1.0,
+            )
+            self.assertEqual(
+                manifest["candidate_generator"], "structure-aware-rule-v2.1"
             )
 
             annotation["split"] = "test"
