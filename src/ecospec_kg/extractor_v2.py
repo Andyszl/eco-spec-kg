@@ -726,6 +726,7 @@ def extract_v2(
         "model": "deterministic-v2-rule",
         "seed": 42,
         "temperature": 0,
+        "max_tokens": 1024,
         "candidate_generator": "structure-aware-rule-v2",
         "use_schema": True,
         "use_layout": True,
@@ -745,6 +746,9 @@ def extract_v2(
     if config["backend"] == "llm":
         provider = OpenAICompatibleProvider.from_env()
         provider.model = str(config["model"])
+        provider.max_tokens = int(config["max_tokens"])
+        if provider.max_tokens < 1:
+            raise ValueError("max_tokens must be a positive integer")
         if "enable_thinking" in config:
             value = config["enable_thinking"]
             if not isinstance(value, bool):
@@ -754,9 +758,10 @@ def extract_v2(
     predictions: list[dict[str, Any]] = []
     raw_responses: list[dict[str, Any]] = []
     for unit in units:
+        candidates: dict[str, Any] | None = None
+        prompt_hash: str | None = None
         try:
             candidates = extractor.predict_unit(unit)
-            prompt_hash = None
             if provider is None:
                 prediction = candidates
             else:
@@ -784,6 +789,26 @@ def extract_v2(
             prediction["prompt_hash"] = prompt_hash
             predictions.append(prediction)
         except Exception as exc:  # Keep every source unit visible to validation.
+            candidate_hash = None
+            if candidates is not None:
+                candidate_hash = sha256_json(
+                    {
+                        "entities": candidates["entities"],
+                        "relations": candidates["relations"],
+                    }
+                )
+                if provider is not None and prompt_hash is None:
+                    system, prompt = build_llm_selection_messages(unit, candidates)
+                    prompt_hash = sha256_json({"system": system, "prompt": prompt})
+            if provider is not None and provider.last_raw_response is not None:
+                raw_responses.append(
+                    {
+                        "unit_id": unit["unit_id"],
+                        "prompt_hash": prompt_hash,
+                        "status": "error",
+                        "provider_response": provider.last_raw_response,
+                    }
+                )
             predictions.append(
                 {
                     "schema_version": PREDICTION_SCHEMA_VERSION,
@@ -800,10 +825,10 @@ def extract_v2(
                     "no_relation_reason": "extraction_error",
                     "experiment_id": config["experiment_id"],
                     "config_hash": sha256_json(config),
-                    "candidate_hash": None,
+                    "candidate_hash": candidate_hash,
                     "model": config["model"],
                     "seed": config["seed"],
-                    "prompt_hash": None,
+                    "prompt_hash": prompt_hash,
                 }
             )
 

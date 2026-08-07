@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from typing import Any
@@ -10,6 +11,11 @@ from typing import Protocol
 
 class CompletionProvider(Protocol):
     def complete(self, system: str, prompt: str) -> str: ...
+
+
+
+class CompletionHTTPError(RuntimeError):
+    pass
 
 
 @dataclass(slots=True)
@@ -56,6 +62,7 @@ class OpenAICompatibleProvider:
         )
 
     def complete(self, system: str, prompt: str) -> str:
+        self.last_raw_response = None
         user_content = prompt + "\n/no_think" if self.append_no_think else prompt
         payload = {
             "model": self.model,
@@ -79,8 +86,20 @@ class OpenAICompatibleProvider:
             },
             method="POST",
         )
-        with urllib.request.urlopen(request, timeout=self.timeout) as response:
-            result = json.loads(response.read().decode("utf-8"))
+        try:
+            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                result = json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="replace")
+            self.last_raw_response = {
+                "http_status": exc.code,
+                "reason": str(exc.reason),
+                "error_body": body,
+            }
+            preview = body[:2000] if body else "<empty response body>"
+            raise CompletionHTTPError(
+                f"HTTP {exc.code} {exc.reason}: {preview}"
+            ) from exc
         self.last_raw_response = result
         message = result["choices"][0]["message"]
         content = message.get("content")

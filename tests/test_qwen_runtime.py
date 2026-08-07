@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import json
+import io
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
+from urllib.error import HTTPError
 
 from ecospec_kg.io_utils import read_json, write_jsonl
-from ecospec_kg.providers import OpenAICompatibleProvider
+from ecospec_kg.providers import CompletionHTTPError, OpenAICompatibleProvider
 from ecospec_kg.training import LoRASettings, build_swift_command, run_swift_lora
 
 
@@ -34,6 +36,27 @@ class QwenRuntimeTests(unittest.TestCase):
         self.assertEqual(payload["model"], "Qwen3.5-9B")
         self.assertEqual(
             payload["chat_template_kwargs"], {"enable_thinking": False}
+        )
+
+    def test_openai_provider_preserves_http_error_body(self) -> None:
+        provider = OpenAICompatibleProvider(
+            base_url="http://127.0.0.1:8000/v1",
+            api_key="local-token",
+            model="Qwen3.5-9B",
+        )
+        error = HTTPError(
+            url="http://127.0.0.1:8000/v1/chat/completions",
+            code=400,
+            msg="Bad Request",
+            hdrs=None,
+            fp=io.BytesIO(b'{"error":"context length exceeded"}'),
+        )
+        with patch("urllib.request.urlopen", side_effect=error):
+            with self.assertRaisesRegex(CompletionHTTPError, "context length exceeded"):
+                provider.complete("system", "prompt")
+        self.assertEqual(provider.last_raw_response["http_status"], 400)
+        self.assertIn(
+            "context length exceeded", provider.last_raw_response["error_body"]
         )
 
     def test_swift_command_uses_text_only_qwen35_settings(self) -> None:

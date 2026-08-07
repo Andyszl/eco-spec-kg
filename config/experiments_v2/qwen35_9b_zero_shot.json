@@ -4,6 +4,7 @@
   "model": "Qwen3.5-9B",
   "seed": 42,
   "temperature": 0,
+  "max_tokens": 1024,
   "candidate_generator": "structure-aware-rule-v2",
   "use_schema": true,
   "use_layout": true,
