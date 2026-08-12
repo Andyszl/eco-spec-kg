@@ -12,7 +12,9 @@ license = {text = "MIT"}
 authors = [{name = "EcoSpec-KG contributors"}]
 dependencies = [
   "pydantic>=2.7,<3",
-  "pdfplumber>=0.11,<1",
+  # pdfplumber 0.11.10 requires Pillow>=12.2, which conflicts with
+  # the Gradio 5 dependency pulled in by the Qwen/ms-swift environment.
+  "pdfplumber>=0.11,<0.11.10",
   "numpy>=1.26,<3",
 ]
 

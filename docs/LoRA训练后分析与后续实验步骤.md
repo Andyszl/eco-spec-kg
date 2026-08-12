@@ -31,6 +31,8 @@ conda activate ecospec-train
 cd /home/hello/szl/eco-spec-kg
 git pull --ff-only origin main
 python -m pip install -e ".[analysis]"
+python -m pip install "pdfplumber==0.11.9" "Pillow>=10,<12"
+python -m pip check
 
 python -m ecospec_kg.cli_v2 --help | grep -E \
   'analyze-errors-v2|analyze-training-v2'
