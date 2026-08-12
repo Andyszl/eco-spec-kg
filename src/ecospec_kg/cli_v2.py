@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .analysis_v2 import analyze_errors_v2, analyze_training_v2
 from .evaluation_v2 import evaluate_v2
 from .experiment_data_v2 import prepare_experiment_package_v2
 from .extractor_v2 import extract_v2
@@ -69,6 +70,17 @@ def _parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--units", type=Path, required=True)
     evaluate.add_argument("--validation-report", type=Path, required=True)
     evaluate.add_argument("--out", type=Path, required=True)
+
+    analyze_errors = commands.add_parser("analyze-errors-v2")
+    analyze_errors.add_argument("--units", type=Path, required=True)
+    analyze_errors.add_argument("--gold", type=Path, required=True)
+    analyze_errors.add_argument("--predictions", type=Path, required=True)
+    analyze_errors.add_argument("--out", type=Path, required=True)
+
+    analyze_training = commands.add_parser("analyze-training-v2")
+    analyze_training.add_argument("--units", type=Path, required=True)
+    analyze_training.add_argument("--annotations", type=Path, required=True)
+    analyze_training.add_argument("--out", type=Path, required=True)
     return parser
 
 
@@ -182,6 +194,48 @@ def main(argv: list[str] | None = None) -> int:
             "report": str(args.out / "metrics.json"),
         }
         print(json.dumps(summary, ensure_ascii=False))
+        return 0
+    if args.command == "analyze-errors-v2":
+        report = analyze_errors_v2(
+            args.units,
+            args.gold,
+            args.predictions,
+            args.out,
+        )
+        print(
+            json.dumps(
+                {
+                    "error_count": report["error_count"],
+                    "by_error_type": report["by_error_type"],
+                    "report": str(args.out / "error_summary.json"),
+                    "workbook": str(args.out / "error_details.xlsx"),
+                },
+                ensure_ascii=False,
+            )
+        )
+        return 0
+    if args.command == "analyze-training-v2":
+        report = analyze_training_v2(
+            args.units,
+            args.annotations,
+            args.out,
+        )
+        print(
+            json.dumps(
+                {
+                    "unit_count": report["unit_count"],
+                    "entity_recall_upper_bound": report[
+                        "entity_recall_upper_bound"
+                    ],
+                    "relation_recall_upper_bound": report[
+                        "relation_recall_upper_bound"
+                    ],
+                    "report": str(args.out / "training_distribution.json"),
+                    "workbook": str(args.out / "training_distribution.xlsx"),
+                },
+                ensure_ascii=False,
+            )
+        )
         return 0
     raise ValueError(f"unknown command: {args.command}")
 

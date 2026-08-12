@@ -4,7 +4,13 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
+from ecospec_kg.analysis_v2 import (
+    analyze_errors_v2,
+    analyze_training_v2,
+    collect_error_details_v2,
+)
 from ecospec_kg.evaluation_v2 import evaluate_v2
 from ecospec_kg.experiment_data_v2 import prepare_experiment_package_v2
 from ecospec_kg.extractor_v2 import (
@@ -96,6 +102,120 @@ def empty_annotation(unit_id: str) -> dict:
 
 
 class ExperimentChainV2Tests(unittest.TestCase):
+    def test_error_analysis_reconstructs_details_and_rejects_test_gold(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unit = source_unit()
+            units_path = root / "dev_units.jsonl"
+            gold_path = root / "dev_annotations.jsonl"
+            predictions_path = root / "predictions.jsonl"
+            write_jsonl(units_path, [unit])
+            annotation = {
+                **empty_annotation(unit["unit_id"]),
+                "split": "dev",
+                "entities": [
+                    {
+                        "name": "构成比例",
+                        "entity_type": "assessment_indicator",
+                        "evidence_span_ids": ["span-formula"],
+                    }
+                ],
+            }
+            write_jsonl(gold_path, [annotation])
+            write_jsonl(
+                predictions_path,
+                [
+                    {
+                        "unit_id": unit["unit_id"],
+                        "entities": [],
+                        "relations": [],
+                    }
+                ],
+            )
+
+            details = collect_error_details_v2(
+                units_path, gold_path, predictions_path
+            )
+            self.assertEqual(len(details), 1)
+            self.assertEqual(details[0]["error_type"], "entity_false_negative")
+            self.assertEqual(details[0]["entity_name"], "构成比例")
+            self.assertIn("P_ij = S_ij / TS", details[0]["source_text"])
+            self.assertEqual(details[0]["review_reason"], "")
+
+            annotation["split"] = "test"
+            write_jsonl(gold_path, [annotation])
+            with self.assertRaisesRegex(ValueError, "allowed gold splits"):
+                collect_error_details_v2(units_path, gold_path, predictions_path)
+
+    def test_training_analysis_reports_candidate_distribution(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unit = source_unit()
+            units_path = root / "train_units.jsonl"
+            annotations_path = root / "train_annotations.jsonl"
+            write_jsonl(units_path, [unit])
+            annotation = {**empty_annotation(unit["unit_id"]), "split": "train"}
+            write_jsonl(annotations_path, [annotation])
+
+            with patch("ecospec_kg.analysis_v2._write_workbook") as writer:
+                report = analyze_training_v2(
+                    units_path, annotations_path, root / "analysis"
+                )
+
+            self.assertEqual(report["unit_count"], 1)
+            self.assertEqual(report["no_relation_unit_count"], 1)
+            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.1")
+            self.assertGreater(report["entity_candidate_negative_count"], 0)
+            self.assertTrue((root / "analysis" / "training_distribution.json").exists())
+            writer.assert_called_once()
+
+    def test_error_analysis_splits_relation_false_positive_and_negative(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unit = source_unit()
+            units_path = root / "dev_units.jsonl"
+            gold_path = root / "dev_annotations.jsonl"
+            predictions_path = root / "predictions.jsonl"
+            write_jsonl(units_path, [unit])
+            annotation = {
+                **empty_annotation(unit["unit_id"]),
+                "split": "dev",
+                "relations": [
+                    {
+                        "head_name": "构成比例",
+                        "head_type": "assessment_indicator",
+                        "relation_type": "constrained_by",
+                        "tail_name": "质量要求A",
+                        "tail_type": "quality_rule",
+                    }
+                ],
+            }
+            prediction = {
+                "unit_id": unit["unit_id"],
+                "entities": [],
+                "relations": [
+                    {
+                        "head_name": "构成比例",
+                        "head_type": "assessment_indicator",
+                        "relation_type": "constrained_by",
+                        "tail_name": "质量要求B",
+                        "tail_type": "quality_rule",
+                    }
+                ],
+            }
+            write_jsonl(gold_path, [annotation])
+            write_jsonl(predictions_path, [prediction])
+
+            with patch("ecospec_kg.analysis_v2._write_workbook"):
+                report = analyze_errors_v2(
+                    units_path, gold_path, predictions_path, root / "analysis"
+                )
+
+            self.assertEqual(
+                report["relation_errors_by_type_and_direction"]["constrained_by"],
+                {"false_positive": 1, "false_negative": 1, "total": 2},
+            )
+
     def test_rule_candidates_cover_assessment_methods_and_nested_context(self) -> None:
         unit = {
             "schema_version": "source-unit-v2.0",
