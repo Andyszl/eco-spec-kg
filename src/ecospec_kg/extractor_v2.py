@@ -24,7 +24,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.1"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.2"
 
 OBSERVATION_CODES = {
     "HJ 1166-2021",
@@ -231,11 +231,54 @@ def _candidate_terms(text: str, terms: tuple[str, ...]) -> list[str]:
     return [term for term in terms if term in text]
 
 
+def _source_keywords(source: str) -> list[str]:
+    name = _clean(source)
+    core = re.sub(r"(?:数据|资料|影像|图像)$", "", name)
+    keywords = [name, core]
+    if len(core) > 2 and core.endswith("量"):
+        keywords.append(core[:-1])
+    return _unique([keyword for keyword in keywords if len(keyword) >= 2])
+
+
+def _dynamic_spatial_scopes(text: str) -> list[str]:
+    scopes = _candidate_terms(text, SPATIAL_TERMS)
+    scopes.extend(term for term in ("样地", "样方", "林内") if term in text)
+    scopes.extend(
+        _clean(match.group(0)).replace(" ", "")
+        for match in re.finditer(r"第\s*[A-Za-z0-9\u4e00-\u9fff]+\s*分区", text)
+    )
+    scopes.extend(
+        match.group(0)
+        for match in re.finditer(
+            r"(?:乔木|灌木|草本|植被|调查|监测|固定|临时)样方", text
+        )
+    )
+    return _unique(scopes)
+
+
+def _normalize_method_candidate(value: str) -> str:
+    name = _clean(value)
+    name = re.sub(r"^[（(]\s*\d+\s*[）)]\s*", "", name)
+    name = re.sub(r"^(?:还有|常用的是)", "", name)
+    repeated = re.fullmatch(r"(.{2,16})\1", name)
+    if repeated:
+        name = repeated.group(1)
+    if (
+        not name
+        or name in {"这些模型", "上述模型", "该模型", "这些方法", "上述方法"}
+        or "实际条件选择合适的模型和方法" in name
+        or "除了上述" in name
+        or "常采用" in name
+    ):
+        return ""
+    return name
+
+
 def _method_candidates(text: str) -> list[str]:
     methods: list[str] = [term for term in COMMON_METHOD_TERMS if term in text]
     for match in METHOD_RE.finditer(text):
         name = re.sub(
-            r"^(?:目前|主要|具体|利用|采用|通过|运用|根据|一类是|另一类是)",
+            r"^(?:目前|主要|具体|利用|采用|通过|运用|根据|还有|一类是|另一类是)",
             "",
             _clean(match.group(1)),
         )
@@ -316,7 +359,11 @@ def _method_candidates(text: str) -> list[str]:
         methods.append("仪器测量")
     if "现场调查" in text:
         methods.append("现场调查")
-    return _unique(methods)
+    return _unique(
+        normalized
+        for method in methods
+        if (normalized := _normalize_method_candidate(method))
+    )
 
 
 def _quality_candidates(text: str) -> list[str]:
@@ -357,6 +404,43 @@ def _formula_lhs_symbols(expression: str) -> list[str]:
         if found:
             symbols.append(re.sub(r"[\s{}]", "", found.group(1)))
     return _unique(symbols)
+
+
+def _formula_expression_body(expression: str) -> str:
+    return re.sub(
+        r"\s*[（(]\s*(?:公式\s*)?[A-Za-z]?(?:\.)?\d+(?:\.\d+)*\s*[）)]\s*$",
+        "",
+        expression,
+    )
+
+
+def _overall_scope_methods(text: str, methods: list[str]) -> list[str]:
+    scoped = [
+        method
+        for method in methods
+        if method in text
+        and method.startswith("基于")
+        and re.search(r"获取|估算|反演|计算|测量|测定", method)
+    ]
+    if scoped:
+        return scoped
+    condition_start = min(
+        (
+            position
+            for token in ("可根据", "根据")
+            if (position := text.find(token)) >= 0
+        ),
+        default=-1,
+    )
+    if condition_start < 0:
+        return []
+    sentence = re.split(r"[。；;]", text[:condition_start])[-1]
+    classified = [
+        method
+        for method in methods
+        if method in sentence and re.search(r"主要分为|可划分为|包括", sentence)
+    ]
+    return classified[:1]
 
 
 def _symbol_base(symbol: str) -> str:
@@ -551,7 +635,9 @@ class RuleCandidateExtractorV2:
                     formula_spans,
                 )
 
-            expression = str(formula.get("expression_text", ""))
+            expression = _formula_expression_body(
+                str(formula.get("expression_text", ""))
+            )
             outputs = [
                 symbol for symbol, role in role_overrides.items() if role == "output"
             ] or _formula_lhs_symbols(expression)
@@ -622,8 +708,9 @@ class RuleCandidateExtractorV2:
                 source_entity = builder.add_entity(
                     source, EntityTypeV2.DATA_SOURCE, formula_spans
                 )
+                source_keywords = _source_keywords(source)
                 for variable_entity, definition in sourced_variable_entities:
-                    if source in definition:
+                    if any(keyword in definition for keyword in source_keywords):
                         builder.add_relation(
                             variable_entity,
                             RelationTypeV2.SOURCED_FROM,
@@ -640,7 +727,7 @@ class RuleCandidateExtractorV2:
                     target,
                     formula_spans,
                 )
-            for space in _terms(package_text, SPATIAL_TERMS):
+            for space in _dynamic_spatial_scopes(package_text):
                 target = builder.add_entity(space, EntityTypeV2.SPATIAL_SCOPE, formula_spans)
                 builder.add_relation(
                     formula_entity,
@@ -798,7 +885,13 @@ class RuleCandidateExtractorV2:
             if (rule := builder.add_entity(rule_name, EntityTypeV2.QUALITY_RULE, spans))
             is not None
         ]
-        for method in method_entities:
+        scoped_method_names = set(_overall_scope_methods(text, method_names))
+        scoped_methods = [
+            method for method in method_entities if method["name"] in scoped_method_names
+        ]
+        if not scoped_methods and len(method_entities) == 1:
+            scoped_methods = method_entities
+        for method in scoped_methods:
             for rule in quality_entities:
                 builder.add_relation(
                     method, RelationTypeV2.CONSTRAINED_BY, rule, spans
@@ -875,20 +968,24 @@ class RuleCandidateExtractorV2:
             ]
             for indicator in indicators:
                 builder.add_relation(
-                    self._subject(builder), RelationTypeV2.HAS_INDICATOR, indicator, spans
+                    self._subject(builder),
+                    RelationTypeV2.HAS_INDICATOR,
+                    indicator,
+                    spans,
                 )
             for target in ecosystem_entities:
                 for indicator in indicators:
                     builder.add_relation(
                         indicator, RelationTypeV2.APPLIES_TO_ECOSYSTEM, target, spans
                     )
-            for space in _terms(text, SPATIAL_TERMS):
+            for space in _dynamic_spatial_scopes(text):
                 target = builder.add_entity(space, EntityTypeV2.SPATIAL_SCOPE, spans)
                 for indicator in indicators:
                     builder.add_relation(
                         indicator, RelationTypeV2.APPLIES_TO_SPACE, target, spans
                     )
-                for method in method_entities:
+                space_methods = scoped_methods if quality_entities else method_entities
+                for method in space_methods:
                     builder.add_relation(
                         method, RelationTypeV2.APPLIES_TO_SPACE, target, spans
                     )

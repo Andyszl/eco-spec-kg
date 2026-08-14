@@ -103,6 +103,10 @@ def _detail_base(unit: dict[str, Any], error_type: str) -> dict[str, Any]:
         "tail_type": "",
         "evidence_span_ids": "",
         "source_text": _unit_text(unit),
+        "candidate_generator": CANDIDATE_GENERATOR_VERSION,
+        "candidate_present": False,
+        "candidate_id": "",
+        "selection_result": "candidate_missing",
         "review_reason": "",
         "correction_action": "",
     }
@@ -147,15 +151,22 @@ def collect_error_details_v2(
         unit = unit_by_id[unit_id]
         gold = gold_by_id[unit_id]
         prediction = prediction_by_id[unit_id]
+        candidates = RuleCandidateExtractorV2().predict_unit(unit)
         gold_entities = {_entity_key(item): item for item in gold.get("entities", [])}
         pred_entities = {
             _entity_key(item): item for item in prediction.get("entities", [])
+        }
+        candidate_entities = {
+            _entity_key(item): item for item in candidates.get("entities", [])
         }
         gold_relations = {
             _relation_key(item): item for item in gold.get("relations", [])
         }
         pred_relations = {
             _relation_key(item): item for item in prediction.get("relations", [])
+        }
+        candidate_relations = {
+            _relation_key(item): item for item in candidates.get("relations", [])
         }
         for error_type, keys, source in (
             ("entity_false_negative", set(gold_entities) - set(pred_entities), gold_entities),
@@ -168,6 +179,18 @@ def collect_error_details_v2(
                     entity_name=key[0],
                     entity_type=key[1],
                     evidence_span_ids=_span_ids(item),
+                )
+                candidate = candidate_entities.get(key)
+                row.update(
+                    candidate_present=candidate is not None,
+                    candidate_id=(str(candidate.get("entity_id", "")) if candidate else ""),
+                    selection_result=(
+                        "selected_false_positive"
+                        if key in pred_entities
+                        else "candidate_not_selected"
+                        if candidate is not None
+                        else "candidate_missing"
+                    ),
                 )
                 details.append(row)
         for error_type, keys, source in (
@@ -192,6 +215,18 @@ def collect_error_details_v2(
                     tail_name=key[3],
                     tail_type=key[4],
                     evidence_span_ids=_span_ids(item),
+                )
+                candidate = candidate_relations.get(key)
+                row.update(
+                    candidate_present=candidate is not None,
+                    candidate_id=(str(candidate.get("relation_id", "")) if candidate else ""),
+                    selection_result=(
+                        "selected_false_positive"
+                        if key in pred_relations
+                        else "candidate_not_selected"
+                        if candidate is not None
+                        else "candidate_missing"
+                    ),
                 )
                 details.append(row)
     return details

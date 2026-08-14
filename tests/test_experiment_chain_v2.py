@@ -115,8 +115,8 @@ class ExperimentChainV2Tests(unittest.TestCase):
                 "split": "dev",
                 "entities": [
                     {
-                        "name": "构成比例",
-                        "entity_type": "assessment_indicator",
+                        "name": "P_ij",
+                        "entity_type": "model_variable",
                         "evidence_span_ids": ["span-formula"],
                     }
                 ],
@@ -138,9 +138,14 @@ class ExperimentChainV2Tests(unittest.TestCase):
             )
             self.assertEqual(len(details), 1)
             self.assertEqual(details[0]["error_type"], "entity_false_negative")
-            self.assertEqual(details[0]["entity_name"], "构成比例")
+            self.assertEqual(details[0]["entity_name"], "P_ij")
             self.assertIn("P_ij = S_ij / TS", details[0]["source_text"])
             self.assertEqual(details[0]["review_reason"], "")
+            self.assertTrue(details[0]["candidate_present"])
+            self.assertTrue(details[0]["candidate_id"])
+            self.assertEqual(
+                details[0]["selection_result"], "candidate_not_selected"
+            )
 
             annotation["split"] = "test"
             write_jsonl(gold_path, [annotation])
@@ -164,7 +169,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
 
             self.assertEqual(report["unit_count"], 1)
             self.assertEqual(report["no_relation_unit_count"], 1)
-            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.1")
+            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.2")
             self.assertGreater(report["entity_candidate_negative_count"], 0)
             self.assertTrue((root / "analysis" / "training_distribution.json").exists())
             writer.assert_called_once()
@@ -279,6 +284,157 @@ class ExperimentChainV2Tests(unittest.TestCase):
             set(payload["candidate_relations"][0]), {"id", "head", "type", "tail"}
         )
 
+    def test_formula_number_is_not_treated_as_an_input_variable(self) -> None:
+        unit = source_unit()
+        unit["unit_id"] = "unit-formula-number"
+        unit["provenance"]["standard_code"] = "HJ 1172-2021"
+        unit["provenance"]["document_title"] = "生态系统质量评估"
+        unit["provenance"]["section"] = "B.1"
+        unit["provenance"]["heading_chain"] = ["附录 B", "B.1 叶面积指数（LAI）"]
+        unit["formulas"] = [
+            {
+                "formula_number": "B.3",
+                "expression_text": "L = -1/2Aln(1-x) （B.3）",
+                "evidence_span": unit["provenance"]["evidence_spans"][0],
+            }
+        ]
+        variable_span = unit["provenance"]["evidence_spans"][1]
+        unit["variable_definitions"] = [
+            {"symbol": "L", "definition": "叶面积指数", "unit": "", "evidence_span": variable_span},
+            {"symbol": "x", "definition": "植被指数", "unit": "", "evidence_span": variable_span},
+            {"symbol": "A、B", "definition": "经验参数", "unit": "", "evidence_span": variable_span},
+        ]
+
+        prediction = RuleCandidateExtractorV2().predict_unit(unit)
+        relation_keys = {
+            (item["head_name"], item["relation_type"], item["tail_name"])
+            for item in prediction["relations"]
+        }
+        self.assertIn(("公式（B.3）", "has_input", "x"), relation_keys)
+        self.assertIn(("公式（B.3）", "has_input", "A"), relation_keys)
+        self.assertNotIn(("公式（B.3）", "has_input", "B"), relation_keys)
+
+    def test_formula_source_keywords_link_only_related_variables(self) -> None:
+        unit = source_unit()
+        unit["unit_id"] = "unit-formula-source"
+        unit["provenance"]["standard_code"] = "HJ 1173-2021"
+        unit["provenance"]["document_title"] = "生态系统服务功能评估"
+        unit["provenance"]["section"] = "A.2"
+        unit["provenance"]["heading_chain"] = ["附录 A", "A.2 土壤保持量"]
+        unit["formulas"][0]["formula_number"] = "A.6"
+        unit["formulas"][0]["expression_text"] = "R = P + alpha （A.6）"
+        variable_span = unit["provenance"]["evidence_spans"][1]
+        unit["variable_definitions"] = [
+            {"symbol": "R", "definition": "多年平均年降雨侵蚀力", "unit": "", "evidence_span": variable_span},
+            {"symbol": "P", "definition": "侵蚀性日降雨量", "unit": "mm", "evidence_span": variable_span},
+            {"symbol": "alpha", "definition": "经验参数", "unit": "", "evidence_span": variable_span},
+        ]
+        unit["adjacent_source_text"] = "降雨侵蚀力空间数据根据逐日降雨量资料获得。"
+
+        prediction = RuleCandidateExtractorV2().predict_unit(unit)
+        relation_keys = {
+            (item["head_name"], item["relation_type"], item["tail_name"])
+            for item in prediction["relations"]
+        }
+        self.assertIn(("R", "sourced_from", "降雨量资料"), relation_keys)
+        self.assertIn(("P", "sourced_from", "降雨量资料"), relation_keys)
+        self.assertNotIn(("alpha", "sourced_from", "降雨量资料"), relation_keys)
+
+    def test_dynamic_operational_spatial_scopes_are_candidates(self) -> None:
+        unit = {
+            "schema_version": "source-unit-v2.0",
+            "unit_id": "unit-spatial-scopes",
+            "unit_type": "procedure_clause",
+            "provenance": {
+                "standard_code": "HJ 1172-2021",
+                "document_title": "生态系统质量评估",
+                "pages": [8],
+                "section": "B.1",
+                "heading_chain": ["B.1 叶面积指数"],
+                "evidence_spans": [
+                    {"span_id": "span-space", "page": 8, "bbox": [10, 20, 200, 80]}
+                ],
+            },
+            "clause_text": "叶面积指数应在乔木样方、第j分区和林内进行计算。",
+        }
+        prediction = RuleCandidateExtractorV2().predict_unit(unit)
+        names = {
+            item["name"]
+            for item in prediction["entities"]
+            if item["entity_type"] == "spatial_scope"
+        }
+        self.assertTrue({"乔木样方", "第j分区", "林内"} <= names)
+
+    def test_constraints_and_space_apply_only_to_overall_method(self) -> None:
+        unit = {
+            "schema_version": "source-unit-v2.0",
+            "unit_id": "unit-method-scope",
+            "unit_type": "procedure_clause",
+            "provenance": {
+                "standard_code": "HJ 1172-2021",
+                "document_title": "生态系统质量评估",
+                "pages": [8],
+                "section": "B.1",
+                "heading_chain": ["附录 B", "B.1 叶面积指数（LAI）"],
+                "evidence_spans": [
+                    {"span_id": "span-scope", "page": 8, "bbox": [10, 20, 200, 80]}
+                ],
+            },
+            "clause_text": (
+                "（2）冠层模型\n冠层模型通常可划分为四类：参数模型、几何光学模型、"
+                "混合介质模型和计算机模拟模型。这些模型已得到广泛应用，目前基于冠层"
+                "模型估算叶面积指数常采用反演优化算法、神经网络技术、遗传算法、"
+                "贝叶斯网络算法和查找表方法等，可根据评估区域和所具备的实际条件"
+                "选择合适的模型和方法估算叶面积指数。"
+            ),
+        }
+
+        prediction = RuleCandidateExtractorV2().predict_unit(unit)
+        entity_names = {item["name"] for item in prediction["entities"]}
+        relation_keys = {
+            (item["head_name"], item["relation_type"], item["tail_name"])
+            for item in prediction["relations"]
+        }
+        rule = "根据评估区域和实际条件选择合适的模型和方法"
+        overall = "基于冠层模型估算叶面积指数"
+        self.assertIn((overall, "constrained_by", rule), relation_keys)
+        self.assertIn((overall, "applies_to_space", "评估区域"), relation_keys)
+        for child in ("冠层模型", "参数模型", "神经网络技术", "查找表方法"):
+            self.assertNotIn((child, "constrained_by", rule), relation_keys)
+            self.assertNotIn((child, "applies_to_space", "评估区域"), relation_keys)
+        self.assertNotIn("这些模型", entity_names)
+        self.assertNotIn("（2）冠层模型冠层模型", entity_names)
+
+    def test_method_candidate_rejects_discourse_prefix(self) -> None:
+        unit = {
+            "schema_version": "source-unit-v2.0",
+            "unit_id": "unit-method-boundary",
+            "unit_type": "procedure_clause",
+            "provenance": {
+                "standard_code": "HJ 1172-2021",
+                "document_title": "生态系统质量评估",
+                "pages": [15],
+                "section": "B.2",
+                "heading_chain": ["附录 B", "B.2 植被覆盖度（FVC）"],
+                "evidence_spans": [
+                    {"span_id": "span-method", "page": 15, "bbox": [10, 20, 200, 80]}
+                ],
+            },
+            "clause_text": (
+                "（4）其他方法除了上述常用植被覆盖度遥感估算方法，"
+                "主要还有物理模型法、光谱梯度差法等。"
+            ),
+        }
+
+        prediction = RuleCandidateExtractorV2().predict_unit(unit)
+        names = {
+            item["name"]
+            for item in prediction["entities"]
+            if item["entity_type"] == "method"
+        }
+        self.assertNotIn("其他方法除了上述常用植被覆盖度遥感估算方法", names)
+        self.assertIn("物理模型法", names)
+
     def test_rule_candidates_read_ecosystem_classification_columns(self) -> None:
         unit = {
             "schema_version": "source-unit-v2.0",
@@ -348,7 +504,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
                 1.0,
             )
             self.assertEqual(
-                manifest["candidate_generator"], "structure-aware-rule-v2.1"
+                manifest["candidate_generator"], "structure-aware-rule-v2.2"
             )
 
             annotation["split"] = "test"
