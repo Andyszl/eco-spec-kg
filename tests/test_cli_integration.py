@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -13,6 +15,37 @@ FIXTURE = ROOT / "data" / "fixtures" / "mini_chunks.jsonl"
 
 
 class CliIntegrationTests(unittest.TestCase):
+    def test_module_entrypoint_runs_train_preflight(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            prepared = root / "training.jsonl"
+            output = root / "run"
+            prepared.write_text("", encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "ecospec_kg.cli",
+                    "train",
+                    "--prepared",
+                    str(prepared),
+                    "--out",
+                    str(output),
+                    "--model",
+                    "unused-in-preflight",
+                    "--trainer",
+                    "swift",
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(read_json(output / "run_manifest.json")["status"], "prepared")
+
     def test_fixture_pipeline(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -63,4 +96,3 @@ class CliIntegrationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

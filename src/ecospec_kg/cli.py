@@ -360,3 +360,7 @@ def main(argv: list[str] | None = None) -> int:
         launch(args.data, args.host, args.port)
         return 0
     raise AssertionError(f"unhandled command: {args.command}")
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
