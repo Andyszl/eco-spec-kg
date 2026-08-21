@@ -1,0 +1,155 @@
+{
+  "schema_version": "ecospec-review-provenance-v2.0",
+  "gold_nature": "ai_expert_adjudicated_gold",
+  "claims_human_expert_review": false,
+  "created_at": "2026-08-21T00:00:00+08:00",
+  "input": {
+    "review_workbook": "outputs/019d-review/error_details_expert_b_reviewed_v22.xlsx",
+    "review_workbook_sha256": "b2817bd484730697753e74ca919fc1ba75015ddc5d276cf69d72ce500cebcee4",
+    "hj_1172_pdf_sha256": "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0",
+    "hj_1173_pdf_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b"
+  },
+  "reviewers": [
+    {
+      "reviewer_id": "ai_ecology_standard_adjudicator_c_v1",
+      "reviewer_type": "ai_simulated_domain_reviewer",
+      "human_expert": false,
+      "role_definition": "config/adjudication/ai_ecology_standard_expert_c_v1.json"
+    }
+  ],
+  "adjudication": {
+    "adjudicator_id": "ai_ecology_standard_adjudicator_c_v1",
+    "decision_count": 7,
+    "unresolved_count": 0,
+    "status": "ai_adjudicated"
+  },
+  "decisions": [
+    {
+      "source_row": 10,
+      "unit_id": "1e567fd1d6ed4c82",
+      "target": "森林 [ecosystem_type]",
+      "decision": "accept_prediction_as_missing_gold",
+      "action": "add_gold_entity",
+      "entity": {
+        "name": "森林",
+        "entity_type": "ecosystem_type",
+        "evidence_span_ids": [
+          "a7ee9527f47619d1"
+        ]
+      },
+      "status": "adjudicated",
+      "reason": "HJ 1173-2021附录A表A.1第一列为生态系统类型，该行明确列出森林。"
+    },
+    {
+      "source_row": 14,
+      "unit_id": "3194374504e7f58a",
+      "target": "观测数据拟合 [method]",
+      "decision": "reject_gold_entity",
+      "action": "remove_gold_entity",
+      "entity": {
+        "name": "观测数据拟合",
+        "entity_type": "method",
+        "evidence_span_ids": [
+          "52b3de18fb8317f1"
+        ]
+      },
+      "status": "adjudicated",
+      "reason": "原文明示的方法名称是经验模型法；使用观测数据进行拟合是建模步骤，不是独立方法名称。"
+    },
+    {
+      "source_row": 21,
+      "unit_id": "3194374504e7f58a",
+      "target": "叶面积指数 --calculated_by--> 公式（B.2）",
+      "decision": "keep_gold_relation",
+      "action": "no_gold_change",
+      "relation": {
+        "head_name": "叶面积指数",
+        "head_type": "assessment_indicator",
+        "relation_type": "calculated_by",
+        "tail_name": "公式（B.2）",
+        "tail_type": "formula",
+        "evidence_span_ids": [
+          "b64ed9b7ba5c122f",
+          "22661664e779fc3d"
+        ]
+      },
+      "status": "adjudicated",
+      "reason": "附录B.1连续列出B.1至B.3且明确L为叶面积指数，当前冻结金标准已包含三条计算关系。"
+    },
+    {
+      "source_row": 24,
+      "unit_id": "49f0b2f2399c7641",
+      "target": "全国 [spatial_scope]",
+      "decision": "reject_gold_entity",
+      "action": "remove_gold_entity",
+      "entity": {
+        "name": "全国",
+        "entity_type": "spatial_scope",
+        "evidence_span_ids": [
+          "ff1f9d701fc16068"
+        ]
+      },
+      "status": "adjudicated",
+      "reason": "全国仅来自规范通用标题，没有限定该来源单元中的指标、公式或方法适用范围。"
+    },
+    {
+      "source_row": 25,
+      "unit_id": "52570c34d85db8fb",
+      "target": "灌丛 [ecosystem_type]",
+      "decision": "accept_prediction_as_missing_gold",
+      "action": "add_gold_entity",
+      "entity": {
+        "name": "灌丛",
+        "entity_type": "ecosystem_type",
+        "evidence_span_ids": [
+          "f51a371b473a094d"
+        ]
+      },
+      "status": "adjudicated",
+      "reason": "HJ 1173-2021附录A表A.1生态系统类型列明确列出灌丛。"
+    },
+    {
+      "source_row": 29,
+      "unit_id": "78bd15d38602a8f7",
+      "target": "生态系统质量 --has_indicator--> 生态系统质量指数（EQI）",
+      "decision": "keep_canonical_gold_relation",
+      "action": "register_alias_only",
+      "alias": {
+        "name": "生态系统质量指数（EQI）",
+        "entity_type": "assessment_indicator",
+        "canonical_name": "EQI",
+        "evidence_span_ids": [
+          "ed4aed777d1248ad"
+        ]
+      },
+      "status": "adjudicated",
+      "reason": "当前金标准已有生态系统质量到EQI的关系；生态系统质量指数（EQI）是全称别名，不重复新增关系。"
+    },
+    {
+      "source_row": 31,
+      "unit_id": "93935a51fd8ca2c3",
+      "target": "草地 [ecosystem_type]",
+      "decision": "accept_prediction_as_missing_gold",
+      "action": "add_gold_entity",
+      "entity": {
+        "name": "草地",
+        "entity_type": "ecosystem_type",
+        "evidence_span_ids": [
+          "44305ec7e1dc929c"
+        ]
+      },
+      "status": "adjudicated",
+      "reason": "HJ 1173-2021附录A表A.1生态系统类型列明确列出草地。"
+    }
+  ],
+  "limitations": {
+    "human_expert": false,
+    "human_expert_review_required_for_publication": true,
+    "permitted_use": [
+      "软件验收",
+      "预实验",
+      "AI辅助来源核验"
+    ],
+    "forbidden_claim": "不得称为human_expert_gold或真实领域专家裁决"
+  }
+}

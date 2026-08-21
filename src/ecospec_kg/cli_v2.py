@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .adjudication_apply_v2 import apply_adjudication_v2
 from .analysis_v2 import analyze_errors_v2, analyze_training_v2
 from .evaluation_v2 import evaluate_v2
 from .experiment_data_v2 import prepare_experiment_package_v2
@@ -38,12 +39,19 @@ def _parser() -> argparse.ArgumentParser:
     gate.add_argument("--out", type=Path, required=True)
     gate.add_argument("--pilot", type=Path)
 
+    apply_adjudication = commands.add_parser("apply-adjudication-v2")
+    apply_adjudication.add_argument("--source-units", type=Path, required=True)
+    apply_adjudication.add_argument("--annotations", type=Path, required=True)
+    apply_adjudication.add_argument("--decisions", type=Path, required=True)
+    apply_adjudication.add_argument("--out", type=Path, required=True)
+
     prepare = commands.add_parser("prepare-experiment-v2")
     prepare.add_argument("--source-units", type=Path, required=True)
     prepare.add_argument("--annotations", type=Path, required=True)
     prepare.add_argument("--out", type=Path, required=True)
     prepare.add_argument("--dataset-version", default="v2.1")
     prepare.add_argument("--gold-nature", default="ai_expert_pre_gold")
+    prepare.add_argument("--review-provenance", type=Path)
 
     extract = commands.add_parser("extract-v2")
     extract.add_argument("--units", type=Path, required=True)
@@ -121,6 +129,23 @@ def main(argv: list[str] | None = None) -> int:
         }
         print(json.dumps(summary, ensure_ascii=False))
         return 0 if report["passed"] else 1
+    if args.command == "apply-adjudication-v2":
+        manifest = apply_adjudication_v2(
+            args.source_units,
+            args.annotations,
+            args.decisions,
+            args.out,
+        )
+        summary = {
+            "status": manifest["status"],
+            "gold_nature": manifest["gold_nature"],
+            "decision_count": manifest["decision_count"],
+            "modified_unit_count": manifest["modified_unit_count"],
+            "delta": manifest["delta"],
+            "manifest": manifest["manifest"],
+        }
+        print(json.dumps(summary, ensure_ascii=False))
+        return 0
     if args.command == "prepare-experiment-v2":
         manifest = prepare_experiment_package_v2(
             args.source_units,
@@ -128,6 +153,7 @@ def main(argv: list[str] | None = None) -> int:
             args.out,
             dataset_version=args.dataset_version,
             gold_nature=args.gold_nature,
+            review_provenance_path=args.review_provenance,
         )
         summary = {
             "package_id": manifest["package_id"],

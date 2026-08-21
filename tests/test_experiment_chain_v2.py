@@ -18,7 +18,7 @@ from ecospec_kg.extractor_v2 import (
     build_llm_selection_messages,
     extract_v2,
 )
-from ecospec_kg.io_utils import read_json, read_jsonl, stable_id, write_jsonl
+from ecospec_kg.io_utils import read_json, read_jsonl, stable_id, write_json, write_jsonl
 from ecospec_kg.ontology_v2 import ONTOLOGY_VERSION
 from ecospec_kg.prediction_validation_v2 import validate_predictions_v2
 from ecospec_kg.training_v2 import prepare_lora_training_v2
@@ -98,6 +98,48 @@ def empty_annotation(unit_id: str) -> dict:
         "review_status": "human_expert_adjudicated",
         "no_relation_reason": "fixture",
         "notes": "",
+    }
+
+
+def human_review_provenance() -> dict:
+    return {
+        "schema_version": "ecospec-review-provenance-v2.0",
+        "gold_nature": "human_expert_gold",
+        "reviewers": [
+            {
+                "reviewer_id": "fixture-human-a",
+                "reviewer_type": "human_domain_expert",
+                "human_expert": True,
+                "qualification_summary": "test fixture ecology expert",
+                "identity_verification_reference": "fixture://human-a",
+                "signed_at": "2026-08-21T00:00:00+00:00",
+            },
+            {
+                "reviewer_id": "fixture-human-b",
+                "reviewer_type": "human_domain_expert",
+                "human_expert": True,
+                "qualification_summary": "test fixture ecology expert",
+                "identity_verification_reference": "fixture://human-b",
+                "signed_at": "2026-08-21T00:00:00+00:00",
+            },
+        ],
+        "adjudication": {"adjudicator_id": "fixture-human-a"},
+    }
+
+
+def ai_review_provenance() -> dict:
+    return {
+        "schema_version": "ecospec-review-provenance-v2.0",
+        "gold_nature": "ai_expert_adjudicated_gold",
+        "claims_human_expert_review": False,
+        "reviewers": [
+            {
+                "reviewer_id": "fixture-ai-c",
+                "reviewer_type": "ai_simulated_domain_reviewer",
+                "human_expert": False,
+            }
+        ],
+        "adjudication": {"adjudicator_id": "fixture-ai-c"},
     }
 
 
@@ -544,6 +586,75 @@ class ExperimentChainV2Tests(unittest.TestCase):
                     source_path, annotations_path, root / "package"
                 )
 
+    def test_human_expert_gold_requires_review_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unit = source_unit()
+            source_path = root / "source.jsonl"
+            annotations_path = root / "annotations.jsonl"
+            write_jsonl(source_path, [unit])
+            write_jsonl(annotations_path, [empty_annotation(unit["unit_id"])])
+
+            with self.assertRaisesRegex(ValueError, "requires --review-provenance"):
+                prepare_experiment_package_v2(
+                    source_path,
+                    annotations_path,
+                    root / "package",
+                    gold_nature="human_expert_gold",
+                )
+
+    def test_prepare_rejects_ai_provenance_for_human_expert_gold(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unit = source_unit()
+            source_path = root / "source.jsonl"
+            annotations_path = root / "annotations.jsonl"
+            provenance_path = root / "ai-review-provenance.json"
+            write_jsonl(source_path, [unit])
+            write_jsonl(annotations_path, [empty_annotation(unit["unit_id"])])
+            provenance = ai_review_provenance()
+            provenance["gold_nature"] = "human_expert_gold"
+            write_json(provenance_path, provenance)
+
+            with self.assertRaisesRegex(
+                ValueError, "at least two distinct human domain experts"
+            ):
+                prepare_experiment_package_v2(
+                    source_path,
+                    annotations_path,
+                    root / "package",
+                    gold_nature="human_expert_gold",
+                    review_provenance_path=provenance_path,
+                )
+
+    def test_prepare_records_ai_adjudication_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unit = source_unit()
+            source_path = root / "source.jsonl"
+            annotations_path = root / "annotations.jsonl"
+            provenance_path = root / "ai-review-provenance.json"
+            write_jsonl(source_path, [unit])
+            write_jsonl(annotations_path, [empty_annotation(unit["unit_id"])])
+            write_json(provenance_path, ai_review_provenance())
+
+            manifest = prepare_experiment_package_v2(
+                source_path,
+                annotations_path,
+                root / "package",
+                gold_nature="ai_expert_adjudicated_gold",
+                review_provenance_path=provenance_path,
+            )
+
+            self.assertEqual(
+                manifest["review_provenance"]["reviewer_types"],
+                ["ai_simulated_domain_reviewer"],
+            )
+            self.assertTrue(
+                manifest["human_expert_review_required_for_publication"]
+            )
+            self.assertTrue((root / "package" / "review_provenance.json").is_file())
+
     def test_rule_extraction_is_byte_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -589,12 +700,15 @@ class ExperimentChainV2Tests(unittest.TestCase):
             unit = source_unit()
             write_jsonl(source_path, [unit])
             write_jsonl(annotations_path, [empty_annotation(unit["unit_id"])])
+            provenance_path = root / "human-review-provenance.json"
+            write_json(provenance_path, human_review_provenance())
             package_dir = root / "package"
             prepare_experiment_package_v2(
                 source_path,
                 annotations_path,
                 package_dir,
                 gold_nature="human_expert_gold",
+                review_provenance_path=provenance_path,
             )
             blind = package_dir / "blind" / "test_units.jsonl"
             run = root / "run"

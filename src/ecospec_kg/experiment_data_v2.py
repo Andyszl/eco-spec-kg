@@ -16,6 +16,11 @@ from .experiment_io_v2 import (
 )
 from .io_utils import read_jsonl, stable_id
 from .ontology_v2 import ONTOLOGY_VERSION, schema_quality_report, schema_rows_v2
+from .review_provenance_v2 import (
+    HUMAN_EXPERT_GOLD,
+    validate_review_provenance_v2,
+    write_package_review_provenance,
+)
 
 
 DATASET_PACKAGE_VERSION = "ecospec-experiment-dataset-v2.1"
@@ -80,7 +85,12 @@ def prepare_experiment_package_v2(
     *,
     dataset_version: str = "v2.1",
     gold_nature: str = "ai_expert_pre_gold",
+    review_provenance_path: Path | None = None,
 ) -> dict[str, Any]:
+    review_provenance = validate_review_provenance_v2(
+        gold_nature,
+        review_provenance_path,
+    )
     source_units = read_jsonl(source_units_path)
     annotations = read_jsonl(annotations_path)
     if not source_units:
@@ -124,6 +134,14 @@ def prepare_experiment_package_v2(
     schema_path = out_dir / "schema_v2.json"
     write_json(schema_path, schema)
 
+    package_review_provenance = None
+    if review_provenance is not None and review_provenance_path is not None:
+        package_review_provenance = write_package_review_provenance(
+            out_dir,
+            review_provenance_path,
+            review_provenance,
+        )
+
     files: list[dict[str, Any]] = []
     for split in ("train", "dev", "test"):
         files.append(
@@ -160,8 +178,9 @@ def prepare_experiment_package_v2(
         "dataset_version": dataset_version,
         "gold_nature": gold_nature,
         "human_expert_review_required_for_publication": (
-            gold_nature != "human_expert_gold"
+            gold_nature != HUMAN_EXPERT_GOLD
         ),
+        "review_provenance": package_review_provenance,
         "ontology_version": ONTOLOGY_VERSION,
         "split_policy_version": SPLIT_POLICY_VERSION,
         "created_at": utc_now(),
