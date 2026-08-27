@@ -320,11 +320,44 @@ class ExperimentChainV2Tests(unittest.TestCase):
         system, prompt = build_llm_selection_messages(unit, prediction)
         self.assertIn("只输出单行紧凑JSON", system)
         payload = json.loads(prompt)
+        self.assertEqual(
+            payload["selection_policy"]["version"], "ecospec-selection-v2.3"
+        )
+        self.assertEqual(
+            set(payload["selection_policy"]["rules"]),
+            {
+                "entity_boundary",
+                "has_indicator_evidence",
+                "method_recall",
+                "same_source_unit",
+            },
+        )
         self.assertNotIn("provenance", payload["source_unit"])
         self.assertNotIn("evidence_span_ids", payload["candidate_entities"][0])
         self.assertEqual(
             set(payload["candidate_relations"][0]), {"id", "head", "type", "tail"}
         )
+        entity_by_name = {
+            item["name"]: item for item in payload["candidate_entities"]
+        }
+        self.assertEqual(entity_by_name["统计方法"]["support_scope"], "body")
+        self.assertEqual(
+            entity_by_name["B.1 叶面积指数"]["boundary"],
+            "structure_prefixed",
+        )
+        self.assertEqual(
+            entity_by_name["生态系统质量"]["support_scope"],
+            "context_only",
+        )
+        focus = payload["selection_focus"]
+        self.assertIn(
+            entity_by_name["统计方法"]["id"], focus["method_entity_ids"]
+        )
+        self.assertIn(
+            entity_by_name["B.1 叶面积指数"]["id"],
+            focus["boundary_risk_entity_ids"],
+        )
+        self.assertTrue(focus["has_indicator_relation_ids"])
 
     def test_formula_number_is_not_treated_as_an_input_variable(self) -> None:
         unit = source_unit()
@@ -521,6 +554,10 @@ class ExperimentChainV2Tests(unittest.TestCase):
             write_jsonl(units_path, [source_unit()])
             run = root / "rule"
             extract_v2(units_path, run)
+            resolved_config = json.loads((run / "resolved_config.json").read_text())
+            self.assertEqual(
+                resolved_config["selection_policy"], "ecospec-selection-v2.3"
+            )
             prediction = read_jsonl(run / "predictions.jsonl")[0]
             annotation = {
                 "unit_id": prediction["unit_id"],
@@ -547,6 +584,16 @@ class ExperimentChainV2Tests(unittest.TestCase):
             )
             self.assertEqual(
                 manifest["candidate_generator"], "structure-aware-rule-v2.2"
+            )
+            self.assertEqual(
+                manifest["selection_policy_version"], "ecospec-selection-v2.3"
+            )
+            focus = manifest["selection_focus_coverage"]
+            self.assertGreater(focus["has_indicator"]["candidate_count"], 0)
+            self.assertGreater(focus["context_only_entities"]["candidate_count"], 0)
+            self.assertEqual(
+                focus["has_indicator"]["candidate_count"],
+                focus["has_indicator"]["selected_count"],
             )
 
             annotation["split"] = "test"

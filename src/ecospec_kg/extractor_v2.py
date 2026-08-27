@@ -25,6 +25,7 @@ from .providers import OpenAICompatibleProvider
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
 CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.2"
+SELECTION_POLICY_VERSION = "ecospec-selection-v2.3"
 
 OBSERVATION_CODES = {
     "HJ 1166-2021",
@@ -1023,28 +1024,97 @@ def _parse_llm_selection(response: str) -> dict[str, list[str]]:
     }
 
 
+_PROMPT_BODY_FIELDS = (
+    "clause_text",
+    "cells",
+    "table_title",
+    "formulas",
+    "variable_definitions",
+    "manual_variable_roles",
+    "introduction",
+    "interstitial_text",
+    "adjacent_source_text",
+    "temporal_mentions",
+    "frequency_mentions",
+    "instrument_mentions",
+    "trigger_terms",
+)
+_STRUCTURE_PREFIX_RE = re.compile(
+    r"^(?:附录\s*[A-Z]|表\s*[A-Z]?\d+(?:\.\d+)*|"
+    r"[A-Z](?:\.\d+)+|\d+(?:\.\d+)+|[（(]\s*\d+\s*[）)])\s*"
+)
+
+
+def _text_values(value: Any) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        return [text for child in value.values() for text in _text_values(child)]
+    if isinstance(value, list):
+        return [text for child in value for text in _text_values(child)]
+    return []
+
+
+def _contains_candidate_name(value: Any, name: str) -> bool:
+    compact_name = re.sub(r"\s+", "", _clean(name)).casefold()
+    if not compact_name:
+        return False
+    return any(
+        compact_name in re.sub(r"\s+", "", _clean(text)).casefold()
+        for text in _text_values(value)
+    )
+
+
+def _prompt_entity(
+    item: dict[str, Any], source_unit: dict[str, Any]
+) -> dict[str, Any]:
+    name = str(item["name"])
+    body_support = [
+        field
+        for field in _PROMPT_BODY_FIELDS
+        if source_unit.get(field)
+        and _contains_candidate_name(source_unit[field], name)
+    ]
+    heading_support = [
+        field
+        for field in ("heading_chain", "section")
+        if source_unit.get(field)
+        and _contains_candidate_name(source_unit[field], name)
+    ]
+    entity_type = str(item["entity_type"])
+    if body_support:
+        support_scope = "body"
+    elif heading_support:
+        support_scope = "heading"
+    elif entity_type in {
+        EntityTypeV2.FORMULA.value,
+        EntityTypeV2.MODEL_VARIABLE.value,
+        EntityTypeV2.UNIT.value,
+    }:
+        support_scope = "structured"
+    else:
+        support_scope = "context_only"
+    return {
+        "id": item["entity_id"],
+        "name": name,
+        "type": entity_type,
+        "support_scope": support_scope,
+        "support_fields": body_support + heading_support,
+        "boundary": (
+            "structure_prefixed"
+            if _STRUCTURE_PREFIX_RE.match(name)
+            else "clean"
+        ),
+    }
+
+
 def build_llm_selection_messages(
     unit: dict[str, Any], candidates: dict[str, Any]
 ) -> tuple[str, str]:
     system = (
         "你是生态评估技术规范关系抽取器。只能从候选实体和候选关系中选择，"
         "不得改写名称、类型、关系或证据。只输出单行紧凑JSON，不得输出Markdown、"
-        "解释、换行或缩进。"
-    )
-    source_fields = (
-        "clause_text",
-        "cells",
-        "table_title",
-        "formulas",
-        "variable_definitions",
-        "manual_variable_roles",
-        "introduction",
-        "interstitial_text",
-        "adjacent_source_text",
-        "temporal_mentions",
-        "frequency_mentions",
-        "instrument_mentions",
-        "trigger_terms",
+        "解释、换行或缩进。必须逐项检查候选，不得依赖其他来源单元或领域常识补全。"
     )
     source_unit = {
         "unit_id": unit["unit_id"],
@@ -1052,14 +1122,10 @@ def build_llm_selection_messages(
         "standard_code": unit.get("provenance", {}).get("standard_code", ""),
         "section": unit.get("provenance", {}).get("section", ""),
         "heading_chain": unit.get("provenance", {}).get("heading_chain", []),
-        **{key: unit[key] for key in source_fields if unit.get(key)},
+        **{key: unit[key] for key in _PROMPT_BODY_FIELDS if unit.get(key)},
     }
     candidate_entities = [
-        {
-            "id": item["entity_id"],
-            "name": item["name"],
-            "type": item["entity_type"],
-        }
+        _prompt_entity(item, source_unit)
         for item in candidates["entities"]
     ]
     candidate_relations = [
@@ -1071,15 +1137,62 @@ def build_llm_selection_messages(
         }
         for item in candidates["relations"]
     ]
+    method_entity_ids = [
+        item["id"] for item in candidate_entities if item["type"] == "method"
+    ]
+    context_only_entity_ids = [
+        item["id"]
+        for item in candidate_entities
+        if item["support_scope"] == "context_only"
+    ]
+    boundary_risk_entity_ids = [
+        item["id"]
+        for item in candidate_entities
+        if item["boundary"] == "structure_prefixed"
+    ]
+    has_indicator_relation_ids = [
+        item["id"]
+        for item in candidate_relations
+        if item["type"] == "has_indicator"
+    ]
     prompt = json.dumps(
         {
             "task": (
                 "返回 selected_relation_ids 和 selected_entity_ids。仅选择原文明确支持的候选；"
                 "被关系使用的实体无需重复放入 selected_entity_ids。"
             ),
+            "selection_policy": {
+                "version": SELECTION_POLICY_VERSION,
+                "rules": {
+                    "method_recall": (
+                        "逐项检查正文明确列举、定义或使用的每个method；即使没有关系也应作为"
+                        "独立实体选择。不得把泛指的模型、方法或操作步骤当作method。"
+                    ),
+                    "has_indicator_evidence": (
+                        "has_indicator必须由当前单元正文的明确表述或表格/公式包的结构化字段"
+                        "直接建立。procedure_clause中的标题共现、文档主题和领域常识均不足以"
+                        "建立该关系。"
+                    ),
+                    "same_source_unit": (
+                        "所有实体和关系只能依据本source_unit内给出的字段；不得借用前后来源"
+                        "单元、训练记忆或常识补齐实体及关系。context_only实体不得独立选择，"
+                        "只有当前单元存在明确结构化关系时才可作为其端点。"
+                    ),
+                    "entity_boundary": (
+                        "选择与原文完整语义短语一致的最小边界；有clean候选时拒绝带章节号、"
+                        "表号、序号或话语前缀的structure_prefixed候选，也不得选择截断片段。"
+                    ),
+                },
+            },
             "source_unit": source_unit,
             "candidate_entities": candidate_entities,
             "candidate_relations": candidate_relations,
+            "selection_focus": {
+                "method_entity_ids": method_entity_ids,
+                "has_indicator_relation_ids": has_indicator_relation_ids,
+                "context_only_entity_ids": context_only_entity_ids,
+                "boundary_risk_entity_ids": boundary_risk_entity_ids,
+            },
             "output_schema": {
                 "selected_entity_ids": ["entity_id"],
                 "selected_relation_ids": ["relation_id"],
@@ -1152,6 +1265,7 @@ def extract_v2(
         "temperature": 0,
         "max_tokens": 1024,
         "candidate_generator": CANDIDATE_GENERATOR_VERSION,
+        "selection_policy": SELECTION_POLICY_VERSION,
         "use_schema": True,
         "use_layout": True,
         "use_evidence": True,
