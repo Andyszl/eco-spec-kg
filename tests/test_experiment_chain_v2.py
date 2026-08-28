@@ -321,18 +321,21 @@ class ExperimentChainV2Tests(unittest.TestCase):
         self.assertIn("只输出单行紧凑JSON", system)
         payload = json.loads(prompt)
         self.assertEqual(
-            payload["selection_policy"]["version"], "ecospec-selection-v2.3"
+            payload["selection_policy"]["version"], "ecospec-selection-v2.4"
         )
         self.assertEqual(
             set(payload["selection_policy"]["rules"]),
             {
                 "entity_boundary",
-                "has_indicator_evidence",
-                "method_recall",
+                "formula_relation_recall",
+                "independent_candidate_decision",
+                "method_recall_precision",
+                "relation_precision",
                 "same_source_unit",
             },
         )
         self.assertNotIn("provenance", payload["source_unit"])
+        self.assertNotIn("adjacent_source_text", payload["source_unit"])
         self.assertNotIn("evidence_span_ids", payload["candidate_entities"][0])
         self.assertEqual(
             set(payload["candidate_relations"][0]), {"id", "head", "type", "tail"}
@@ -358,6 +361,16 @@ class ExperimentChainV2Tests(unittest.TestCase):
             focus["boundary_risk_entity_ids"],
         )
         self.assertTrue(focus["has_indicator_relation_ids"])
+        self.assertEqual(
+            focus["formula_relation_ids"],
+            [
+                item["id"]
+                for item in payload["candidate_relations"]
+                if item["type"]
+                in {"has_input", "has_output", "calculated_by", "constrained_by"}
+            ],
+        )
+        self.assertTrue(focus["precision_relation_ids"])
 
     def test_formula_number_is_not_treated_as_an_input_variable(self) -> None:
         unit = source_unit()
@@ -389,6 +402,16 @@ class ExperimentChainV2Tests(unittest.TestCase):
         self.assertIn(("公式（B.3）", "has_input", "A"), relation_keys)
         self.assertNotIn(("公式（B.3）", "has_input", "B"), relation_keys)
 
+        _, prompt = build_llm_selection_messages(unit, prediction)
+        focus = json.loads(prompt)["selection_focus"]
+        expected_formula_ids = {
+            item["relation_id"]
+            for item in prediction["relations"]
+            if item["relation_type"]
+            in {"has_input", "has_output", "calculated_by", "constrained_by"}
+        }
+        self.assertEqual(set(focus["formula_relation_ids"]), expected_formula_ids)
+
     def test_formula_source_keywords_link_only_related_variables(self) -> None:
         unit = source_unit()
         unit["unit_id"] = "unit-formula-source"
@@ -414,6 +437,10 @@ class ExperimentChainV2Tests(unittest.TestCase):
         self.assertIn(("R", "sourced_from", "降雨量资料"), relation_keys)
         self.assertIn(("P", "sourced_from", "降雨量资料"), relation_keys)
         self.assertNotIn(("alpha", "sourced_from", "降雨量资料"), relation_keys)
+
+        _, prompt = build_llm_selection_messages(unit, prediction)
+        payload = json.loads(prompt)
+        self.assertNotIn("adjacent_source_text", payload["source_unit"])
 
     def test_dynamic_operational_spatial_scopes_are_candidates(self) -> None:
         unit = {
@@ -556,7 +583,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
             extract_v2(units_path, run)
             resolved_config = json.loads((run / "resolved_config.json").read_text())
             self.assertEqual(
-                resolved_config["selection_policy"], "ecospec-selection-v2.3"
+                resolved_config["selection_policy"], "ecospec-selection-v2.4"
             )
             prediction = read_jsonl(run / "predictions.jsonl")[0]
             annotation = {
@@ -586,11 +613,16 @@ class ExperimentChainV2Tests(unittest.TestCase):
                 manifest["candidate_generator"], "structure-aware-rule-v2.2"
             )
             self.assertEqual(
-                manifest["selection_policy_version"], "ecospec-selection-v2.3"
+                manifest["selection_policy_version"], "ecospec-selection-v2.4"
+            )
+            self.assertEqual(
+                manifest["schema_version"], "ecospec-lora-training-v2.2"
             )
             focus = manifest["selection_focus_coverage"]
             self.assertGreater(focus["has_indicator"]["candidate_count"], 0)
             self.assertGreater(focus["context_only_entities"]["candidate_count"], 0)
+            self.assertGreater(focus["formula_relations"]["candidate_count"], 0)
+            self.assertGreater(focus["precision_relations"]["candidate_count"], 0)
             self.assertEqual(
                 focus["has_indicator"]["candidate_count"],
                 focus["has_indicator"]["selected_count"],

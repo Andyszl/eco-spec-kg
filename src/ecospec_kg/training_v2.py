@@ -87,6 +87,8 @@ def prepare_lora_training_v2(
     selection_focus_coverage = {
         "method": _focus_bucket(),
         "has_indicator": _focus_bucket(),
+        "formula_relations": _focus_bucket(),
+        "precision_relations": _focus_bucket(),
         "context_only_entities": _focus_bucket(),
         "boundary_risk_entities": _focus_bucket(),
     }
@@ -163,6 +165,16 @@ def prepare_lora_training_v2(
             selected_relation_set,
         )
         _update_focus_bucket(
+            selection_focus_coverage["formula_relations"],
+            set(focus["formula_relation_ids"]),
+            selected_relation_set,
+        )
+        _update_focus_bucket(
+            selection_focus_coverage["precision_relations"],
+            set(focus["precision_relation_ids"]),
+            selected_relation_set,
+        )
+        _update_focus_bucket(
             selection_focus_coverage["context_only_entities"],
             set(focus["context_only_entity_ids"]),
             selected_entity_set,
@@ -192,7 +204,7 @@ def prepare_lora_training_v2(
 
     write_jsonl(output_path, rows)
     manifest = {
-        "schema_version": "ecospec-lora-training-v2.1",
+        "schema_version": "ecospec-lora-training-v2.2",
         "candidate_generator": CANDIDATE_GENERATOR_VERSION,
         "selection_policy_version": SELECTION_POLICY_VERSION,
         "created_at": utc_now(),

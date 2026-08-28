@@ -25,7 +25,7 @@ from .providers import OpenAICompatibleProvider
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
 CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.2"
-SELECTION_POLICY_VERSION = "ecospec-selection-v2.3"
+SELECTION_POLICY_VERSION = "ecospec-selection-v2.4"
 
 OBSERVATION_CODES = {
     "HJ 1166-2021",
@@ -1033,7 +1033,6 @@ _PROMPT_BODY_FIELDS = (
     "manual_variable_roles",
     "introduction",
     "interstitial_text",
-    "adjacent_source_text",
     "temporal_mentions",
     "frequency_mentions",
     "instrument_mentions",
@@ -1155,32 +1154,60 @@ def build_llm_selection_messages(
         for item in candidate_relations
         if item["type"] == "has_indicator"
     ]
+    formula_relation_ids = [
+        item["id"]
+        for item in candidate_relations
+        if item["type"]
+        in {
+            "has_input",
+            "has_output",
+            "calculated_by",
+            "constrained_by",
+        }
+    ]
+    precision_relation_ids = [
+        item["id"]
+        for item in candidate_relations
+        if item["type"] in {"has_indicator", "obtained_by"}
+    ]
     prompt = json.dumps(
         {
             "task": (
                 "返回 selected_relation_ids 和 selected_entity_ids。仅选择原文明确支持的候选；"
-                "被关系使用的实体无需重复放入 selected_entity_ids。"
+                "被关系使用的实体无需重复放入 selected_entity_ids。逐个独立判断全部候选，"
+                "不设选择数量上限。"
             ),
             "selection_policy": {
                 "version": SELECTION_POLICY_VERSION,
                 "rules": {
-                    "method_recall": (
-                        "逐项检查正文明确列举、定义或使用的每个method；即使没有关系也应作为"
-                        "独立实体选择。不得把泛指的模型、方法或操作步骤当作method。"
+                    "independent_candidate_decision": (
+                        "逐个独立判断全部候选，不设实体或关系选择数量上限；已选择一个相似候选"
+                        "不能作为排除其他候选的理由。"
                     ),
-                    "has_indicator_evidence": (
-                        "has_indicator必须由当前单元正文的明确表述或表格/公式包的结构化字段"
-                        "直接建立。procedure_clause中的标题共现、文档主题和领域常识均不足以"
-                        "建立该关系。"
+                    "method_recall_precision": (
+                        "method仅选择当前单元正文或结构化字段中明确命名、定义或用于计算的最小"
+                        "完整方法、模型、算法或操作程序；逐项保留所有满足条件者。拒绝仅表示"
+                        "“方法”“模型”“计算”“评估”“获得”等泛称或叙述动作。"
+                    ),
+                    "formula_relation_recall": (
+                        "公式包及当前单元的formulas、variable_definitions、manual_variable_roles"
+                        "可直接支持has_input、has_output、calculated_by和constrained_by；对每条"
+                        "明确的变量角色、公式绑定或约束均应选择，无需另有正文谓词。"
+                    ),
+                    "relation_precision": (
+                        "has_indicator仅在当前单元正文明确陈述或表格/公式结构化字段直接绑定主体"
+                        "与指标时选择；obtained_by仅在当前单元明确表示实体由某方法或数据源获得"
+                        "或计算时选择。标题共现、同单元共现、领域常识均不足以建边。"
                     ),
                     "same_source_unit": (
-                        "所有实体和关系只能依据本source_unit内给出的字段；不得借用前后来源"
-                        "单元、训练记忆或常识补齐实体及关系。context_only实体不得独立选择，"
-                        "只有当前单元存在明确结构化关系时才可作为其端点。"
+                        "只能依据source_unit实际给出的当前来源字段；不得借用相邻或其他来源"
+                        "单元、训练记忆或常识。context_only实体不得独立选择，只有当前单元的"
+                        "明确结构化关系直接支持时才可作端点。"
                     ),
                     "entity_boundary": (
-                        "选择与原文完整语义短语一致的最小边界；有clean候选时拒绝带章节号、"
-                        "表号、序号或话语前缀的structure_prefixed候选，也不得选择截断片段。"
+                        "实体必须采用与当前单元原文一致的最小完整语义边界；优先clean候选，"
+                        "拒绝带章节号、表号、序号、话语前缀的structure_prefixed候选、截断"
+                        "片段以及过宽或过窄边界。"
                     ),
                 },
             },
@@ -1190,6 +1217,8 @@ def build_llm_selection_messages(
             "selection_focus": {
                 "method_entity_ids": method_entity_ids,
                 "has_indicator_relation_ids": has_indicator_relation_ids,
+                "formula_relation_ids": formula_relation_ids,
+                "precision_relation_ids": precision_relation_ids,
                 "context_only_entity_ids": context_only_entity_ids,
                 "boundary_risk_entity_ids": boundary_risk_entity_ids,
             },
