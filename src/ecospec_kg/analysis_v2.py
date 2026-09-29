@@ -8,6 +8,7 @@ from .experiment_io_v2 import (
     assert_blind_records,
     read_jsonl,
     sha256_path,
+    sha256_json,
     utc_now,
     write_json,
     write_jsonl,
@@ -16,7 +17,7 @@ from .extractor_v2 import CANDIDATE_GENERATOR_VERSION, RuleCandidateExtractorV2
 from .io_utils import normalize_space
 
 
-ANALYSIS_SCHEMA_VERSION = "ecospec-analysis-v2.0"
+ANALYSIS_SCHEMA_VERSION = "ecospec-analysis-v2.1"
 
 
 def _entity_key(entity: dict[str, Any]) -> tuple[str, str]:
@@ -148,10 +149,19 @@ def collect_error_details_v2(
     )
     details: list[dict[str, Any]] = []
     for unit_id in sorted(unit_by_id):
+        detail_start = len(details)
         unit = unit_by_id[unit_id]
         gold = gold_by_id[unit_id]
         prediction = prediction_by_id[unit_id]
         candidates = RuleCandidateExtractorV2().predict_unit(unit)
+        actual_hash = sha256_json({k: candidates[k] for k in ("entities", "relations")})
+        expected_hash = prediction.get("candidate_hash")
+        if expected_hash and expected_hash != actual_hash:
+            raise ValueError(
+                f"candidate hash mismatch for {unit_id}: expected={expected_hash}, actual={actual_hash}; "
+                "use the original candidate generator and source units; do not rewrite historical hashes"
+            )
+        verification = "hash_verified" if expected_hash else "missing_hash"
         gold_entities = {_entity_key(item): item for item in gold.get("entities", [])}
         pred_entities = {
             _entity_key(item): item for item in prediction.get("entities", [])
@@ -229,6 +239,15 @@ def collect_error_details_v2(
                     ),
                 )
                 details.append(row)
+        for row in details[detail_start:]:
+            row["candidate_verification"] = verification
+            row["reconstructed_candidate_hash"] = actual_hash
+            row["prediction_candidate_hash"] = expected_hash or ""
+            if not expected_hash:
+                row["candidate_present"] = None
+                row["candidate_id"] = ""
+                if row["selection_result"] != "selected_false_positive":
+                    row["selection_result"] = "candidate_unverified"
     return details
 
 
@@ -312,6 +331,7 @@ def analyze_errors_v2(
         },
         "error_count": len(details),
         "by_error_type": _counter_dict(row["error_type"] for row in details),
+        "candidate_verification_by_error_row": _counter_dict(row["candidate_verification"] for row in details),
         "entity_errors_by_type": _counter_dict(
             row["entity_type"] for row in details if row["object_kind"] == "entity"
         ),

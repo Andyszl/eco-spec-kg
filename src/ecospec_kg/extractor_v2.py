@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -18,13 +19,14 @@ from .experiment_io_v2 import (
     write_jsonl,
 )
 from .io_utils import normalize_space, stable_id
+from .formula_symbols import formula_symbols, normalize_symbol
 from .ontology_v2 import EntityTypeV2, ONTOLOGY_VERSION, RelationTypeV2
 from .prediction_contract_v2 import PREDICTION_SCHEMA_VERSION
 from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.2"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.3"
 SELECTION_POLICY_VERSION = "ecospec-selection-v2.4"
 
 OBSERVATION_CODES = {
@@ -444,17 +446,29 @@ def _overall_scope_methods(text: str, methods: list[str]) -> list[str]:
     return classified[:1]
 
 
-def _symbol_base(symbol: str) -> str:
-    return re.split(r"[_\s]", symbol, maxsplit=1)[0].strip("′'")
-
-
 def _symbol_occurs(symbol: str, expression: str) -> bool:
-    compact_symbol = re.sub(r"[\s_{}]", "", symbol).casefold()
-    compact_expression = re.sub(r"[\s_{}]", "", expression).casefold()
-    if compact_symbol and compact_symbol in compact_expression:
-        return True
-    base = re.sub(r"[\s_{}]", "", _symbol_base(symbol)).casefold()
-    return bool(base and base in compact_expression)
+    return normalize_symbol(symbol) in formula_symbols(expression, [symbol])
+
+
+def _formula_aliases(formula: dict[str, Any], symbols: set[str], spans: set[str]) -> dict[str, str]:
+    aliases: dict[str, str] = {}
+    entries = formula.get("symbol_aliases", [])
+    if not isinstance(entries, list):
+        raise ValueError("formula symbol_aliases must be a list of evidenced local aliases")
+    for entry in entries:
+        if not isinstance(entry, dict):
+            raise ValueError("formula symbol alias must be an object")
+        alias = normalize_symbol(str(entry.get("symbol", "")))
+        canonical = normalize_symbol(str(entry.get("canonical_symbol", "")))
+        evidence = entry.get("evidence_span_ids")
+        if (not alias or canonical not in symbols or alias in symbols or alias in aliases
+                or not isinstance(evidence, list) or not evidence
+                or any(not isinstance(s, str) or s not in spans for s in evidence)
+                or not str(entry.get("reason", "")).strip()
+                or formula_symbols(alias) != {alias}):
+            raise ValueError(f"invalid or unsupported formula symbol alias: {alias!r}")
+        aliases[alias] = canonical
+    return aliases
 
 
 def _split_variable(variable: dict[str, Any]) -> list[dict[str, Any]]:
@@ -610,6 +624,8 @@ class RuleCandidateExtractorV2:
             ]
         )
         for formula in unit.get("formulas", []):
+            declared = {normalize_symbol(str(v.get("symbol", ""))) for v in variables}
+            aliases = _formula_aliases(formula, declared, set(_span_ids(unit)))
             number = str(formula.get("formula_number", ""))
             formula_span = formula.get("evidence_span", {}).get("span_id")
             formula_spans = [formula_span] if formula_span else _span_ids(unit)
@@ -642,13 +658,13 @@ class RuleCandidateExtractorV2:
             outputs = [
                 symbol for symbol, role in role_overrides.items() if role == "output"
             ] or _formula_lhs_symbols(expression)
+            outputs = {aliases.get(normalize_symbol(s), normalize_symbol(s)) for s in outputs}
+            present = {aliases.get(s, s) for s in formula_symbols(expression, declared | set(aliases))}
             matched = [
                 variable
                 for variable in variables
-                if _symbol_occurs(str(variable.get("symbol", "")), expression)
+                if normalize_symbol(str(variable.get("symbol", ""))) in present
             ]
-            if "=" not in expression or not matched:
-                matched = list(variables) if len(unit.get("formulas", [])) == 1 else matched
             sourced_variable_entities: list[tuple[dict[str, Any], str]] = []
             output_variable_entities: list[dict[str, Any]] = []
             for variable in matched:
@@ -666,8 +682,7 @@ class RuleCandidateExtractorV2:
                 relation = (
                     RelationTypeV2.HAS_OUTPUT
                     if role == "output"
-                    or symbol in outputs
-                    or _symbol_base(symbol) in {_symbol_base(item) for item in outputs}
+                    or normalize_symbol(symbol) in outputs
                     else RelationTypeV2.HAS_INPUT
                 )
                 builder.add_relation(
@@ -1308,11 +1323,24 @@ def extract_v2(
         config["seed"] = seed
     if config["backend"] not in {"rule", "llm"}:
         raise ValueError("backend must be 'rule' or 'llm'")
+    for flag in ("use_schema", "use_layout", "use_evidence"):
+        if config[flag] is not True:
+            raise ValueError(f"{flag} must be true; disabling this component is not implemented in the V2 selector")
+    if type(config["seed"]) is not int:
+        raise ValueError("seed must be an integer")
+    temperature = config["temperature"]
+    if (type(temperature) not in (int, float) or not math.isfinite(temperature)
+            or not 0 <= temperature <= 2):
+        raise ValueError("temperature must be a finite number between 0 and 2")
+    if config["candidate_generator"] != CANDIDATE_GENERATOR_VERSION:
+        raise ValueError(f"candidate_generator must match loaded code: {CANDIDATE_GENERATOR_VERSION}")
 
     provider = None
     if config["backend"] == "llm":
         provider = OpenAICompatibleProvider.from_env()
         provider.model = str(config["model"])
+        provider.seed = config["seed"]
+        provider.temperature = temperature
         provider.max_tokens = int(config["max_tokens"])
         if provider.max_tokens < 1:
             raise ValueError("max_tokens must be a positive integer")
@@ -1434,6 +1462,8 @@ def extract_v2(
         "runtime": runtime_metadata(repo_root),
         "implementation": {
             "extractor_v2.py": sha256_path(Path(__file__)),
+            "formula_symbols.py": sha256_path(Path(__file__).with_name("formula_symbols.py")),
+            "providers.py": sha256_path(Path(__file__).with_name("providers.py")),
             "prediction_contract_v2.py": sha256_path(
                 Path(__file__).with_name("prediction_contract_v2.py")
             ),

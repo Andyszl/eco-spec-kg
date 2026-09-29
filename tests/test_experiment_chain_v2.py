@@ -12,6 +12,7 @@ from ecospec_kg.analysis_v2 import (
     collect_error_details_v2,
 )
 from ecospec_kg.evaluation_v2 import evaluate_v2
+from ecospec_kg.experiment_io_v2 import sha256_json
 from ecospec_kg.experiment_data_v2 import prepare_experiment_package_v2
 from ecospec_kg.extractor_v2 import (
     RuleCandidateExtractorV2,
@@ -171,6 +172,10 @@ class ExperimentChainV2Tests(unittest.TestCase):
                         "unit_id": unit["unit_id"],
                         "entities": [],
                         "relations": [],
+                        "candidate_hash": sha256_json({
+                            k: RuleCandidateExtractorV2().predict_unit(unit)[k]
+                            for k in ("entities", "relations")
+                        }),
                     }
                 ],
             )
@@ -211,7 +216,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
 
             self.assertEqual(report["unit_count"], 1)
             self.assertEqual(report["no_relation_unit_count"], 1)
-            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.2")
+            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.3")
             self.assertGreater(report["entity_candidate_negative_count"], 0)
             self.assertTrue((root / "analysis" / "training_distribution.json").exists())
             writer.assert_called_once()
@@ -610,7 +615,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
                 1.0,
             )
             self.assertEqual(
-                manifest["candidate_generator"], "structure-aware-rule-v2.2"
+                manifest["candidate_generator"], "structure-aware-rule-v2.3"
             )
             self.assertEqual(
                 manifest["selection_policy_version"], "ecospec-selection-v2.4"

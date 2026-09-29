@@ -41,6 +41,8 @@ class OpenAICompatibleProvider:
     append_no_think: bool = False
     enable_thinking: bool | None = None
     last_raw_response: dict[str, Any] | None = None
+    seed: int | None = None
+    temperature: float = 0
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleProvider":
@@ -74,9 +76,11 @@ class OpenAICompatibleProvider:
                 {"role": "system", "content": system},
                 {"role": "user", "content": user_content},
             ],
-            "temperature": 0,
+            "temperature": self.temperature,
             "max_tokens": self.max_tokens,
         }
+        if self.seed is not None:
+            payload["seed"] = self.seed
         if self.enable_thinking is not None:
             payload["chat_template_kwargs"] = {
                 "enable_thinking": self.enable_thinking
