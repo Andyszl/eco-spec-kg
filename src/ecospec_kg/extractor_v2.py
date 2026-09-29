@@ -26,7 +26,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.3"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.4"
 SELECTION_POLICY_VERSION = "ecospec-selection-v2.4"
 
 OBSERVATION_CODES = {
@@ -401,7 +401,7 @@ def _formula_lhs_symbols(expression: str) -> list[str]:
         segment = re.split(r"[;\n]", expression[: match.start()])[-1].strip()
         found = re.search(
             r"([A-Za-z\u0370-\u03ff\u4e00-\u9fff]+[′’']?"
-            r"(?:_[A-Za-z0-9,]+)?(?:\s*\([^()=]{1,20}\))?)\s*$",
+            r"(?:_[A-Za-z0-9\u0370-\u03ff\u4e00-\u9fff_,]+)?(?:\s*\([^()=]{1,20}\))?)\s*$",
             segment,
         )
         if found:

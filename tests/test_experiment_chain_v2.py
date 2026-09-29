@@ -216,7 +216,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
 
             self.assertEqual(report["unit_count"], 1)
             self.assertEqual(report["no_relation_unit_count"], 1)
-            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.3")
+            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.4")
             self.assertGreater(report["entity_candidate_negative_count"], 0)
             self.assertTrue((root / "analysis" / "training_distribution.json").exists())
             writer.assert_called_once()
@@ -615,7 +615,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
                 1.0,
             )
             self.assertEqual(
-                manifest["candidate_generator"], "structure-aware-rule-v2.3"
+                manifest["candidate_generator"], "structure-aware-rule-v2.4"
             )
             self.assertEqual(
                 manifest["selection_policy_version"], "ecospec-selection-v2.4"

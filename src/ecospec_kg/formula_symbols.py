@@ -6,7 +6,7 @@ from functools import lru_cache
 from typing import Iterable
 
 _FUNCTIONS = frozenset({"ln", "log", "exp", "sin", "cos", "tan", "sqrt", "min", "max", "sum", "abs"})
-_IDENTIFIER = re.compile(r"[A-Za-z\u0370-\u03ff]+(?:_[A-Za-z0-9,]+)?[′’']*")
+_IDENTIFIER = re.compile(r"[A-Za-z\u0370-\u03ff\u4e00-\u9fff]+(?:_[A-Za-z0-9\u0370-\u03ff\u4e00-\u9fff_,]+)?[′’']*")
 
 
 def normalize_symbol(value: str) -> str:
@@ -38,8 +38,11 @@ def formula_symbols(expression: str, declared: Iterable[str] = ()) -> set[str]:
         return None
 
     found: set[str] = set()
-    for match in _IDENTIFIER.finditer(normalize_symbol(expression)):
-        token = match.group()
+    # Compact only explicit braced subscripts; whitespace between identifiers
+    # remains a boundary (e.g. a numerator followed by the next line's LHS).
+    expression = re.sub(r"_\{([^{}]*)\}", lambda m: "_" + normalize_symbol(m.group(1)), expression)
+    for match in _IDENTIFIER.finditer(expression):
+        token = normalize_symbol(match.group())
         # Subscripts are integral to identity; never decompose x_ij as x_i*j.
         parts = (token,) if "_" in token else split_product(token) or (token,)
         found.update(part for part in parts if part not in _FUNCTIONS)

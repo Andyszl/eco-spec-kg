@@ -5,7 +5,7 @@
   "seed": 42,
   "temperature": 0,
   "max_tokens": 3072,
-  "candidate_generator": "structure-aware-rule-v2.3",
+  "candidate_generator": "structure-aware-rule-v2.4",
   "use_schema": true,
   "use_layout": true,
   "use_evidence": true,

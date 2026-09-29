@@ -8,6 +8,53 @@ from test_experiment_chain_v2 import source_unit, empty_annotation
 from ecospec_kg.analysis_v2 import collect_error_details_v2
 from ecospec_kg.experiment_io_v2 import sha256_json, write_json, write_jsonl
 from ecospec_kg.extractor_v2 import RuleCandidateExtractorV2, _symbol_occurs, extract_v2
+from ecospec_kg.formula_symbols import formula_symbols
+
+
+@pytest.mark.parametrize("expression,declared,expected", [
+    ("n\nQ = A", ["n", "Q", "A"], {"n", "Q", "A"}),
+    ("r L", ["L"], {"r", "L"}),
+    ("Caco\nEF = 3", ["EF"], {"Caco", "EF"}),
+    ("Q_se_p=R*K", ["Q_se_p", "R", "K"], {"Q_se_p", "R", "K"}),
+    ("Q_{se_p}=R", ["Q_se_p", "R"], {"Q_se_p", "R"}),
+    ("x_{i, j}=y", ["x_i,j", "y"], {"x_i,j", "y"}),
+    ("R_半月k=P_i,j,k", ["R_半月k", "P_i,j,k"], {"R_半月k", "P_i,j,k"}),
+    ("S_L潜=S_L", ["S_L潜", "S_L"], {"S_L潜", "S_L"}),
+    ("实测值-反演值", ["实测值", "反演值"], {"实测值", "反演值"}),
+    ("总实测值", ["实测值"], {"总实测值"}),
+    ("x_i_j", ["x_i", "j"], {"x_i_j"}),
+    ("L=ln(x)+C", ["L", "n", "x", "C", "c"], {"L", "x", "C"}),
+])
+def test_formula_token_boundaries(expression, declared, expected):
+    assert formula_symbols(expression, declared) == expected
+
+
+def test_chinese_formula_variables_generate_inputs_and_units():
+    unit = source_unit()
+    span = unit["variable_definitions"][0]["evidence_span"]
+    unit["formulas"][0]["expression_text"] = "REE=sqrt(Σ[((实测值-反演值)/反演值)^2]/验证点数)"
+    unit["variable_definitions"] = [
+        {"symbol": s, "definition": s, "unit": "个" if s == "验证点数" else "", "evidence_span": span}
+        for s in ("REE", "实测值", "反演值", "验证点数", "点数")
+    ]
+    candidate = RuleCandidateExtractorV2().predict_unit(unit)
+    edges = {(r["head_name"], r["relation_type"], r["tail_name"]) for r in candidate["relations"]}
+    assert {("公式（1）", "has_input", s) for s in ("实测值", "反演值", "验证点数")} <= edges
+    assert ("验证点数", "has_unit", "个") in edges
+    assert not any(e["name"] == "点数" for e in candidate["entities"])
+
+
+def test_nested_subscript_output_is_not_a_suffix_variable():
+    unit = source_unit()
+    span = unit["variable_definitions"][0]["evidence_span"]
+    unit["formulas"][0]["expression_text"] = "Q_se_p=R*K"
+    unit["variable_definitions"] = [
+        {"symbol": s, "definition": s, "evidence_span": span}
+        for s in ("Q_se_p", "R", "K", "se_p", "Q")
+    ]
+    assert variable_relations(unit) == {
+        ("has_output", "Q_se_p"), ("has_input", "R"), ("has_input", "K")
+    }
 
 
 @pytest.mark.parametrize("symbol,expression,expected", [
