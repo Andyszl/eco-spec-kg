@@ -1,0 +1,131 @@
+{
+  "baseline_commit": "9bc751ff7281faf41e75193975159d429db76e71",
+  "current_commit": "b644fc2fbef449119061ada131bd7adac8ee832b",
+  "loaded_source_hashes": {
+    "formula_symbols.py": "7c00c107327d6614002bb76445551973fd1316fd70d1d19453386b38860e5dd6",
+    "extractor_v2.py": "5c959a9b58b931ef556b26098329eebd8af93fa9e80ed14296775c38aae4c26e"
+  },
+  "tracked_src_dirty": true,
+  "candidate_generator": "structure-aware-rule-v2.5",
+  "conditions": {
+    "original": {
+      "input_hashes": [
+        "ee23c78b36f89abb74fd2fbd17960c3225764be136dbe7795ce9340b43e86a86",
+        "463cce20b9d10e8d8e790a2df5b5e25a1b13110d3b88570ce4728a9c5b9047e7"
+      ],
+      "coverage": {
+        "v2.4": {
+          "covered_entity_count": 1088,
+          "gold_entity_count": 1244,
+          "covered_relation_count": 607,
+          "gold_relation_count": 799,
+          "entity_recall_upper_bound": 0.874598,
+          "relation_recall_upper_bound": 0.7597,
+          "entity_candidate_negative_count": 791,
+          "relation_candidate_negative_count": 411
+        },
+        "v2.5": {
+          "covered_entity_count": 1088,
+          "gold_entity_count": 1244,
+          "covered_relation_count": 607,
+          "gold_relation_count": 799,
+          "entity_recall_upper_bound": 0.874598,
+          "relation_recall_upper_bound": 0.7597,
+          "entity_candidate_negative_count": 791,
+          "relation_candidate_negative_count": 411
+        }
+      },
+      "changed_units": []
+    },
+    "reviewed": {
+      "input_hashes": [
+        "ee4398db0538415280f9a0f1e12f2e292bb365ee9c9b6f26728bdb819e57e39a",
+        "c6471750b60ec69cd88a58e9000e8001a0794c9cb13250ad09658544e1a4e4f6"
+      ],
+      "coverage": {
+        "v2.4": {
+          "covered_entity_count": 1117,
+          "gold_entity_count": 1242,
+          "covered_relation_count": 662,
+          "gold_relation_count": 794,
+          "entity_recall_upper_bound": 0.899356,
+          "relation_recall_upper_bound": 0.833753,
+          "entity_candidate_negative_count": 791,
+          "relation_candidate_negative_count": 404
+        },
+        "v2.5": {
+          "covered_entity_count": 1117,
+          "gold_entity_count": 1242,
+          "covered_relation_count": 663,
+          "gold_relation_count": 794,
+          "entity_recall_upper_bound": 0.899356,
+          "relation_recall_upper_bound": 0.835013,
+          "entity_candidate_negative_count": 791,
+          "relation_candidate_negative_count": 400
+        }
+      },
+      "changed_units": [
+        {
+          "unit_id": "5954b773ec29497b",
+          "added": [
+            [
+              "公式（A.5）",
+              "formula",
+              "has_input",
+              "R_半月k",
+              "model_variable"
+            ]
+          ],
+          "removed": [
+            [
+              "公式（A.5）",
+              "formula",
+              "has_input",
+              "k",
+              "model_variable"
+            ],
+            [
+              "公式（A.6）",
+              "formula",
+              "has_input",
+              "i",
+              "model_variable"
+            ],
+            [
+              "公式（A.6）",
+              "formula",
+              "has_input",
+              "j",
+              "model_variable"
+            ]
+          ],
+          "gained_coverage": [
+            [
+              "公式（A.5）",
+              "formula",
+              "has_input",
+              "R_半月k",
+              "model_variable"
+            ]
+          ],
+          "lost_coverage": []
+        },
+        {
+          "unit_id": "f8f74534ea13a463",
+          "added": [],
+          "removed": [
+            [
+              "公式（A.1）",
+              "formula",
+              "has_input",
+              "i",
+              "model_variable"
+            ]
+          ],
+          "gained_coverage": [],
+          "lost_coverage": []
+        }
+      ]
+    }
+  }
+}

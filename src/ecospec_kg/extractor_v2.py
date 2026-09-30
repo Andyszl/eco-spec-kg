@@ -26,7 +26,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.4"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.5"
 SELECTION_POLICY_VERSION = "ecospec-selection-v2.4"
 
 OBSERVATION_CODES = {
@@ -397,8 +397,15 @@ def _dynamic_ecosystems(text: str) -> list[str]:
 
 def _formula_lhs_symbols(expression: str) -> list[str]:
     symbols: list[str] = []
-    for match in re.finditer("=", expression):
-        segment = re.split(r"[;\n]", expression[: match.start()])[-1].strip()
+    depth = 0
+    for position, char in enumerate(expression):
+        if char in '([{':
+            depth += 1
+        elif char in ')]}':
+            depth = max(0, depth - 1)
+        if char != '=' or depth or (position and expression[position-1] in '<>!=') or expression[position+1:position+2] == '=':
+            continue
+        segment = re.split(r"[;\n]", expression[:position])[-1].strip()
         found = re.search(
             r"([A-Za-z\u0370-\u03ff\u4e00-\u9fff]+[′’']?"
             r"(?:_[A-Za-z0-9\u0370-\u03ff\u4e00-\u9fff_,]+)?(?:\s*\([^()=]{1,20}\))?)\s*$",
@@ -660,6 +667,8 @@ class RuleCandidateExtractorV2:
             ] or _formula_lhs_symbols(expression)
             outputs = {aliases.get(normalize_symbol(s), normalize_symbol(s)) for s in outputs}
             present = {aliases.get(s, s) for s in formula_symbols(expression, declared | set(aliases))}
+            free_symbols = {aliases.get(s, s) for s in formula_symbols(
+                expression, declared | set(aliases), exclude_bound_indices=True)}
             matched = [
                 variable
                 for variable in variables
@@ -674,6 +683,8 @@ class RuleCandidateExtractorV2:
                 entity = builder.add_entity(
                     symbol, EntityTypeV2.MODEL_VARIABLE, variable_spans
                 )
+                # Bind only formula roles; source/unit metadata is unchanged.
+                is_free = normalize_symbol(symbol) in free_symbols
                 if entity is not None:
                     sourced_variable_entities.append(
                         (entity, str(variable.get("definition", "")))
@@ -685,13 +696,14 @@ class RuleCandidateExtractorV2:
                     or normalize_symbol(symbol) in outputs
                     else RelationTypeV2.HAS_INPUT
                 )
-                builder.add_relation(
-                    formula_entity,
-                    relation,
-                    entity,
-                    formula_spans + variable_spans,
-                )
-                if relation == RelationTypeV2.HAS_OUTPUT:
+                if is_free:
+                    builder.add_relation(
+                        formula_entity,
+                        relation,
+                        entity,
+                        formula_spans + variable_spans,
+                    )
+                if is_free and relation == RelationTypeV2.HAS_OUTPUT:
                     if entity is not None:
                         output_variable_entities.append(entity)
                     builder.add_relation(
