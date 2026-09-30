@@ -26,7 +26,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.5"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.6"
 SELECTION_POLICY_VERSION = "ecospec-selection-v2.4"
 
 OBSERVATION_CODES = {
@@ -627,7 +627,8 @@ class RuleCandidateExtractorV2:
                 str(unit.get("introduction", "")),
                 str(unit.get("interstitial_text", "")),
                 str(unit.get("adjacent_source_text", "")),
-                " ".join(str(item.get("definition", "")) for item in variables),
+                " ".join(str(item.get("definition", "")) for item in variables
+                         if item.get("definition_origin") != "equation_structure_transcription"),
             ]
         )
         for formula in unit.get("formulas", []):
@@ -683,9 +684,10 @@ class RuleCandidateExtractorV2:
                 entity = builder.add_entity(
                     symbol, EntityTypeV2.MODEL_VARIABLE, variable_spans
                 )
-                # Bind only formula roles; source/unit metadata is unchanged.
+                # A bound iteration index is not an observed source quantity.
                 is_free = normalize_symbol(symbol) in free_symbols
-                if entity is not None:
+                if (entity is not None and is_free
+                        and variable.get("definition_origin") != "equation_structure_transcription"):
                     sourced_variable_entities.append(
                         (entity, str(variable.get("definition", "")))
                     )

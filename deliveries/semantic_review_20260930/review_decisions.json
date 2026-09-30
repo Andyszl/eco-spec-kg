@@ -1,0 +1,243 @@
+{
+  "review_date": "2026-09-30",
+  "status": "assistant_source_review_candidate_requires_human_expert_review",
+  "source_pdf_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+  "units_sha256": "ee4398db0538415280f9a0f1e12f2e292bb365ee9c9b6f26728bdb819e57e39a",
+  "annotations_sha256": "c6471750b60ec69cd88a58e9000e8001a0794c9cb13250ad09658544e1a4e4f6",
+  "units": [
+    {
+      "unit_id": "1c050560ebde04e3",
+      "pages": [
+        10
+      ],
+      "reason": "A.18恢复分式；Caco_3与同页CaCo_3局部对应。碳酸钙项可不予考虑但原式明确含该项。公式直接计算EF而非防风固沙量。",
+      "definitions": [
+        {
+          "symbol": "CaCo_3",
+          "unit": "%",
+          "evidence_span_id": "5fb047ceb5518730"
+        }
+      ],
+      "drop_relations": [
+        [
+          "防风固沙量",
+          "calculated_by",
+          "公式（A.18）"
+        ]
+      ],
+      "formulas": [
+        {
+          "number": "A.18",
+          "expression": "EF = (29.09 + 0.31 * sa + 0.17 * si + 0.33 * (sa / cl) - 2.59 * OM - 0.95 * Caco_3) / 100",
+          "inputs": [
+            "sa",
+            "si",
+            "cl",
+            "OM",
+            "CaCo_3"
+          ],
+          "outputs": [
+            "EF"
+          ],
+          "symbol_aliases": [
+            {
+              "symbol": "Caco_3",
+              "canonical_symbol": "CaCo_3",
+              "evidence_span_ids": [
+                "008b923d08a87e0e",
+                "5fb047ceb5518730"
+              ],
+              "reason": "同页公式与定义/同一编号方程组中的大小写对应；只适用于该公式。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit_id": "1e3a79efa6e9062f",
+      "pages": [
+        11
+      ],
+      "reason": "A.23为Marxan迭代目标函数。按原文明确解释的四个完整项保留整体量实体；不独立拆出未定义t/BLM，不补造输出，不把目标函数等同于不可替代性指数的直接计算式。Thershold原样保留。",
+      "drop_relations": [
+        [
+          "生境不可替代性指数",
+          "calculated_by",
+          "公式（A.23）"
+        ]
+      ],
+      "formulas": [
+        {
+          "number": "A.23",
+          "expression": "∑Cost_PUs + BLM∑Boundary_PUs + ∑SPF_ConValue + CostThersholdPenalty(t)",
+          "inputs": [
+            "∑Cost_PUs",
+            "BLM∑Boundary_PUs",
+            "∑SPF_ConValue",
+            "CostThersholdPenalty(t)"
+          ],
+          "outputs": []
+        }
+      ]
+    },
+    {
+      "unit_id": "3b87291bafd7da90",
+      "pages": [
+        9,
+        10
+      ],
+      "reason": "依据原页编号恢复三个方程组边界。潜在量与实际量不同；组内定义量记输出，外部依赖记输入。保留原OCR证据跨度，原跨度跨组不代表公式范围。结构补录量不是原文另列的文字定义，不推断未给出的单位。A.15/16直接计算中间量，不直接计算防风固沙量。",
+      "definitions": [
+        {
+          "symbol": "Q_MAX潜",
+          "definition": "由A.15潜在组方程定义的量；原页未另列文字定义。",
+          "unit": "",
+          "definition_origin": "equation_structure_transcription",
+          "evidence_span_id": "9196ee230fa77e89"
+        },
+        {
+          "symbol": "S潜",
+          "definition": "由A.15潜在组方程定义的量；原页未另列文字定义。",
+          "unit": "",
+          "definition_origin": "equation_structure_transcription",
+          "evidence_span_id": "9196ee230fa77e89"
+        },
+        {
+          "symbol": "S",
+          "definition": "由A.16实际组方程定义的量；原页未另列文字定义。",
+          "unit": "",
+          "definition_origin": "equation_structure_transcription",
+          "evidence_span_id": "c7ac5de419b1f61d"
+        }
+      ],
+      "drop_relations": [
+        [
+          "防风固沙量",
+          "calculated_by",
+          "公式（A.15）"
+        ],
+        [
+          "防风固沙量",
+          "calculated_by",
+          "公式（A.16）"
+        ]
+      ],
+      "formulas": [
+        {
+          "number": "A.14",
+          "expression": "SR = S_L潜 - S_L",
+          "inputs": [
+            "S_L潜",
+            "S_L"
+          ],
+          "outputs": [
+            "SR"
+          ]
+        },
+        {
+          "number": "A.15",
+          "expression": "S_L潜 = (2 * z / S潜^2) * Q_MAX潜 * exp(-(z / s潜)^2)\nQ_MAX潜 = 109.8 * (WF * EF * SCF * K′)\nS潜 = 150.71 * (WF * EF * SCF * K′)^(-0.3711)",
+          "inputs": [
+            "Z",
+            "WF",
+            "EF",
+            "SCF",
+            "K′"
+          ],
+          "outputs": [
+            "S_L潜",
+            "Q_MAX潜",
+            "S潜"
+          ],
+          "symbol_aliases": [
+            {
+              "symbol": "z",
+              "canonical_symbol": "Z",
+              "evidence_span_ids": [
+                "9196ee230fa77e89",
+                "04d32abc9215eccc"
+              ],
+              "reason": "同页公式与定义/同一编号方程组中的大小写对应；只适用于该公式。"
+            },
+            {
+              "symbol": "s潜",
+              "canonical_symbol": "S潜",
+              "evidence_span_ids": [
+                "9196ee230fa77e89"
+              ],
+              "reason": "同页公式与定义/同一编号方程组中的大小写对应；只适用于该公式。"
+            }
+          ]
+        },
+        {
+          "number": "A.16",
+          "expression": "S_L = (2 * z / S^2) * Q_MAX * exp(-(z / s)^2)\nS = 150.71 * (WF * EF * SCF * K′ * C)^(-0.3711)\nQ_MAX = 109.8 * (WF * EF * SCF * K′ * C)",
+          "inputs": [
+            "Z",
+            "WF",
+            "EF",
+            "SCF",
+            "K′",
+            "C"
+          ],
+          "outputs": [
+            "S_L",
+            "S",
+            "Q_MAX"
+          ],
+          "symbol_aliases": [
+            {
+              "symbol": "z",
+              "canonical_symbol": "Z",
+              "evidence_span_ids": [
+                "c7ac5de419b1f61d",
+                "04d32abc9215eccc"
+              ],
+              "reason": "同页公式与定义/同一编号方程组中的大小写对应；只适用于该公式。"
+            },
+            {
+              "symbol": "s",
+              "canonical_symbol": "S",
+              "evidence_span_ids": [
+                "c7ac5de419b1f61d"
+              ],
+              "reason": "同页公式与定义/同一编号方程组中的大小写对应；只适用于该公式。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "pages": [
+        8
+      ],
+      "reason": "i/j分别表示年份/日序号，为求和索引，不是降雨观测量；删除其到降雨量资料的来源边，保留R、R_半月k、P_i,j,k来源边。全训练集同名索引来源边检查仅发现这两条。 n/m是结构补录的求和上限，显式标记补录来源；该解释不能作为降雨资料来源边的文本证据。",
+      "drop_relations": [
+        [
+          "i",
+          "sourced_from",
+          "降雨量资料"
+        ],
+        [
+          "j",
+          "sourced_from",
+          "降雨量资料"
+        ]
+      ],
+      "formulas": [],
+      "definitions": [
+        {
+          "symbol": "n",
+          "definition_origin": "equation_structure_transcription",
+          "evidence_span_id": "17310df1dcf6db8c"
+        },
+        {
+          "symbol": "m",
+          "definition_origin": "equation_structure_transcription",
+          "evidence_span_id": "17310df1dcf6db8c"
+        }
+      ]
+    }
+  ]
+}

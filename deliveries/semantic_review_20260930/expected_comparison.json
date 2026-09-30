@@ -1,0 +1,428 @@
+{
+  "baseline_commit": "9b8e4adb5388a6dccc8176b9dd129bddf6157599",
+  "candidate_generator": "structure-aware-rule-v2.6",
+  "source_hashes": {
+    "formula_symbols.py": "1d7678df8177d6e0becae0b4ebe6ca9c99af8fcd07cf5d96e05bb2f46c630a38",
+    "extractor_v2.py": "f6f354629f6a14f1bc679f6e5356c75e1549c56ebe7134854c72c12c623ff7dd"
+  },
+  "matrix": {
+    "v2.5__rc1_source__rc1_labels": {
+      "covered_entity_count": 1117,
+      "gold_entity_count": 1242,
+      "covered_relation_count": 663,
+      "gold_relation_count": 794,
+      "entity_recall_upper_bound": 0.899356,
+      "relation_recall_upper_bound": 0.835013,
+      "entity_candidate_negative_count": 791,
+      "relation_candidate_negative_count": 400
+    },
+    "v2.6__rc1_source__rc1_labels": {
+      "covered_entity_count": 1118,
+      "gold_entity_count": 1242,
+      "covered_relation_count": 662,
+      "gold_relation_count": 794,
+      "entity_recall_upper_bound": 0.900161,
+      "relation_recall_upper_bound": 0.833753,
+      "entity_candidate_negative_count": 791,
+      "relation_candidate_negative_count": 400
+    },
+    "v2.5__rc1_source__rc2_labels": {
+      "covered_entity_count": 1117,
+      "gold_entity_count": 1247,
+      "covered_relation_count": 659,
+      "gold_relation_count": 796,
+      "entity_recall_upper_bound": 0.89575,
+      "relation_recall_upper_bound": 0.827889,
+      "entity_candidate_negative_count": 791,
+      "relation_candidate_negative_count": 404
+    },
+    "v2.6__rc1_source__rc2_labels": {
+      "covered_entity_count": 1118,
+      "gold_entity_count": 1247,
+      "covered_relation_count": 660,
+      "gold_relation_count": 796,
+      "entity_recall_upper_bound": 0.896552,
+      "relation_recall_upper_bound": 0.829146,
+      "entity_candidate_negative_count": 791,
+      "relation_candidate_negative_count": 402
+    },
+    "v2.5__rc2_source__rc1_labels": {
+      "covered_entity_count": 1121,
+      "gold_entity_count": 1242,
+      "covered_relation_count": 670,
+      "gold_relation_count": 794,
+      "entity_recall_upper_bound": 0.902576,
+      "relation_recall_upper_bound": 0.843829,
+      "entity_candidate_negative_count": 798,
+      "relation_candidate_negative_count": 435
+    },
+    "v2.6__rc2_source__rc1_labels": {
+      "covered_entity_count": 1125,
+      "gold_entity_count": 1242,
+      "covered_relation_count": 672,
+      "gold_relation_count": 794,
+      "entity_recall_upper_bound": 0.905797,
+      "relation_recall_upper_bound": 0.846348,
+      "entity_candidate_negative_count": 796,
+      "relation_candidate_negative_count": 420
+    },
+    "v2.5__rc2_source__rc2_labels": {
+      "covered_entity_count": 1126,
+      "gold_entity_count": 1247,
+      "covered_relation_count": 681,
+      "gold_relation_count": 796,
+      "entity_recall_upper_bound": 0.902967,
+      "relation_recall_upper_bound": 0.855528,
+      "entity_candidate_negative_count": 793,
+      "relation_candidate_negative_count": 424
+    },
+    "v2.6__rc2_source__rc2_labels": {
+      "covered_entity_count": 1130,
+      "gold_entity_count": 1247,
+      "covered_relation_count": 685,
+      "gold_relation_count": 796,
+      "entity_recall_upper_bound": 0.906175,
+      "relation_recall_upper_bound": 0.860553,
+      "entity_candidate_negative_count": 791,
+      "relation_candidate_negative_count": 407
+    }
+  },
+  "code_differences": {
+    "rc1": [
+      {
+        "unit_id": "1e3a79efa6e9062f",
+        "added": [
+          [
+            "公式（A.23）",
+            "formula",
+            "has_input",
+            "CostThersholdPenalty(t)",
+            "model_variable"
+          ]
+        ],
+        "removed": []
+      },
+      {
+        "unit_id": "5954b773ec29497b",
+        "added": [],
+        "removed": [
+          [
+            "i",
+            "model_variable",
+            "sourced_from",
+            "降雨量资料",
+            "data_source"
+          ],
+          [
+            "j",
+            "model_variable",
+            "sourced_from",
+            "降雨量资料",
+            "data_source"
+          ]
+        ]
+      }
+    ],
+    "rc2": [
+      {
+        "unit_id": "1e3a79efa6e9062f",
+        "added": [
+          [
+            "公式（A.23）",
+            "formula",
+            "has_input",
+            "BLM∑Boundary_PUs",
+            "model_variable"
+          ],
+          [
+            "公式（A.23）",
+            "formula",
+            "has_input",
+            "CostThersholdPenalty(t)",
+            "model_variable"
+          ],
+          [
+            "公式（A.23）",
+            "formula",
+            "has_input",
+            "∑Cost_PUs",
+            "model_variable"
+          ],
+          [
+            "公式（A.23）",
+            "formula",
+            "has_input",
+            "∑SPF_ConValue",
+            "model_variable"
+          ]
+        ],
+        "removed": []
+      },
+      {
+        "unit_id": "3b87291bafd7da90",
+        "added": [],
+        "removed": [
+          [
+            "Q_MAX",
+            "model_variable",
+            "obtained_by",
+            "15潜在组方程",
+            "method"
+          ],
+          [
+            "Q_MAX",
+            "model_variable",
+            "obtained_by",
+            "16实际组方程",
+            "method"
+          ],
+          [
+            "Q_MAX潜",
+            "model_variable",
+            "obtained_by",
+            "15潜在组方程",
+            "method"
+          ],
+          [
+            "Q_MAX潜",
+            "model_variable",
+            "obtained_by",
+            "16实际组方程",
+            "method"
+          ],
+          [
+            "S",
+            "model_variable",
+            "obtained_by",
+            "15潜在组方程",
+            "method"
+          ],
+          [
+            "S",
+            "model_variable",
+            "obtained_by",
+            "16实际组方程",
+            "method"
+          ],
+          [
+            "SR",
+            "model_variable",
+            "obtained_by",
+            "15潜在组方程",
+            "method"
+          ],
+          [
+            "SR",
+            "model_variable",
+            "obtained_by",
+            "16实际组方程",
+            "method"
+          ],
+          [
+            "S_L",
+            "model_variable",
+            "obtained_by",
+            "15潜在组方程",
+            "method"
+          ],
+          [
+            "S_L",
+            "model_variable",
+            "obtained_by",
+            "16实际组方程",
+            "method"
+          ],
+          [
+            "S_L潜",
+            "model_variable",
+            "obtained_by",
+            "15潜在组方程",
+            "method"
+          ],
+          [
+            "S_L潜",
+            "model_variable",
+            "obtained_by",
+            "16实际组方程",
+            "method"
+          ],
+          [
+            "S潜",
+            "model_variable",
+            "obtained_by",
+            "15潜在组方程",
+            "method"
+          ],
+          [
+            "S潜",
+            "model_variable",
+            "obtained_by",
+            "16实际组方程",
+            "method"
+          ]
+        ]
+      },
+      {
+        "unit_id": "5954b773ec29497b",
+        "added": [],
+        "removed": [
+          [
+            "i",
+            "model_variable",
+            "sourced_from",
+            "降雨量资料",
+            "data_source"
+          ],
+          [
+            "j",
+            "model_variable",
+            "sourced_from",
+            "降雨量资料",
+            "data_source"
+          ],
+          [
+            "m",
+            "model_variable",
+            "sourced_from",
+            "降雨量资料",
+            "data_source"
+          ]
+        ]
+      }
+    ]
+  },
+  "remaining_reviewed_false_relations": [
+    {
+      "unit_id": "1c050560ebde04e3",
+      "unannotated_candidates": [
+        [
+          "防风固沙量",
+          "assessment_indicator",
+          "calculated_by",
+          "公式（A.18）",
+          "formula"
+        ]
+      ]
+    },
+    {
+      "unit_id": "1e3a79efa6e9062f",
+      "unannotated_candidates": [
+        [
+          "生境不可替代性指数",
+          "assessment_indicator",
+          "calculated_by",
+          "公式（A.23）",
+          "formula"
+        ]
+      ]
+    },
+    {
+      "unit_id": "3b87291bafd7da90",
+      "unannotated_candidates": [
+        [
+          "Q_MAX",
+          "model_variable",
+          "obtained_by",
+          "修正风蚀方程",
+          "method"
+        ],
+        [
+          "Q_MAX潜",
+          "model_variable",
+          "obtained_by",
+          "修正风蚀方程",
+          "method"
+        ],
+        [
+          "S",
+          "model_variable",
+          "obtained_by",
+          "修正风蚀方程",
+          "method"
+        ],
+        [
+          "SR",
+          "model_variable",
+          "obtained_by",
+          "修正风蚀方程",
+          "method"
+        ],
+        [
+          "S_L",
+          "model_variable",
+          "obtained_by",
+          "修正风蚀方程",
+          "method"
+        ],
+        [
+          "S_L潜",
+          "model_variable",
+          "obtained_by",
+          "修正风蚀方程",
+          "method"
+        ],
+        [
+          "S潜",
+          "model_variable",
+          "obtained_by",
+          "修正风蚀方程",
+          "method"
+        ],
+        [
+          "防风固沙量",
+          "assessment_indicator",
+          "calculated_by",
+          "公式（A.15）",
+          "formula"
+        ],
+        [
+          "防风固沙量",
+          "assessment_indicator",
+          "calculated_by",
+          "公式（A.16）",
+          "formula"
+        ]
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "unannotated_candidates": [
+        [
+          "R",
+          "model_variable",
+          "obtained_by",
+          "如下公式计算",
+          "method"
+        ],
+        [
+          "R",
+          "model_variable",
+          "obtained_by",
+          "如下公式进行计算",
+          "method"
+        ],
+        [
+          "R_半月k",
+          "model_variable",
+          "obtained_by",
+          "如下公式计算",
+          "method"
+        ],
+        [
+          "R_半月k",
+          "model_variable",
+          "obtained_by",
+          "如下公式进行计算",
+          "method"
+        ]
+      ]
+    }
+  ],
+  "reviewed_formula_roles_and_bound_index_check": "passed",
+  "artifact_hashes": {
+    "blind/train_units.jsonl": "6cb286dd48a36d478f68eaf2ed7e1ec28cd8bbd31fdef9ae33359e0446a52162",
+    "gold/train_annotations.jsonl": "97c942f32658595b804106fd172b96018be7ee388e812f443bde11ee8278a906",
+    "review/decisions.json": "c4a92598c082a636fdb36531be59489559397632c4188b0b6b0fcdee0d7e2caa",
+    "review/revision_ledger.jsonl": "e25b5b3153ba96ad6c5839b2c0d4624ecce3d33547f1c3973dc96adb10034a87"
+  }
+}

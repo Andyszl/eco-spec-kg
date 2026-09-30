@@ -44,6 +44,15 @@ def _lexical_symbols(expression: str, declared: Iterable[str] = ()) -> set[str]:
     # Compact only explicit braced subscripts; whitespace between identifiers
     # remains a boundary (e.g. a numerator followed by the next line's LHS).
     expression = re.sub(r"_\{([^{}]*)\}", lambda m: "_" + normalize_symbol(m.group(1)), expression)
+    # A source may define a whole aggregate or function value as a quantity.
+    # Match only explicitly declared complete forms, longest first, then mask
+    # them so constituent names/arguments do not acquire invented roles.
+    for symbol in sorted((s for s in vocabulary if not _IDENTIFIER.fullmatch(s)),
+                         key=lambda s: (-len(s), s)):
+        pattern = rf"(?<![{_LETTERS}0-9_∑′]){re.escape(symbol)}(?![{_LETTERS}0-9_∑′])"
+        expression, count = re.subn(pattern, ' ', expression)
+        if count:
+            found.add(symbol)
     for match in _IDENTIFIER.finditer(expression):
         token = normalize_symbol(match.group())
         # Subscripts are integral to identity; never decompose x_ij as x_i*j.
