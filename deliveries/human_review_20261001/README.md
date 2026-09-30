@@ -24,6 +24,18 @@
 
 应让两位真实生态领域专家分别审核全部 882 条，检查实体、关系方向、证据 span、公式角色和漏标；可纠正、添加、删除标注。审阅过程彼此独立，但因模板预填 AI 候选，论文必须如实称为“独立的人类专家复核 AI 候选”，不能写成“从零独立标注”。审核完的每条记录设 `annotator_id` 为实际审核者 ID，`review_status` 为 `human_reviewed`，并填写 `human_review.reviewer_id`、`human_review.reviewed_at`。模板中的 `PENDING_EXPERT_A/B` 不能用于冻结。
 
+每行 JSON 对应一个 `unit_id`，对照同 ID 的 `sources/all_units.jsonl` 审核。原 PDF 对于公式版面、上下标和表格仍是必要证据；服务器没有完整原规范文件时，须私下向专家提供相应原件。不能仅依赖预填 AI 标签。修改实体时保留或新建本单元唯一 `entity_id`，关系的 `head_id/tail_id` 必须指向本单元实体且名称和类型一致；所有 `evidence_span_ids` 应来自该来源单元。每位专家只修改自己提交文件，保留原模板作核验对照。填写审核时间应是实际完成时间，不能批量标记未核对的单元。
+
+两个独立提交齐全后先生成分歧清单，再进行裁决：
+
+```bash
+python tools/prepare_human_review_v2.py compare \
+  --packet "$PACKET" --expert-a "$REVIEW_A" --expert-b "$REVIEW_B" \
+  --out "$COMPARISON_OUT"
+```
+
+输出 `disagreements.jsonl` 和 `agreement.json`，同时检查审核状态、全量单元、实体/关系类型、证据及关系端点 ID。分歧按单元列出，供裁决者逐项回看原文。若无分歧，`disagreements.jsonl` 和后续 `adjudication_log.jsonl` 均可为空文件，但最终882条仍须由指定裁决者确认。
+
 对两位专家意见不同的单元，裁决者逐条写一条 `adjudication_log.jsonl`，包含 `unit_id`、`adjudicator_id`、具体 `reason` 和 `signed_at`；全量 `adjudicated_annotations.jsonl` 每条设 `review_status=human_adjudicated`，并填写裁决者 ID、时间、最终实体及关系。若两位专家完全一致，最终标注仍需经指定裁决者确认，且不能无理由改变一致的实体或关系。
 
 另需 `review_provenance.json`：`schema_version=ecospec-review-provenance-v2.0`、`gold_nature=human_expert_gold`、`claims_human_expert_review=true`；`reviewers` 中有两位不同的 `human_domain_expert`，各含 `reviewer_id`、`human_expert=true`、`qualification_summary`、`identity_verification_reference`、`signed_at`；`adjudication` 中明确其中一位为 `adjudicator_id` 且 `unresolved_count=0`。这些字段必须由实际审核过程产生，不得从 AI 候选或本模板自动填充。

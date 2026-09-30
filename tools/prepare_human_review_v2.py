@@ -91,6 +91,48 @@ def _keys(row: dict, kind: str) -> set[tuple]:
              r["tail_name"], r["tail_type"]) for r in row[kind]}
 
 
+def _validate_review_rows(sources: list[dict], rows: list[dict], reviewer_id: str) -> None:
+    result = validate_expert_annotations(sources, rows, reviewer_id)
+    if not result["passed"]:
+        raise ValueError(f"review schema/evidence validation failed: {result['failures'][:3]}")
+    for row in rows:
+        entities = {e["entity_id"]: (e["name"], e["entity_type"])
+                    for e in row["entities"]}
+        if len(entities) != len(row["entities"]):
+            raise ValueError(f"duplicate entity ID: {row['unit_id']}")
+        for relation in row["relations"]:
+            for side in ("head", "tail"):
+                if entities.get(relation[side + "_id"]) != (
+                    relation[side + "_name"], relation[side + "_type"]
+                ):
+                    raise ValueError(f"relation endpoint ID mismatch: {row['unit_id']}")
+
+
+def compare_submissions(packet: Path, expert_a: Path, expert_b: Path,
+                        out: Path) -> dict[str, Any]:
+    if out.exists():
+        raise ValueError("output exists; refusing to overwrite")
+    check_manifest(packet)
+    sources = read_rows(packet / "sources/all_units.jsonl")
+    a, b = read_rows(expert_a), read_rows(expert_b)
+    a_id, b_id = _reviewer_id(a, "expert_A"), _reviewer_id(b, "expert_B")
+    if a_id == b_id:
+        raise ValueError("reviewers must be distinct human experts")
+    expected = [u["unit_id"] for u in sources]
+    if [r["unit_id"] for r in a] != expected or [r["unit_id"] for r in b] != expected:
+        raise ValueError("full source inventory and order required")
+    _validate_review_rows(sources, a, a_id)
+    _validate_review_rows(sources, b, b_id)
+    agreement, disagreements = compare_experts(sources, a, b)
+    out.mkdir(parents=True)
+    write_rows(out / "disagreements.jsonl", disagreements)
+    summary = {"reviewer_ids": [a_id, b_id], "disagreement_count": len(disagreements),
+               "agreement": agreement, "expert_A_sha256": sha256_path(expert_a),
+               "expert_B_sha256": sha256_path(expert_b)}
+    write_json(out / "agreement.json", summary)
+    return summary
+
+
 def validate_submissions(sources: list[dict], expert_a: list[dict], expert_b: list[dict],
                          adjudicated: list[dict], provenance: dict,
                          decision_log: list[dict] | None = None) -> dict[str, Any]:
@@ -120,11 +162,9 @@ def validate_submissions(sources: list[dict], expert_a: list[dict], expert_b: li
         raise ValueError("human review provenance declaration required")
     if adjudication.get("unresolved_count") != 0:
         raise ValueError("unresolved expert disagreements")
-    for label, rows, reviewer_id in (("A", expert_a, a_id), ("B", expert_b, b_id),
-                                     ("adjudicated", adjudicated, adjudicator_id)):
-        result = validate_expert_annotations(sources, rows, reviewer_id)
-        if not result["passed"]:
-            raise ValueError(f"{label} schema/evidence validation failed: {result['failures'][:3]}")
+    for rows, reviewer_id in ((expert_a, a_id), (expert_b, b_id),
+                              (adjudicated, adjudicator_id)):
+        _validate_review_rows(sources, rows, reviewer_id)
     for row in adjudicated:
         if (row.get("review_status") != "human_adjudicated"
                 or row.get("human_review", {}).get("reviewer_id") != adjudicator_id
@@ -237,6 +277,9 @@ if __name__ == "__main__":
     prep = commands.add_parser("prepare")
     for flag in ("rc2", "frozen", "out"):
         prep.add_argument("--" + flag, type=Path, required=True)
+    comparison = commands.add_parser("compare")
+    for flag in ("packet", "expert-a", "expert-b", "out"):
+        comparison.add_argument("--" + flag, type=Path, required=True)
     for command in ("validate", "freeze"):
         check = commands.add_parser(command)
         for flag in ("packet", "expert-a", "expert-b", "adjudicated", "provenance", "decision-log", "out"):
@@ -244,6 +287,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.command == "prepare":
         result = prepare(args.rc2, args.frozen, args.out)
+    elif args.command == "compare":
+        result = compare_submissions(args.packet, args.expert_a, args.expert_b, args.out)
     else:
         action = validate if args.command == "validate" else freeze
         result = action(args.packet, args.expert_a, args.expert_b, args.adjudicated,

@@ -5,7 +5,9 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-from prepare_human_review_v2 import prepare_records, validate_submissions, freeze, write_json, write_rows
+from prepare_human_review_v2 import (
+    prepare_records, validate_submissions, compare_submissions, freeze, write_json, write_rows,
+)
 
 
 def sample():
@@ -89,6 +91,26 @@ def test_disputed_unit_requires_logged_adjudication():
         validate_submissions(packet["sources"], a, b, final, provenance)
 
 
+def test_compare_writes_only_actual_disagreements(tmp_path):
+    packet = prepare_records(sample())
+    folder = tmp_path / "packet"
+    write_rows(folder / "sources/all_units.jsonl", packet["sources"])
+    write_json(folder / "manifest.json", {"files": []})
+    for reviewer in ("A", "B"):
+        row = packet["templates"][reviewer][0]
+        row["annotator_id"] = f"person_{reviewer}"
+        row["review_status"] = "human_reviewed"
+        row["human_review"] = {"reviewer_id": f"person_{reviewer}",
+                               "reviewed_at": "2026-10-01T10:00:00+08:00"}
+    packet["templates"]["B"][0]["entities"] = []
+    write_rows(tmp_path / "A.jsonl", packet["templates"]["A"])
+    write_rows(tmp_path / "B.jsonl", packet["templates"]["B"])
+    summary = compare_submissions(folder, tmp_path / "A.jsonl", tmp_path / "B.jsonl",
+                                  tmp_path / "difference")
+    assert summary["disagreement_count"] == 1
+    assert (tmp_path / "difference/disagreements.jsonl").exists()
+
+
 def test_signed_reviews_freeze_only_matching_split(tmp_path):
     rows = sample()
     rows["train"][0][0]["provenance"]["standard_code"] = "HJ 1167-2021"
@@ -119,3 +141,27 @@ def test_signed_reviews_freeze_only_matching_split(tmp_path):
                     tmp_path / "provenance.json", tmp_path / "log.jsonl", tmp_path / "frozen")
     assert result["passed"]
     assert (tmp_path / "frozen/manifest.json").exists()
+
+
+def test_relation_endpoint_id_must_match_reviewed_entity(tmp_path):
+    rows = sample()
+    source = rows["train"][0][0]
+    label = rows["train"][1][0]
+    label["relations"] = [{"head_id": "WRONG", "head_name": "X", "head_type": "model_variable",
+                           "relation_type": "calculated_by", "tail_id": "formula-id",
+                           "tail_name": "公式（1）", "tail_type": "formula", "evidence_span_ids": ["s"]}]
+    label["entities"].append({"entity_id": "formula-id", "name": "公式（1）",
+                              "entity_type": "formula", "evidence_span_ids": ["s"]})
+    packet = prepare_records(rows)
+    write_rows(tmp_path / "sources/all_units.jsonl", [source])
+    write_json(tmp_path / "manifest.json", {"files": []})
+    for reviewer in ("A", "B"):
+        review = packet["templates"][reviewer][0]
+        review["annotator_id"] = f"person_{reviewer}"
+        review["review_status"] = "human_reviewed"
+        review["human_review"] = {"reviewer_id": f"person_{reviewer}",
+                                  "reviewed_at": "2026-10-01T10:00:00+08:00"}
+        write_rows(tmp_path / f"{reviewer}.jsonl", [review])
+    with pytest.raises(ValueError, match="endpoint ID"):
+        compare_submissions(tmp_path, tmp_path / "A.jsonl", tmp_path / "B.jsonl",
+                            tmp_path / "disagreements")
