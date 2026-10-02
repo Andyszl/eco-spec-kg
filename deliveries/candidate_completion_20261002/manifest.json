@@ -1,0 +1,15 @@
+{
+  "baseline_commit": "738f1d66bad904cb270ed389fbad83b0478d3694",
+  "candidate_generator": "structure-aware-rule-v2.7",
+  "dataset_version": "v2.2-human-confirmed-20261002",
+  "files": [
+    {
+      "path": "expected.json",
+      "sha256": "af9da12fb4a85b45c1eff78863389898da8507f42a0dc6daccec87ec6ed8deb0"
+    }
+  ],
+  "schema_version": "ecospec-candidate-completion-delivery-v1.0",
+  "source_delivery": "human_confirmed_20261002",
+  "source_delivery_manifest_sha256": "f90a0767eed740768a4290c66941a38eafb4226fb09a68946eb3e11d269980e6",
+  "test_included": false
+}

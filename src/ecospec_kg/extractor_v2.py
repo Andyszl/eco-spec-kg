@@ -26,7 +26,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.6"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.7"
 SELECTION_POLICY_VERSION = "ecospec-selection-v2.4"
 
 OBSERVATION_CODES = {
@@ -52,6 +52,25 @@ INSTRUMENT_TERMS = (
     "光合有效辐射计",
     "相机",
     "定位工具",
+    "叶面积指数仪器",
+    "叶面积仪",
+    "冠层分析仪",
+    "带有刻度的标尺",
+    "雨量器",
+    "全站仪",
+    "皮尺",
+    "蒸发器",
+    "水位自动监测系统",
+    "温度计",
+    "风速仪",
+    "风向标",
+    "自记水位计",
+    "水位管",
+    "钢尺水位计",
+    "径流观测设施",
+    "传感器",
+    "无人机",
+    "记录本",
 )
 DATA_SOURCE_TERMS = (
     "遥感影像数据",
@@ -152,6 +171,9 @@ COMMON_METHOD_TERMS = (
     "像元分解模型",
     "线性像元分解法",
     "归一化处理",
+    "每木检尺",
+    "仪器直接观测",
+    "人工观测",
 )
 FORMULA_INDICATORS = {
     ("HJ 1172-2021", "1"): "生态系统参数相对密度",
@@ -362,11 +384,88 @@ def _method_candidates(text: str) -> list[str]:
         methods.append("仪器测量")
     if "现场调查" in text:
         methods.append("现场调查")
+    # Keep the old candidates while adding bounded, source-visible names.
+    # A bare 法 suffix is useful only at a method/list boundary, not in 法规.
+    boundary = r"(?:^|[，,。；;：:、]|采用|运用|利用|通过|依据|使用|及|和|或|用)\s*"
+    named_method = (
+        r"([\u4e00-\u9fffA-Za-z0-9·—\- ]{2,32}?"
+        r"(?:法|方程|模型|技术|抽样))"
+        r"([（(][A-Za-z][A-Za-z0-9 -]{1,15}[）)])?"
+        r"(?=进行|相结合|测定|测量|观测|计算|估算|获取|提取|主要|则|方法|"
+        r"训练|估测|[，,。；;、及和或]|$)"
+    )
+    for match in re.finditer(boundary + named_method, text):
+        name = _clean(match.group(1))
+        name = re.sub(r"^(?:主要采用|常用的|可采用|可使用|采用|使用|运用|利用|依据|通过|用)", "", name)
+        if name not in GENERIC_METHODS and name not in DATA_SOURCE_TERMS and len(name) >= 2:
+            methods.append(name)
+            if match.group(2):
+                methods.append(name + match.group(2))
+    # Method names can also be explicit observation-content fields.
+    for match in re.finditer(r"(?:观测内容|观测方法|测定方法)[：:]\s*([^；;。]{2,40})", text):
+        value = _clean(match.group(1))
+        if re.search(r"(?:观测|调查|检尺|法|技术)$", value):
+            methods.append(value)
+    for match in re.finditer(r"进行([^。；;]{2,180}?)等(?:一系列)?处理", text):
+        for item in re.split(r"[、，,]|与|以及", match.group(1)):
+            item = _clean(item)
+            if 2 <= len(item) <= 24 and re.search(r"(?:校正|配准|融合|合成|增强|拼接|裁剪)$", item):
+                methods.append(item)
+    for instrument in _candidate_terms(text, INSTRUMENT_TERMS):
+        match = re.search(re.escape(instrument) + r"\s*(?:等工具)?(?:进行)?(测量|测定|观测)", text)
+        if match:
+            methods.append(instrument + match.group(1))
     return _unique(
         normalized
         for method in methods
         if (normalized := _normalize_method_candidate(method))
     )
+
+
+_FIELD_UNIT = re.compile(
+    r"([\u4e00-\u9fff][\u4e00-\u9fffA-Za-z（）() ]{0,25}?)[a-z]?\s*[/／：:]\s*"
+    r"([（(]?(?:%|％|℃|°|(?:kg|mg|g|km|cm|mm|m|s|h|a|d)(?:[23²³])?"
+    r"(?:/(?:kg|g|km|cm|mm|m|s|h|a|d)(?:[23²³])?)?)[）)]?)"
+    r"(?=$|[；;、，,\s])"
+)
+
+
+def _unit_spellings(value: str) -> list[str]:
+    superscript = re.sub(r"(?<=[A-Za-z])([23])(?=$|[/·])",
+                         lambda m: {"2": "²", "3": "³"}[m.group(1)], value)
+    return _unique([value, superscript])
+
+
+def _table_form_fields(unit: dict[str, Any]) -> list[tuple[str, str]]:
+    """Read row labels/units in observation forms, without inherited cell/header values."""
+    if (unit.get("provenance", {}).get("standard_code") not in OBSERVATION_CODES
+            or not re.search(r"(?:调查|观测|记录|核查)表", str(unit.get("table_title", "")))
+            or unit.get("cells", {}).get("观测指标") or unit.get("cells", {}).get("核查指标")):
+        return []
+    inherited = set(unit.get("inherited_columns", []))
+    cells = unit.get("raw_cells", {k: v for k, v in unit.get("cells", {}).items() if k not in inherited})
+    fields: list[tuple[str, str]] = []
+    metadata = r"(?:编号|编码|照片|填写|日期|调查者|记录者|行政区|工程类型|建成时间)"
+    for key, value in cells.items():
+        if not value:
+            continue
+        text = _clean(value)
+        for match in _FIELD_UNIT.finditer(text):
+            name, unit_name = _clean(match.group(1)), match.group(2)
+            if re.search(metadata, name):
+                continue
+            # Strip a printed footnote marker, but preserve the literal unit spelling.
+            name = re.sub(r"(?<=[\u4e00-\u9fff])[a-z]$", "", name)
+            if unit_name not in {"（°）", "(°)"}:
+                unit_name = unit_name.strip("（）()")
+            fields.extend((name, spelling) for spelling in _unit_spellings(unit_name))
+        if not re.search(r"_\d+$", str(key)):
+            # Primary cells in a blank form are labels. Choice/description cells are not.
+            for label in re.split(r"[、，,]", text):
+                if (re.fullmatch(r"[\u4e00-\u9fff]{2,20}", label)
+                        and not re.search(metadata, label) and label not in {"有无", "其他", "备注"}):
+                    fields.append((label, ""))
+    return list(dict.fromkeys(fields))
 
 
 def _quality_candidates(text: str) -> list[str]:
@@ -782,6 +881,12 @@ class RuleCandidateExtractorV2:
         for ecosystem in _dynamic_ecosystems(context):
             builder.add_entity(ecosystem, EntityTypeV2.ECOSYSTEM_TYPE, spans)
 
+        for field_name, unit_name in _table_form_fields(unit):
+            variable = builder.add_entity(field_name, EntityTypeV2.OBSERVATION_VARIABLE, spans)
+            if unit_name:
+                target = builder.add_entity(unit_name, EntityTypeV2.UNIT, spans)
+                builder.add_relation(variable, RelationTypeV2.HAS_UNIT, target, spans)
+
         classification_values = [
             _clean(value)
             for key, value in cells.items()
@@ -807,6 +912,9 @@ class RuleCandidateExtractorV2:
         name = cells.get("观测指标") or cells.get("核查指标")
         if name:
             variable = builder.add_entity(name, EntityTypeV2.OBSERVATION_VARIABLE, spans)
+            if "百分比" in str(cells.get("指标定义", "")):
+                target = builder.add_entity("百分比", EntityTypeV2.UNIT, spans)
+                builder.add_relation(variable, RelationTypeV2.HAS_UNIT, target, spans)
             temporal = _clean(cells.get("观测时间", ""))
             frequency = _clean(cells.get("观测频度", ""))
             if temporal and temporal not in {"—", "-", "/"}:
@@ -909,6 +1017,8 @@ class RuleCandidateExtractorV2:
             if (method := builder.add_entity(method_name, EntityTypeV2.METHOD, spans))
             is not None
         ]
+        for instrument in _candidate_terms(text, INSTRUMENT_TERMS):
+            builder.add_entity(instrument, EntityTypeV2.INSTRUMENT, spans)
         quality_entities = [
             rule
             for rule_name in _quality_candidates(text)
@@ -946,6 +1056,9 @@ class RuleCandidateExtractorV2:
                 if name and name not in {"野外观测技术方法", "野外核查"}
                 else None
             )
+            if variable and "百分比" in text:
+                target = builder.add_entity("百分比", EntityTypeV2.UNIT, spans)
+                builder.add_relation(variable, RelationTypeV2.HAS_UNIT, target, spans)
             for method in method_entities:
                 builder.add_relation(variable, RelationTypeV2.OBTAINED_BY, method, spans)
                 for ecosystem in ecosystem_entities:
@@ -1023,6 +1136,10 @@ class RuleCandidateExtractorV2:
     def _quality(self, builder: PredictionBuilder) -> None:
         unit = builder.unit
         text = str(unit.get("clause_text", ""))
+        if (_page(unit) >= 4 and len(text) >= 8 and "目 次" not in text
+                and re.search(r"进行.*处理|采用|运用|使用|通过|用.+法", text)):
+            for method in _method_candidates(text):
+                builder.add_entity(method, EntityTypeV2.METHOD)
         if (
             unit["provenance"]["standard_code"] != "HJ 1176-2021"
             or _page(unit) < 5

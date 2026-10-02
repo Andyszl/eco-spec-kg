@@ -56,3 +56,14 @@ def test_delivery_rejects_extra_test_file(tmp_path):
     (folder / "gold/test_annotations.jsonl").write_text("{}\n", encoding="utf-8")
     with pytest.raises(ValueError, match="inventory"):
         check_delivery(folder)
+
+
+def test_old_delivery_requires_an_explicit_data_only_version_check(tmp_path):
+    folder = delivery(tmp_path)
+    path = folder / "manifest.json"
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    manifest["candidate_generator"] = "structure-aware-rule-v2.6"
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="candidate generator version"):
+        check_delivery(folder)
+    check_delivery(folder, expected_candidate_generator="structure-aware-rule-v2.6")

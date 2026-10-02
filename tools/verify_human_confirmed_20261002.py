@@ -20,14 +20,14 @@ FILES = {
 }
 
 
-def check_delivery(folder: Path) -> dict:
+def check_delivery(folder: Path, *, expected_candidate_generator: str = CANDIDATE_GENERATOR_VERSION) -> dict:
     manifest = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
     files = manifest["files"]
     actual_data_files = {p.relative_to(folder).as_posix() for p in folder.rglob("*.jsonl")}
     if ({entry["path"] for entry in files} != FILES or len(files) != len(FILES)
             or actual_data_files != {name for name in FILES if name.endswith(".jsonl")}):
         raise ValueError("delivery file inventory must contain only the fixed train/dev files")
-    if manifest.get("candidate_generator") != CANDIDATE_GENERATOR_VERSION:
+    if manifest.get("candidate_generator") != expected_candidate_generator:
         raise ValueError("candidate generator version differs from this delivery")
     if (manifest.get("gold_nature") != "human_expert_gold"
             or manifest.get("review_method") != "ai_assisted_human_confirmed"):

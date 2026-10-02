@@ -31,7 +31,7 @@ conda activate ecospec-train
   WORK=/home/hello/szl/eco-spec-kg-human-confirmed-20261002
   OUT=/home/hello/szl/eco-spec-results/human_confirmed_20261002
   git -C "$REPO" fetch https://github.com/Andyszl/eco-spec-kg.git main
-  REV=$(git -C "$REPO" rev-parse FETCH_HEAD)
+  REV=738f1d66bad904cb270ed389fbad83b0478d3694
   test ! -e "$WORK"
   test ! -e "$OUT"
   git -C "$REPO" worktree add --detach "$WORK" "$REV"

@@ -1,0 +1,392 @@
+{
+  "dev": {
+    "entity_f1": 0.680851,
+    "macro_relation_f1": 0.651671,
+    "relation_f1": 0.564706,
+    "validated_units": 22
+  },
+  "train": {
+    "baseline": {
+      "covered_entity_count": 1018,
+      "covered_relation_count": 603,
+      "entity_candidate_count": 1921,
+      "entity_recall_upper_bound": 0.732901,
+      "entity_unannotated_candidate_count": 903,
+      "gold_entity_count": 1389,
+      "gold_relation_count": 840,
+      "relation_candidate_count": 1092,
+      "relation_recall_upper_bound": 0.717857,
+      "relation_unannotated_candidate_count": 489
+    },
+    "by_type": {
+      "baseline": {
+        "applies_to_ecosystem": {
+          "candidates": 169,
+          "covered": 19,
+          "gold": 29,
+          "unannotated": 150
+        },
+        "applies_to_space": {
+          "candidates": 34,
+          "covered": 2,
+          "gold": 29,
+          "unannotated": 32
+        },
+        "assessment_indicator": {
+          "candidates": 72,
+          "covered": 20,
+          "gold": 36,
+          "unannotated": 52
+        },
+        "assessment_subject": {
+          "candidates": 67,
+          "covered": 3,
+          "gold": 4,
+          "unannotated": 64
+        },
+        "calculated_by": {
+          "candidates": 59,
+          "covered": 36,
+          "gold": 38,
+          "unannotated": 23
+        },
+        "classification_rule": {
+          "covered": 0,
+          "gold": 3
+        },
+        "classified_by": {
+          "covered": 0,
+          "gold": 1
+        },
+        "constrained_by": {
+          "candidates": 50,
+          "covered": 48,
+          "gold": 81,
+          "unannotated": 2
+        },
+        "data_source": {
+          "candidates": 115,
+          "covered": 73,
+          "gold": 97,
+          "unannotated": 42
+        },
+        "ecosystem_type": {
+          "candidates": 578,
+          "covered": 108,
+          "gold": 108,
+          "unannotated": 470
+        },
+        "formula": {
+          "candidates": 29,
+          "covered": 29,
+          "gold": 31,
+          "unannotated": 0
+        },
+        "frequency": {
+          "candidates": 170,
+          "covered": 170,
+          "gold": 171,
+          "unannotated": 0
+        },
+        "has_indicator": {
+          "candidates": 72,
+          "covered": 3,
+          "gold": 7,
+          "unannotated": 69
+        },
+        "has_input": {
+          "candidates": 80,
+          "covered": 77,
+          "gold": 77,
+          "unannotated": 3
+        },
+        "has_output": {
+          "candidates": 32,
+          "covered": 32,
+          "gold": 32,
+          "unannotated": 0
+        },
+        "has_unit": {
+          "candidates": 41,
+          "covered": 40,
+          "gold": 91,
+          "unannotated": 1
+        },
+        "instrument": {
+          "candidates": 34,
+          "covered": 30,
+          "gold": 54,
+          "unannotated": 4
+        },
+        "measured_with": {
+          "candidates": 34,
+          "covered": 26,
+          "gold": 52,
+          "unannotated": 8
+        },
+        "method": {
+          "candidates": 302,
+          "covered": 61,
+          "gold": 155,
+          "unannotated": 241
+        },
+        "model_variable": {
+          "candidates": 97,
+          "covered": 97,
+          "gold": 97,
+          "unannotated": 0
+        },
+        "observation_variable": {
+          "candidates": 255,
+          "covered": 236,
+          "gold": 338,
+          "unannotated": 19
+        },
+        "observed_during": {
+          "candidates": 120,
+          "covered": 120,
+          "gold": 121,
+          "unannotated": 0
+        },
+        "observed_every": {
+          "candidates": 170,
+          "covered": 170,
+          "gold": 171,
+          "unannotated": 0
+        },
+        "obtained_by": {
+          "candidates": 191,
+          "covered": 23,
+          "gold": 90,
+          "unannotated": 168
+        },
+        "quality_rule": {
+          "candidates": 46,
+          "covered": 46,
+          "gold": 79,
+          "unannotated": 0
+        },
+        "sourced_from": {
+          "candidates": 40,
+          "covered": 7,
+          "gold": 21,
+          "unannotated": 33
+        },
+        "spatial_scope": {
+          "candidates": 14,
+          "covered": 5,
+          "gold": 24,
+          "unannotated": 9
+        },
+        "temporal_scope": {
+          "candidates": 121,
+          "covered": 120,
+          "gold": 122,
+          "unannotated": 1
+        },
+        "unit": {
+          "candidates": 21,
+          "covered": 20,
+          "gold": 70,
+          "unannotated": 1
+        }
+      },
+      "current": {
+        "applies_to_ecosystem": {
+          "candidates": 201,
+          "covered": 19,
+          "gold": 29,
+          "unannotated": 182
+        },
+        "applies_to_space": {
+          "candidates": 35,
+          "covered": 2,
+          "gold": 29,
+          "unannotated": 33
+        },
+        "assessment_indicator": {
+          "candidates": 72,
+          "covered": 20,
+          "gold": 36,
+          "unannotated": 52
+        },
+        "assessment_subject": {
+          "candidates": 67,
+          "covered": 3,
+          "gold": 4,
+          "unannotated": 64
+        },
+        "calculated_by": {
+          "candidates": 59,
+          "covered": 36,
+          "gold": 38,
+          "unannotated": 23
+        },
+        "classification_rule": {
+          "covered": 0,
+          "gold": 3
+        },
+        "classified_by": {
+          "covered": 0,
+          "gold": 1
+        },
+        "constrained_by": {
+          "candidates": 50,
+          "covered": 48,
+          "gold": 81,
+          "unannotated": 2
+        },
+        "data_source": {
+          "candidates": 115,
+          "covered": 73,
+          "gold": 97,
+          "unannotated": 42
+        },
+        "ecosystem_type": {
+          "candidates": 578,
+          "covered": 108,
+          "gold": 108,
+          "unannotated": 470
+        },
+        "formula": {
+          "candidates": 29,
+          "covered": 29,
+          "gold": 31,
+          "unannotated": 0
+        },
+        "frequency": {
+          "candidates": 170,
+          "covered": 170,
+          "gold": 171,
+          "unannotated": 0
+        },
+        "has_indicator": {
+          "candidates": 72,
+          "covered": 3,
+          "gold": 7,
+          "unannotated": 69
+        },
+        "has_input": {
+          "candidates": 80,
+          "covered": 77,
+          "gold": 77,
+          "unannotated": 3
+        },
+        "has_output": {
+          "candidates": 32,
+          "covered": 32,
+          "gold": 32,
+          "unannotated": 0
+        },
+        "has_unit": {
+          "candidates": 102,
+          "covered": 84,
+          "gold": 91,
+          "unannotated": 18
+        },
+        "instrument": {
+          "candidates": 63,
+          "covered": 54,
+          "gold": 54,
+          "unannotated": 9
+        },
+        "measured_with": {
+          "candidates": 62,
+          "covered": 48,
+          "gold": 52,
+          "unannotated": 14
+        },
+        "method": {
+          "candidates": 427,
+          "covered": 117,
+          "gold": 155,
+          "unannotated": 310
+        },
+        "model_variable": {
+          "candidates": 97,
+          "covered": 97,
+          "gold": 97,
+          "unannotated": 0
+        },
+        "observation_variable": {
+          "candidates": 340,
+          "covered": 298,
+          "gold": 338,
+          "unannotated": 42
+        },
+        "observed_during": {
+          "candidates": 120,
+          "covered": 120,
+          "gold": 121,
+          "unannotated": 0
+        },
+        "observed_every": {
+          "candidates": 170,
+          "covered": 170,
+          "gold": 171,
+          "unannotated": 0
+        },
+        "obtained_by": {
+          "candidates": 273,
+          "covered": 58,
+          "gold": 90,
+          "unannotated": 215
+        },
+        "quality_rule": {
+          "candidates": 46,
+          "covered": 46,
+          "gold": 79,
+          "unannotated": 0
+        },
+        "sourced_from": {
+          "candidates": 40,
+          "covered": 7,
+          "gold": 21,
+          "unannotated": 33
+        },
+        "spatial_scope": {
+          "candidates": 14,
+          "covered": 5,
+          "gold": 24,
+          "unannotated": 9
+        },
+        "temporal_scope": {
+          "candidates": 121,
+          "covered": 120,
+          "gold": 122,
+          "unannotated": 1
+        },
+        "unit": {
+          "candidates": 81,
+          "covered": 63,
+          "gold": 70,
+          "unannotated": 18
+        }
+      }
+    },
+    "changed_unit_count": 175,
+    "current": {
+      "covered_entity_count": 1203,
+      "covered_relation_count": 704,
+      "entity_candidate_count": 2220,
+      "entity_recall_upper_bound": 0.866091,
+      "entity_unannotated_candidate_count": 1017,
+      "gold_entity_count": 1389,
+      "gold_relation_count": 840,
+      "relation_candidate_count": 1296,
+      "relation_recall_upper_bound": 0.838095,
+      "relation_unannotated_candidate_count": 592
+    },
+    "gained_coverage_by_type": {
+      "has_unit": 44,
+      "instrument": 24,
+      "measured_with": 22,
+      "method": 56,
+      "observation_variable": 62,
+      "obtained_by": 35,
+      "unit": 43
+    },
+    "lost_coverage_by_type": {}
+  },
+  "training_records": 693
+}
