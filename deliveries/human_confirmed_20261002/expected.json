@@ -1,0 +1,17 @@
+{
+  "candidate_coverage": {
+    "covered_entities": 1018,
+    "covered_relations": 603,
+    "entity_recall_upper_bound": 0.732901,
+    "gold_entities": 1389,
+    "gold_relations": 840,
+    "relation_recall_upper_bound": 0.717857
+  },
+  "dev": {
+    "entity_f1": 0.711111,
+    "macro_relation_f1": 0.654449,
+    "relation_f1": 0.571429,
+    "validated_units": 22
+  },
+  "training_records": 693
+}

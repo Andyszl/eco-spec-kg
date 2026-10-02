@@ -66,7 +66,14 @@ def test_two_signed_reviews_and_agreed_adjudication_pass():
                                  "signed_at": "2026-10-01T10:00:00+08:00"}
                                 for reviewer in ("person_A", "person_B")],
                   "adjudication": {"adjudicator_id": "person_A", "unresolved_count": 0}}
-    assert validate_submissions(packet["sources"], a, b, final, provenance)["passed"]
+    result = validate_submissions(packet["sources"], a, b, final, provenance)
+    assert result["passed"]
+    assert result["agreement"]["annotation_nature"] == "human_expert_reviewed"
+    assert result["agreement"]["human_expert_review_required_for_publication"] is False
+    provenance["review_method"] = "ai_assisted_human_confirmed"
+    assisted = validate_submissions(packet["sources"], a, b, final, provenance)
+    assert assisted["agreement"]["annotation_nature"] == "ai_assisted_human_confirmed"
+    assert assisted["agreement"]["review_provenance_validated"] is True
 
 
 def test_disputed_unit_requires_logged_adjudication():
@@ -108,6 +115,8 @@ def test_compare_writes_only_actual_disagreements(tmp_path):
     summary = compare_submissions(folder, tmp_path / "A.jsonl", tmp_path / "B.jsonl",
                                   tmp_path / "difference")
     assert summary["disagreement_count"] == 1
+    assert summary["agreement"]["annotation_nature"] == "reviewed_submissions"
+    assert summary["agreement"]["review_provenance_validated"] is False
     assert (tmp_path / "difference/disagreements.jsonl").exists()
 
 

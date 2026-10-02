@@ -1,0 +1,246 @@
+{
+  "allowed_triple_pattern_count": 26,
+  "checks": [
+    {
+      "check": "all_domain_entities_defined",
+      "details": [],
+      "passed": true
+    },
+    {
+      "check": "all_relations_constrained",
+      "details": [],
+      "passed": true
+    },
+    {
+      "check": "no_unbounded_relation",
+      "details": [],
+      "passed": true
+    },
+    {
+      "check": "legacy_ambiguous_values_excluded",
+      "details": [],
+      "passed": true
+    },
+    {
+      "check": "path_templates_use_allowed_edges",
+      "details": [],
+      "passed": true
+    }
+  ],
+  "document_object_count": 6,
+  "domain_entity_count": 15,
+  "ontology_version": "ecospec-ontology-v2.0",
+  "passed": true,
+  "path_template_count": 3,
+  "relation_count": 14,
+  "schema_rows": [
+    {
+      "evidence_rule": "指标体系表或正文明确列出组成关系。",
+      "head_type": "assessment_subject",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "包含评估指标",
+      "relation_type": "has_indicator",
+      "tail_type": "assessment_indicator"
+    },
+    {
+      "evidence_rule": "指标/变量与公式编号在公式包中明确关联。",
+      "head_type": "assessment_indicator",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "由公式计算",
+      "relation_type": "calculated_by",
+      "tail_type": "formula"
+    },
+    {
+      "evidence_rule": "指标/变量与公式编号在公式包中明确关联。",
+      "head_type": "model_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "由公式计算",
+      "relation_type": "calculated_by",
+      "tail_type": "formula"
+    },
+    {
+      "evidence_rule": "变量符号真实出现在公式右侧并有坐标证据。",
+      "head_type": "formula",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "包含输入变量",
+      "relation_type": "has_input",
+      "tail_type": "model_variable"
+    },
+    {
+      "evidence_rule": "变量符号位于公式左侧并有坐标证据。",
+      "head_type": "formula",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "产生输出变量",
+      "relation_type": "has_output",
+      "tail_type": "model_variable"
+    },
+    {
+      "evidence_rule": "同一来源单元存在获取/计算方法触发语义。",
+      "head_type": "model_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "通过方法获得",
+      "relation_type": "obtained_by",
+      "tail_type": "method"
+    },
+    {
+      "evidence_rule": "同一来源单元存在获取/计算方法触发语义。",
+      "head_type": "observation_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "通过方法获得",
+      "relation_type": "obtained_by",
+      "tail_type": "method"
+    },
+    {
+      "evidence_rule": "变量与仪器位于同一条款或表格逻辑行。",
+      "head_type": "observation_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "使用仪器测量",
+      "relation_type": "measured_with",
+      "tail_type": "instrument"
+    },
+    {
+      "evidence_rule": "来源触发词与变量在同一来源单元明确关联。",
+      "head_type": "model_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "来源于数据",
+      "relation_type": "sourced_from",
+      "tail_type": "data_source"
+    },
+    {
+      "evidence_rule": "来源触发词与变量在同一来源单元明确关联。",
+      "head_type": "observation_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "来源于数据",
+      "relation_type": "sourced_from",
+      "tail_type": "data_source"
+    },
+    {
+      "evidence_rule": "单位与对象位于同一变量说明或表格逻辑行。",
+      "head_type": "assessment_indicator",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "计量单位",
+      "relation_type": "has_unit",
+      "tail_type": "unit"
+    },
+    {
+      "evidence_rule": "单位与对象位于同一变量说明或表格逻辑行。",
+      "head_type": "model_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "计量单位",
+      "relation_type": "has_unit",
+      "tail_type": "unit"
+    },
+    {
+      "evidence_rule": "单位与对象位于同一变量说明或表格逻辑行。",
+      "head_type": "observation_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "计量单位",
+      "relation_type": "has_unit",
+      "tail_type": "unit"
+    },
+    {
+      "evidence_rule": "变量与时段位于同一条款或表格逻辑行。",
+      "head_type": "observation_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "观测时段",
+      "relation_type": "observed_during",
+      "tail_type": "temporal_scope"
+    },
+    {
+      "evidence_rule": "变量与频率位于同一条款或表格逻辑行。",
+      "head_type": "observation_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "观测频率",
+      "relation_type": "observed_every",
+      "tail_type": "frequency"
+    },
+    {
+      "evidence_rule": "适用对象必须由正文、表头或注释明确表达。",
+      "head_type": "assessment_indicator",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "适用生态类型",
+      "relation_type": "applies_to_ecosystem",
+      "tail_type": "ecosystem_type"
+    },
+    {
+      "evidence_rule": "适用对象必须由正文、表头或注释明确表达。",
+      "head_type": "formula",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "适用生态类型",
+      "relation_type": "applies_to_ecosystem",
+      "tail_type": "ecosystem_type"
+    },
+    {
+      "evidence_rule": "适用对象必须由正文、表头或注释明确表达。",
+      "head_type": "method",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "适用生态类型",
+      "relation_type": "applies_to_ecosystem",
+      "tail_type": "ecosystem_type"
+    },
+    {
+      "evidence_rule": "空间条件必须由正文、表头或注释明确表达。",
+      "head_type": "assessment_indicator",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "适用空间范围",
+      "relation_type": "applies_to_space",
+      "tail_type": "spatial_scope"
+    },
+    {
+      "evidence_rule": "空间条件必须由正文、表头或注释明确表达。",
+      "head_type": "formula",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "适用空间范围",
+      "relation_type": "applies_to_space",
+      "tail_type": "spatial_scope"
+    },
+    {
+      "evidence_rule": "空间条件必须由正文、表头或注释明确表达。",
+      "head_type": "method",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "适用空间范围",
+      "relation_type": "applies_to_space",
+      "tail_type": "spatial_scope"
+    },
+    {
+      "evidence_rule": "约束对象与阈值、条件或动作必须在质量条款中共现。",
+      "head_type": "data_source",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "受质量规则约束",
+      "relation_type": "constrained_by",
+      "tail_type": "quality_rule"
+    },
+    {
+      "evidence_rule": "约束对象与阈值、条件或动作必须在质量条款中共现。",
+      "head_type": "method",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "受质量规则约束",
+      "relation_type": "constrained_by",
+      "tail_type": "quality_rule"
+    },
+    {
+      "evidence_rule": "约束对象与阈值、条件或动作必须在质量条款中共现。",
+      "head_type": "model_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "受质量规则约束",
+      "relation_type": "constrained_by",
+      "tail_type": "quality_rule"
+    },
+    {
+      "evidence_rule": "约束对象与阈值、条件或动作必须在质量条款中共现。",
+      "head_type": "observation_variable",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "受质量规则约束",
+      "relation_type": "constrained_by",
+      "tail_type": "quality_rule"
+    },
+    {
+      "evidence_rule": "指标与等级边界必须来自同一分级表或条款。",
+      "head_type": "assessment_indicator",
+      "ontology_version": "ecospec-ontology-v2.0",
+      "relation_label_zh": "依据规则分级",
+      "relation_type": "classified_by",
+      "tail_type": "classification_rule"
+    }
+  ]
+}

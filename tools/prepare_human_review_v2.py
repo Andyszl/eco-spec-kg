@@ -124,6 +124,9 @@ def compare_submissions(packet: Path, expert_a: Path, expert_b: Path,
     _validate_review_rows(sources, a, a_id)
     _validate_review_rows(sources, b, b_id)
     agreement, disagreements = compare_experts(sources, a, b)
+    agreement["annotation_nature"] = "reviewed_submissions"
+    agreement["review_provenance_validated"] = False
+    agreement.pop("human_expert_review_required_for_publication", None)
     out.mkdir(parents=True)
     write_rows(out / "disagreements.jsonl", disagreements)
     summary = {"reviewer_ids": [a_id, b_id], "disagreement_count": len(disagreements),
@@ -185,6 +188,13 @@ def validate_submissions(sources: list[dict], expert_a: list[dict], expert_b: li
             for kind in ("entities", "relations"):
                 if _keys(final, kind) != _keys(left, kind):
                     raise ValueError("agreed unit changed during adjudication")
+    agreement["annotation_nature"] = (
+        "ai_assisted_human_confirmed"
+        if provenance.get("review_method") == "ai_assisted_human_confirmed"
+        else "human_expert_reviewed"
+    )
+    agreement["review_provenance_validated"] = True
+    agreement["human_expert_review_required_for_publication"] = False
     return {"passed": True, "unit_count": len(sources), "reviewer_ids": [a_id, b_id],
             "adjudicator_id": adjudicator_id, "disagreement_count": len(disputed),
             "agreement": agreement}

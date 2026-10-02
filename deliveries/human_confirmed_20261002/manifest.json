@@ -1,0 +1,47 @@
+{
+  "candidate_generator": "structure-aware-rule-v2.6",
+  "confirmed_at": "2026-10-02",
+  "dataset_version": "v2.2-human-confirmed-20261002",
+  "files": [
+    {
+      "bytes": 41749,
+      "path": "blind/dev_units.jsonl",
+      "sha256": "a1776a04775ca50fbdc17dcb80ef3223f0214028b3b5f425243783d9e47cd9e8"
+    },
+    {
+      "bytes": 1164274,
+      "path": "blind/train_units.jsonl",
+      "sha256": "6cb286dd48a36d478f68eaf2ed7e1ec28cd8bbd31fdef9ae33359e0446a52162"
+    },
+    {
+      "bytes": 395,
+      "path": "expected.json",
+      "sha256": "a81237d69842ebd9e382ce6d8465ae628b4434dd5c81f33dbe6131f7a7643813"
+    },
+    {
+      "bytes": 24292,
+      "path": "gold/dev_annotations.jsonl",
+      "sha256": "9047b685b2ccb76b986fb2132a3259d231b5cc8a1798cffc1e802bf982d4338a"
+    },
+    {
+      "bytes": 663002,
+      "path": "gold/train_annotations.jsonl",
+      "sha256": "dde317b9f1c57cea2a35c5721638cca14b4ddcd0c495c8b38b45d9b16e2eb6c0"
+    },
+    {
+      "bytes": 8832,
+      "path": "schema_v2.json",
+      "sha256": "fca3a421a97f7a47d37d9bed88b39f29ad9f1d33834a4e57fc26ebd7fdcd602f"
+    }
+  ],
+  "gold_nature": "human_expert_gold",
+  "package_id": "3d80e7fb28e3a308",
+  "review_method": "ai_assisted_human_confirmed",
+  "schema_version": "ecospec-human-confirmed-train-dev-delivery-v1.0",
+  "scope": "anonymized train/dev slice of the private full frozen package",
+  "test_included": false,
+  "unit_split_counts": {
+    "dev": 22,
+    "train": 693
+  }
+}
