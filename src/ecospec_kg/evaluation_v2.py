@@ -173,7 +173,10 @@ def _find_package_manifest(path: Path) -> tuple[Path, dict[str, Any]] | None:
         candidate = parent / "manifest.json"
         if candidate.exists():
             payload = read_json(candidate)
-            if payload.get("schema_version") == "ecospec-experiment-dataset-v2.1":
+            if payload.get("schema_version") in {
+                "ecospec-experiment-dataset-v2.1",
+                "ecospec-human-confirmed-train-dev-delivery-v1.0",
+            }:
                 return candidate, payload
     return None
 
@@ -221,6 +224,7 @@ def evaluate_v2(
     gold_nature = "unknown"
     dataset_version = "unknown"
     package_id = "unknown"
+    review_method = "unknown"
     if package is not None and gold_package is not None:
         if package[0].resolve() != gold_package[0].resolve():
             raise ValueError("blind units and gold annotations come from different packages")
@@ -229,6 +233,7 @@ def evaluate_v2(
         gold_nature = package[1].get("gold_nature", "unknown")
         dataset_version = package[1].get("dataset_version", "unknown")
         package_id = package[1].get("package_id", "unknown")
+        review_method = package[1].get("review_method", "unknown")
 
     unit_by_id = {row["unit_id"]: row for row in units}
     gold_by_id = {row["unit_id"]: row for row in gold_rows}
@@ -359,6 +364,7 @@ def evaluate_v2(
             "package_id": package_id,
             "dataset_version": dataset_version,
             "gold_nature": gold_nature,
+            "review_method": review_method,
             "human_expert_review_required_for_publication": (
                 gold_nature != "human_expert_gold"
             ),
@@ -437,6 +443,7 @@ def evaluate_v2(
 
 - 数据版本：{dataset_version}
 - 金标准性质：{gold_nature}
+- 审核方式：{review_method}
 - 来源单元：{len(units)}
 - 真实专家复核仍需完成：{gold_nature != 'human_expert_gold'}
 
