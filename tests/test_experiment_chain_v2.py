@@ -4,7 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from ecospec_kg.analysis_v2 import (
     analyze_errors_v2,
@@ -145,6 +145,39 @@ def ai_review_provenance() -> dict:
 
 
 class ExperimentChainV2Tests(unittest.TestCase):
+    def test_llm_extraction_accepts_think_prefix_and_preserves_raw_response(self) -> None:
+        unit = source_unit()
+        candidates = RuleCandidateExtractorV2().predict_unit(unit)
+        relation = candidates["relations"][0]
+        raw = "<think>\n\n</think>\n\n" + json.dumps(
+            {
+                "selected_entity_ids": [],
+                "selected_relation_ids": [relation["relation_id"]],
+            }
+        )
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = json.dumps(
+            {"choices": [{"finish_reason": "stop", "message": {"content": raw}}]}
+        ).encode("utf-8")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            units = root / "units.jsonl"
+            write_jsonl(units, [unit])
+            with patch("urllib.request.urlopen", return_value=response):
+                manifest = extract_v2(units, root / "run", backend="llm")
+            self.assertEqual(manifest["status"], "complete")
+            self.assertEqual(manifest["summary"]["success_count"], 1)
+            prediction = read_jsonl(root / "run" / "predictions.jsonl")[0]
+            self.assertEqual(prediction["relations"], [relation])
+            self.assertEqual(
+                {item["entity_id"] for item in prediction["entities"]},
+                {relation["head_id"], relation["tail_id"]},
+            )
+            recorded = read_jsonl(root / "run" / "raw_responses.jsonl")[0]
+            self.assertEqual(recorded["raw_response"], raw)
+            self.assertEqual(recorded["response_sha256"], sha256_json(raw))
+
     def test_error_analysis_reconstructs_details_and_rejects_test_gold(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

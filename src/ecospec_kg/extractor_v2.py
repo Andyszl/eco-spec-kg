@@ -1160,6 +1160,11 @@ class RuleCandidateExtractorV2:
 
 def _parse_llm_selection(response: str) -> dict[str, list[str]]:
     text = response.strip()
+    if text.startswith("<think>"):
+        _, closing_tag, answer = text.partition("</think>")
+        if not closing_tag:
+            raise ValueError("LLM selection has an unclosed think block")
+        text = answer.strip()
     fence = re.search(r"```(?:json)?\s*(.*?)```", text, re.DOTALL | re.IGNORECASE)
     if fence:
         text = fence.group(1).strip()
