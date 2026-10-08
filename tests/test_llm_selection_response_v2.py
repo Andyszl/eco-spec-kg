@@ -7,6 +7,30 @@ from ecospec_kg.extractor_v2 import _parse_llm_selection
 
 
 class LLMSelectionResponseTests(unittest.TestCase):
+    def test_repeated_selection_ids_keep_first_occurrence_order(self) -> None:
+        response = json.dumps(
+            {
+                "selected_entity_ids": ["entity-b", 17, "entity-a", "17", "entity-b"],
+                "selected_relation_ids": [
+                    "ba2680accdff433c",
+                    "d18589b2aec60368",
+                    "ba2680accdff433c",
+                    "da0687cf2a5c71c5",
+                ],
+            }
+        )
+        self.assertEqual(
+            _parse_llm_selection(response),
+            {
+                "selected_entity_ids": ["entity-b", "17", "entity-a"],
+                "selected_relation_ids": [
+                    "ba2680accdff433c",
+                    "d18589b2aec60368",
+                    "da0687cf2a5c71c5",
+                ],
+            },
+        )
+
     def test_server_response_with_empty_think_prefix(self) -> None:
         response = (
             '<think>\n\n</think>\n\n{"selected_entity_ids": [], '

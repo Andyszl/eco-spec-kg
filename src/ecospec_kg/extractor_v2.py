@@ -1170,8 +1170,8 @@ def _parse_llm_selection(response: str) -> dict[str, list[str]]:
         text = fence.group(1).strip()
     payload = json.loads(text)
     return {
-        "selected_entity_ids": [str(item) for item in payload.get("selected_entity_ids", [])],
-        "selected_relation_ids": [str(item) for item in payload.get("selected_relation_ids", [])],
+        key: list(dict.fromkeys(str(item) for item in payload.get(key, [])))
+        for key in ("selected_entity_ids", "selected_relation_ids")
     }
 
 

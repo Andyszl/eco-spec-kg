@@ -145,6 +145,58 @@ def ai_review_provenance() -> dict:
 
 
 class ExperimentChainV2Tests(unittest.TestCase):
+    def test_repeated_seed43_relation_selection_validates_without_changing_choices(self) -> None:
+        repo = Path(__file__).resolve().parents[1]
+        delivery = repo / "deliveries" / "human_confirmed_20261002"
+        unit = next(
+            item for item in read_jsonl(delivery / "blind" / "dev_units.jsonl")
+            if item["unit_id"] == "3194374504e7f58a"
+        )
+        # Selection order reconstructed from the failed seed43 prediction.
+        relation_ids = [
+            "0ca7ed282bc8c7aa", "1aee5e8b8dd3a404", "3ac7957d2c6c9634",
+            "3d60b503c476e65b", "3feedd7cdf0aca6b", "5efc76fef8bf7ff7",
+            "5f9f3d4b98765f5f", "765052fdbae3b810", "adc316d92b9172ed",
+            "ba2680accdff433c", "d18589b2aec60368", "ea4e186dd1335bf7",
+            "726eff18836025bd", "754a96186d2da3d0", "99f19202f7258303",
+            "a38244b8109b4362", "da0687cf2a5c71c5", "d9585092b1204839",
+        ]
+        repeated_ids = relation_ids[:16] + ["ba2680accdff433c"] + relation_ids[16:]
+        candidates = RuleCandidateExtractorV2().predict_unit(unit)
+        by_id = {item["relation_id"]: item for item in candidates["relations"]}
+        self.assertTrue(set(relation_ids).issubset(by_id))
+        expected_relations = [by_id[item] for item in relation_ids]
+        predictions = []
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            units_path = root / "units.jsonl"
+            write_jsonl(units_path, [unit])
+            for name, selected_ids in (("unique", relation_ids), ("repeated", repeated_ids)):
+                raw = "<think>\n\n</think>\n\n" + json.dumps(
+                    {"selected_entity_ids": [], "selected_relation_ids": selected_ids}
+                )
+                run = root / name
+                with patch("ecospec_kg.extractor_v2.OpenAICompatibleProvider.complete", return_value=raw):
+                    manifest = extract_v2(
+                        units_path, run,
+                        config_path=repo / "config" / "experiments_v2" / "qwen35_9b_lora.json",
+                        model="eco-lora-seed43",
+                    )
+                report = validate_predictions_v2(
+                    units_path, run / "predictions.jsonl", delivery / "schema_v2.json",
+                    run / "validation",
+                )
+                self.assertTrue(report["passed"], report["failure_code_counts"])
+                self.assertEqual(report["valid_prediction_unit_count"], 1)
+                self.assertEqual(manifest["summary"]["relation_count"], 18)
+                prediction = read_jsonl(run / "predictions.jsonl")[0]
+                self.assertEqual(prediction["relations"], expected_relations)
+                recorded = read_jsonl(run / "raw_responses.jsonl")[0]
+                self.assertEqual(recorded["raw_response"], raw)
+                self.assertEqual(recorded["response_sha256"], sha256_json(raw))
+                predictions.append(prediction)
+        self.assertEqual(predictions[0], predictions[1])
+
     def test_llm_extraction_accepts_think_prefix_and_preserves_raw_response(self) -> None:
         unit = source_unit()
         candidates = RuleCandidateExtractorV2().predict_unit(unit)
