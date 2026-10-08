@@ -26,8 +26,8 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.7"
-SELECTION_POLICY_VERSION = "ecospec-selection-v2.4"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.8"
+SELECTION_POLICY_VERSION = "ecospec-selection-v2.5"
 
 OBSERVATION_CODES = {
     "HJ 1166-2021",
@@ -480,6 +480,14 @@ def _quality_candidates(text: str) -> list[str]:
     return _unique(rules)
 
 
+def _classification_rule_from_cells(cells: dict[str, Any]) -> str:
+    return "；".join(
+        f"{level}：{_clean(cells[level])}"
+        for level in ("优", "良", "中", "低", "差")
+        if cells.get(level)
+    )
+
+
 def _indicator_heading(unit: dict[str, Any]) -> str:
     title = _heading_title(unit)
     return _clean(re.sub(r"[（(][A-Za-z][A-Za-z0-9_-]*[）)]$", "", title))
@@ -554,6 +562,55 @@ def _overall_scope_methods(text: str, methods: list[str]) -> list[str]:
 
 def _symbol_occurs(symbol: str, expression: str) -> bool:
     return normalize_symbol(symbol) in formula_symbols(expression, [symbol])
+
+
+# Visual source review: HJ 1172-2021, PDF page 8 (printed page 5), B.2.
+# The equation prints x^c while its same-page parameter definition lists C.
+# This is a source-specific spelling correspondence, never global case folding.
+_REVIEWED_FORMULA_ALIASES = ({
+    "source_sha256": "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0",
+    "formula_number": "B.2",
+    "expression_text": "L = A + Bxc （B.2）",
+    "formula_span_id": "b64ed9b7ba5c122f",
+    "symbol_aliases": [{
+        "symbol": "c",
+        "canonical_symbol": "C",
+        "evidence_span_ids": ["b64ed9b7ba5c122f", "152371b40e9ebfa9"],
+        "reason": "原PDF第8页（印刷第5页）B.2的指数c与同页经验参数定义C对应；仅限本公式。",
+    }],
+},)
+
+
+def _formula_with_source_aliases(
+    unit: dict[str, Any], formula: dict[str, Any]
+) -> dict[str, Any]:
+    """Overlay reviewed source bindings without rewriting the frozen unit."""
+    spans = set(_span_ids(unit))
+    for review in _REVIEWED_FORMULA_ALIASES:
+        if (
+            unit.get("provenance", {}).get("source_sha256") != review["source_sha256"]
+            or formula.get("formula_number") != review["formula_number"]
+            or normalize_symbol(str(formula.get("expression_text", "")))
+            != normalize_symbol(review["expression_text"])
+            or formula.get("evidence_span", {}).get("span_id") != review["formula_span_id"]
+            or any(not set(a["evidence_span_ids"]) <= spans for a in review["symbol_aliases"])
+        ):
+            continue
+        existing = formula.get("symbol_aliases", [])
+        if not isinstance(existing, list):
+            raise ValueError("formula symbol_aliases must be a list of evidenced local aliases")
+        additions = []
+        for alias in review["symbol_aliases"]:
+            prior = [a for a in existing if isinstance(a, dict)
+                     and normalize_symbol(str(a.get("symbol", ""))) == alias["symbol"]]
+            if prior:
+                if any(normalize_symbol(str(a.get("canonical_symbol", "")))
+                       != alias["canonical_symbol"] for a in prior):
+                    raise ValueError("formula alias conflicts with reviewed source binding")
+            else:
+                additions.append(alias)
+        return {**formula, "symbol_aliases": [*existing, *additions]}
+    return formula
 
 
 def _formula_aliases(formula: dict[str, Any], symbols: set[str], spans: set[str]) -> dict[str, str]:
@@ -730,7 +787,8 @@ class RuleCandidateExtractorV2:
                          if item.get("definition_origin") != "equation_structure_transcription"),
             ]
         )
-        for formula in unit.get("formulas", []):
+        for source_formula in unit.get("formulas", []):
+            formula = _formula_with_source_aliases(unit, source_formula)
             declared = {normalize_symbol(str(v.get("symbol", ""))) for v in variables}
             aliases = _formula_aliases(formula, declared, set(_span_ids(unit)))
             number = str(formula.get("formula_number", ""))
@@ -956,12 +1014,7 @@ class RuleCandidateExtractorV2:
                     indicator_names = ["生态系统质量指数（EQI）", "EQI"]
                 else:
                     indicator_names = [indicator_name]
-                level_order = ["优", "良", "中", "低", "差"]
-                canonical_rule = "；".join(
-                    f"{level}：{_clean(cells[level])}"
-                    for level in level_order
-                    if cells.get(level)
-                )
+                canonical_rule = _classification_rule_from_cells(cells)
                 rule_names = _unique([canonical_rule, text[:240]])
                 for current_indicator_name in indicator_names:
                     indicator = builder.add_entity(
@@ -993,8 +1046,14 @@ class RuleCandidateExtractorV2:
             indicator = builder.add_entity(
                 indicator_name, EntityTypeV2.ASSESSMENT_INDICATOR, spans
             )
+            row_subject = _clean(cells.get("评估科目") or "")
+            subject = (
+                builder.add_entity(row_subject, EntityTypeV2.ASSESSMENT_SUBJECT, spans)
+                if row_subject and row_subject not in {"—", "-", "/"}
+                else self._subject(builder)
+            )
             builder.add_relation(
-                self._subject(builder), RelationTypeV2.HAS_INDICATOR, indicator, spans
+                subject, RelationTypeV2.HAS_INDICATOR, indicator, spans
             )
             text = " ".join(str(value) for value in cells.values() if value)
             for ecosystem in _dynamic_ecosystems(text):
@@ -1225,6 +1284,16 @@ def _prompt_entity(
         if source_unit.get(field)
         and _contains_candidate_name(source_unit[field], name)
     ]
+    # Reproduce only the exact source-to-candidate normalizations used above.
+    # A valid evidence-span id alone does not prove semantic body support.
+    if item["entity_type"] == EntityTypeV2.CLASSIFICATION_RULE.value:
+        if (source_unit.get("unit_type") == "table_record"
+                and re.search(r"分级|等级|程度", str(source_unit.get("table_title", "")))
+                and name == _classification_rule_from_cells(source_unit.get("cells", {}))):
+            body_support = _unique([*body_support, "cells"])
+    elif item["entity_type"] == EntityTypeV2.QUALITY_RULE.value:
+        if name in _quality_candidates(str(source_unit.get("clause_text", ""))):
+            body_support = _unique([*body_support, "clause_text"])
     heading_support = [
         field
         for field in ("heading_chain", "section")
@@ -1258,6 +1327,47 @@ def _prompt_entity(
     }
 
 
+def _formula_output_bindings(
+    unit: dict[str, Any], candidates: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Expose exact local symbol definitions for existing, distinct candidate edges."""
+    if unit.get("unit_type") != "formula_package":
+        return []
+    entities = {(e["name"], e["entity_type"]): e["entity_id"]
+                for e in candidates["entities"]}
+    relations = {(r["head_id"], r["relation_type"], r["tail_id"]): r["relation_id"]
+                 for r in candidates["relations"]}
+    bindings = []
+    for definition in unit.get("variable_definitions", []):
+        if definition.get("definition_origin") == "equation_structure_transcription":
+            continue
+        name = _clean(definition.get("definition", "")).rstrip("；;，,。.")
+        indicator_id = entities.get((name, EntityTypeV2.ASSESSMENT_INDICATOR.value))
+        for variable in _split_variable(definition):
+            variable_id = entities.get((variable.get("symbol"), EntityTypeV2.MODEL_VARIABLE.value))
+            if not indicator_id or not variable_id:
+                continue
+            for output in candidates["relations"]:
+                if (output["relation_type"] != RelationTypeV2.HAS_OUTPUT.value
+                        or output["tail_id"] != variable_id):
+                    continue
+                formula_id = output["head_id"]
+                variable_relation_id = relations.get(
+                    (variable_id, RelationTypeV2.CALCULATED_BY.value, formula_id))
+                indicator_relation_id = relations.get(
+                    (indicator_id, RelationTypeV2.CALCULATED_BY.value, formula_id))
+                if variable_relation_id and indicator_relation_id:
+                    bindings.append({
+                        "formula_id": formula_id,
+                        "variable_id": variable_id,
+                        "indicator_id": indicator_id,
+                        "definition": definition["definition"],
+                        "variable_relation_id": variable_relation_id,
+                        "indicator_relation_id": indicator_relation_id,
+                    })
+    return bindings
+
+
 def build_llm_selection_messages(
     unit: dict[str, Any], candidates: dict[str, Any]
 ) -> tuple[str, str]:
@@ -1274,6 +1384,10 @@ def build_llm_selection_messages(
         "heading_chain": unit.get("provenance", {}).get("heading_chain", []),
         **{key: unit[key] for key in _PROMPT_BODY_FIELDS if unit.get(key)},
     }
+    if source_unit.get("formulas"):
+        source_unit["formulas"] = [
+            _formula_with_source_aliases(unit, formula) for formula in unit["formulas"]
+        ]
     candidate_entities = [
         _prompt_entity(item, source_unit)
         for item in candidates["entities"]
@@ -1344,6 +1458,10 @@ def build_llm_selection_messages(
                         "公式包及当前单元的formulas、variable_definitions、manual_variable_roles"
                         "可直接支持has_input、has_output、calculated_by和constrained_by；对每条"
                         "明确的变量角色、公式绑定或约束均应选择，无需另有正文谓词。"
+                        "symbol_aliases是有当前来源证据的局部符号对应，仅作用于所属公式，"
+                        "不得全局合并大小写。formula_output_bindings依据当前变量定义列出输出"
+                        "符号与指标名称的对应；两类节点保留各自类型，分别判断其公式关系，"
+                        "不得因为已选符号关系就省略明确支持的指标名称关系。"
                     ),
                     "relation_precision": (
                         "has_indicator仅在当前单元正文明确陈述或表格/公式结构化字段直接绑定主体"
@@ -1363,6 +1481,7 @@ def build_llm_selection_messages(
                 },
             },
             "source_unit": source_unit,
+            "formula_output_bindings": _formula_output_bindings(unit, candidates),
             "candidate_entities": candidate_entities,
             "candidate_relations": candidate_relations,
             "selection_focus": {

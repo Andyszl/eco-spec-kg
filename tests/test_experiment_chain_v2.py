@@ -301,7 +301,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
 
             self.assertEqual(report["unit_count"], 1)
             self.assertEqual(report["no_relation_unit_count"], 1)
-            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.7")
+            self.assertEqual(report["candidate_generator"], "structure-aware-rule-v2.8")
             self.assertGreater(report["entity_candidate_negative_count"], 0)
             self.assertTrue((root / "analysis" / "training_distribution.json").exists())
             writer.assert_called_once()
@@ -411,7 +411,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
         self.assertIn("只输出单行紧凑JSON", system)
         payload = json.loads(prompt)
         self.assertEqual(
-            payload["selection_policy"]["version"], "ecospec-selection-v2.4"
+            payload["selection_policy"]["version"], "ecospec-selection-v2.5"
         )
         self.assertEqual(
             set(payload["selection_policy"]["rules"]),
@@ -673,7 +673,7 @@ class ExperimentChainV2Tests(unittest.TestCase):
             extract_v2(units_path, run)
             resolved_config = json.loads((run / "resolved_config.json").read_text())
             self.assertEqual(
-                resolved_config["selection_policy"], "ecospec-selection-v2.4"
+                resolved_config["selection_policy"], "ecospec-selection-v2.5"
             )
             prediction = read_jsonl(run / "predictions.jsonl")[0]
             annotation = {
@@ -700,10 +700,10 @@ class ExperimentChainV2Tests(unittest.TestCase):
                 1.0,
             )
             self.assertEqual(
-                manifest["candidate_generator"], "structure-aware-rule-v2.7"
+                manifest["candidate_generator"], "structure-aware-rule-v2.8"
             )
             self.assertEqual(
-                manifest["selection_policy_version"], "ecospec-selection-v2.4"
+                manifest["selection_policy_version"], "ecospec-selection-v2.5"
             )
             self.assertEqual(
                 manifest["schema_version"], "ecospec-lora-training-v2.2"
