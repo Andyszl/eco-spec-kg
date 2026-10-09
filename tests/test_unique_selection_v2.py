@@ -18,7 +18,7 @@ from ecospec_kg.io_utils import read_json, read_jsonl, write_json, write_jsonl
 from ecospec_kg.providers import OpenAICompatibleProvider
 from test_repetition_control_v2 import previous_run, Reply
 
-VERSION = "unique-candidate-json-v1"
+VERSION = "unique-candidate-json-v2"
 E1, E2, R1, R2 = (c * 16 for c in "1234")
 
 
@@ -28,6 +28,9 @@ def decoding():
 
 
 class AsciiTokenizer:
+    def get_vocab(self):
+        return {chr(i): i for i in range(32, 127)}
+
     def encode(self, text, add_special_tokens=False):
         assert not add_special_tokens
         return [ord(c) for c in text]
@@ -41,7 +44,7 @@ def constrained(decoding, entities=(E1, E2), relations=(R1, R2)):
 
 
 def path_ids(decoder, entities, relations):
-    # Chunks are deliberate: a segment tokenizer may differ from whole-string BPE.
+    # Tokenize the complete JSON, including tokens crossing grammar boundaries.
     text = '{"selected_entity_ids": ['
     text += ", ".join(json.dumps(i) for i in entities)
     text += '], "selected_relation_ids": ['
@@ -160,6 +163,8 @@ def test_tokenizer_must_round_trip_json_chunks(decoding):
 
 def test_multi_character_tokens_are_supported(decoding):
     class Merged(AsciiTokenizer):
+        def get_vocab(self):
+            return {**super().get_vocab(), json.dumps(E1): 1000}
         def encode(self, text, **_):
             return [1000] if text == json.dumps(E1) else super().encode(text)
         def decode(self, ids, **_):
@@ -168,6 +173,33 @@ def test_multi_character_tokens_are_supported(decoding):
     ids = decoder.tokenizer.encode('{"selected_entity_ids": [') + [1000]
     ids += decoder.tokenizer.encode('], "selected_relation_ids": []}')
     assert_path(decoder, ids)
+
+
+@pytest.mark.parametrize("es,rs", [((), ()), ((), (R1,)), ((E1, E2), (R1, R2))])
+def test_native_tokens_crossing_json_boundaries_remain_selectable(decoding, es, rs):
+    class NativeMerged(AsciiTokenizer):
+        merged = {' ["': 1000, ' [],': 1001, '"]}': 1002, '", "': 1003}
+
+        def get_vocab(self):
+            return {**super().get_vocab(), **self.merged}
+
+        def encode(self, text, **_):
+            ids = []
+            while text:
+                match = next((s for s in self.merged if text.startswith(s)), text[0])
+                ids.append(self.merged.get(match, ord(match[0])))
+                text = text[len(match):]
+            return ids
+
+        def decode(self, ids, **_):
+            reverse = {v: k for k, v in self.merged.items()}
+            return "".join(reverse[i] if i in reverse else chr(i) for i in ids if i != 999)
+
+    decoder = decoding.UniqueSelectionConstraint(NativeMerged(), (E1, E2), (R1, R2), [999])
+    assert_path(decoder, path_ids(decoder, es, rs))
+    for invalid in (((E1, E1), ()), ((), (R1, R1)), (("f" * 16,), ())):
+        with pytest.raises(ValueError, match="prefix"):
+            decoder.allowed(path_ids(decoder, *invalid))
 
 
 def wire_prompt():

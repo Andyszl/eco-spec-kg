@@ -14,7 +14,7 @@ import re
 
 from .experiment_io_v2 import sha256_json, sha256_path
 
-VERSION = "unique-candidate-json-v1"
+VERSION = "unique-candidate-json-v2"
 MARKER = "ecospec_selection_decoding"
 KEYS = ("selected_entity_ids", "selected_relation_ids")
 
@@ -88,8 +88,35 @@ def verify_response(response, system, prompt):
     return check_selection(choice["message"]["content"], *candidate_ids(prompt))
 
 
+_ALPHABET = frozenset('{"selected_entity_ids": [], "selected_relation_ids": []}0123456789abcdef')
+
+
+class _AsciiTokens:
+    """Vocabulary trie permits tokens spanning JSON punctuation and ID boundaries."""
+
+    def __init__(self, tokenizer):
+        self.texts, self.trie = {}, {}
+        ids = sorted(set(tokenizer.get_vocab().values()))
+        for offset in range(0, len(ids), 4096):
+            batch = ids[offset:offset + 4096]
+            kwargs = {"skip_special_tokens": False, "clean_up_tokenization_spaces": False}
+            if hasattr(tokenizer, "batch_decode"):
+                texts = tokenizer.batch_decode([[i] for i in batch], **kwargs)
+            else:
+                texts = [tokenizer.decode([i], **kwargs) for i in batch]
+            require(len(texts) == len(batch), "tokenizer returned an incomplete vocabulary decode")
+            for token, text in zip(batch, texts):
+                if not text or not set(text) <= _ALPHABET:
+                    continue
+                self.texts[token] = text
+                node = self.trie
+                for char in text:
+                    node = node.setdefault(char, {})
+                node.setdefault(None, []).append(token)
+
+
 class UniqueSelectionConstraint:
-    """Prefix callback uses explicit ASCII token segments, with no whitespace loop."""
+    """Finite ASCII JSON grammar intersected with the tokenizer's vocabulary."""
 
     def __init__(self, tokenizer, entities, relations, eos_token_ids):
         self.tokenizer = tokenizer
@@ -97,61 +124,88 @@ class UniqueSelectionConstraint:
         self.eos = [eos_token_ids] if type(eos_token_ids) is int else list(eos_token_ids or [])
         require(self.eos and all(type(i) is int and i >= 0 for i in self.eos), "missing EOS token IDs")
         self.calls = 0
-        self.start = self._encode('{"selected_entity_ids": [')
-        self.close = (self._encode('], "selected_relation_ids": ['), self._encode("]}"))
-        self.comma = self._encode(", ")
-        self.items = tuple({i: self._encode(json.dumps(i)) for i in group} for group in self.ids)
-        self.max_tokens = len(self.start) + sum(map(len, self.close)) + 1
-        self.max_tokens += sum(sum(map(len, group.values())) + max(0, len(group) - 1) * len(self.comma)
-                               for group in self.items)
-        # Reject tokenizers whose decoder changes segment boundaries or whitespace.
-        chunks = [self.start, *self.close, self.comma, *(t for group in self.items for t in group.values())]
-        for order in (chunks, list(reversed(chunks))):
-            require(self._decode([i for chunk in order for i in chunk]) == "".join(self._decode(c) for c in order),
-                    "tokenizer does not preserve concatenated JSON segments")
+        self.start = '{"selected_entity_ids": ['
+        self.close = ('], "selected_relation_ids": [', "]}")
+        self.items = tuple({i: json.dumps(i) for i in group} for group in self.ids)
+        # Every accepted token consumes at least one ASCII character; even the
+        # least compressed legal path fits this bound. There is no whitespace loop.
+        self.max_tokens = len(json.dumps(dict(zip(KEYS, self.ids)))) + 1
+        for char in _ALPHABET:
+            ids = tokenizer.encode(char, add_special_tokens=False)
+            require(len(ids) == 1 and ids[0] not in self.eos and self._decode(ids) == char,
+                    "tokenizer cannot round-trip individual JSON characters")
+        tokens = getattr(tokenizer, "_ecospec_ascii_tokens", None)
+        if tokens is None:
+            tokens = _AsciiTokens(tokenizer)
+            tokenizer._ecospec_ascii_tokens = tokens
+        self.tokens = tokens
+        self.initial = ("start", 0, frozenset(), frozenset(), "")
+        self._next_cache = {}
+        self._cached_tokens, self._cached_text, self._cached_state = (), "", self.initial
 
     def _decode(self, ids):
         return self.tokenizer.decode(list(ids), skip_special_tokens=False, clean_up_tokenization_spaces=False)
 
-    def _encode(self, text):
-        ids = tuple(self.tokenizer.encode(text, add_special_tokens=False))
-        require(ids and all(type(i) is int and i not in self.eos for i in ids)
-                and self._decode(ids) == text, "tokenizer cannot round-trip JSON segment")
-        return ids
+    def _next_chars(self, state):
+        if state in self._next_cache:
+            return self._next_cache[state]
+        stage, group, used0, used1, prefix = state
+        if stage == "done":
+            return {}
+        if stage == "start":
+            options = [(self.start, "first", None)]
+        else:
+            used = (used0, used1)[group]
+            remaining = [(text, "after", item) for item, text in self.items[group].items() if item not in used]
+            close = [(self.close[group], "next_group" if group == 0 else "done", None)]
+            if stage == "first": options = remaining + close
+            elif stage == "item": options = remaining
+            elif stage == "after": options = ([(", ", "item", None)] if remaining else []) + close
+            else: raise ValueError("invalid selection grammar state")
+        options = [(text, target, item) for text, target, item in options if text.startswith(prefix)]
+        following = {}
+        for char in {text[len(prefix)] for text, _, _ in options}:
+            new_prefix = prefix + char
+            complete = [(target, item) for text, target, item in options if text == new_prefix]
+            if complete:
+                require(len(complete) == 1 and not any(text.startswith(new_prefix) and text != new_prefix
+                        for text, _, _ in options), "ambiguous selection grammar prefix")
+                target, item = complete[0]
+                used = [used0, used1]
+                if item is not None: used[group] = used[group] | {item}
+                if target == "next_group": target, next_group = "first", 1
+                else: next_group = group
+                following[char] = (target, next_group, *used, "")
+            else:
+                following[char] = (stage, group, used0, used1, new_prefix)
+        self._next_cache[state] = following
+        return following
 
     def allowed(self, generated):
         generated = tuple(generated)
-        index, stage, group = 0, "start", 0
-        used = [set(), set()]
-        while True:
-            if stage == "done":
-                require(index == len(generated), "invalid selection token prefix after JSON")
-                return self.eos
-            if stage == "start":
-                options = [(self.start, "first", None)]
-            else:
-                remaining = [(seq, "after", item) for item, seq in self.items[group].items() if item not in used[group]]
-                close = [(self.close[group], "next_group" if group == 0 else "done", None)]
-                if stage == "first": options = remaining + close
-                elif stage == "item": options = remaining
-                elif stage == "after": options = ([(self.comma, "item", None)] if remaining else []) + close
-                else: raise ValueError("invalid selection grammar state")
-            suffix = generated[index:]
-            completed, following = [], set()
-            for seq, target, item in options:
-                common = min(len(seq), len(suffix))
-                if seq[:common] != suffix[:common]:
-                    continue
-                if len(suffix) >= len(seq): completed.append((seq, target, item))
-                else: following.add(seq[len(suffix)])
-            if not completed:
-                require(following, "invalid selection token prefix")
-                return sorted(following)
-            require(len(completed) == 1 and not following, "ambiguous tokenizer segment prefix")
-            seq, stage, item = completed[0]
-            index += len(seq)
-            if item is not None: used[group].add(item)
-            if stage == "next_group": group, stage = 1, "first"
+        if generated[:len(self._cached_tokens)] == self._cached_tokens:
+            state, text, offset = self._cached_state, self._cached_text, len(self._cached_tokens)
+        else:
+            state, text, offset = self.initial, "", 0
+        for token in generated[offset:]:
+            chunk = self.tokens.texts.get(token)
+            require(chunk is not None and token not in self.eos, "invalid selection token prefix")
+            for char in chunk:
+                state = self._next_chars(state).get(char)
+                require(state is not None, "invalid selection token prefix")
+            text += chunk
+        require(self._decode(generated) == text, "tokenizer changes concatenated ASCII tokens")
+        self._cached_tokens, self._cached_text, self._cached_state = generated, text, state
+        if state[0] == "done":
+            return self.eos
+        stack, allowed = [(self.tokens.trie, state)], []
+        while stack:
+            node, current = stack.pop()
+            allowed.extend(token for token in node.get(None, ()) if token not in self.eos)
+            for char, following in self._next_chars(current).items():
+                if char in node: stack.append((node[char], following))
+        require(allowed, "tokenizer has no valid selection continuation")
+        return sorted(allowed)
 
     def prefix_callback(self, prompt_length):
         def allowed_tokens(batch_id, input_ids):
