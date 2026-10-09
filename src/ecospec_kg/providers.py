@@ -43,6 +43,7 @@ class OpenAICompatibleProvider:
     last_raw_response: dict[str, Any] | None = None
     seed: int | None = None
     temperature: float = 0
+    repetition_penalty: float | None = None
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleProvider":
@@ -81,6 +82,8 @@ class OpenAICompatibleProvider:
         }
         if self.seed is not None:
             payload["seed"] = self.seed
+        if self.repetition_penalty is not None:
+            payload["repetition_penalty"] = self.repetition_penalty
         if self.enable_thinking is not None:
             payload["chat_template_kwargs"] = {
                 "enable_thinking": self.enable_thinking

@@ -1587,6 +1587,10 @@ def extract_v2(
     if (type(temperature) not in (int, float) or not math.isfinite(temperature)
             or not 0 <= temperature <= 2):
         raise ValueError("temperature must be a finite number between 0 and 2")
+    if "repetition_penalty" in config:
+        penalty = config["repetition_penalty"]
+        if type(penalty) not in (int, float) or not math.isfinite(penalty) or penalty <= 0:
+            raise ValueError("repetition_penalty must be a finite positive number")
     if config["candidate_generator"] != CANDIDATE_GENERATOR_VERSION:
         raise ValueError(f"candidate_generator must match loaded code: {CANDIDATE_GENERATOR_VERSION}")
 
@@ -1597,6 +1601,8 @@ def extract_v2(
         provider.seed = config["seed"]
         provider.temperature = temperature
         provider.max_tokens = int(config["max_tokens"])
+        if "repetition_penalty" in config:
+            provider.repetition_penalty = config["repetition_penalty"]
         if provider.max_tokens < 1:
             raise ValueError("max_tokens must be a positive integer")
         if "enable_thinking" in config:
