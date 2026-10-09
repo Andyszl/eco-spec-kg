@@ -44,6 +44,7 @@ class OpenAICompatibleProvider:
     seed: int | None = None
     temperature: float = 0
     repetition_penalty: float | None = None
+    selection_decoding: str | None = None
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleProvider":
@@ -88,6 +89,12 @@ class OpenAICompatibleProvider:
             payload["chat_template_kwargs"] = {
                 "enable_thinking": self.enable_thinking
             }
+        if self.selection_decoding is not None:
+            from .selection_decoding_v2 import MARKER, VERSION, require
+            require(self.selection_decoding == VERSION and self.enable_thinking is False
+                    and self.temperature == 0 and not self.append_no_think,
+                    "selection_decoding requires its supported version, non-thinking greedy generation")
+            payload["chat_template_kwargs"][MARKER] = self.selection_decoding
         request = urllib.request.Request(
             self.base_url.rstrip("/") + "/chat/completions",
             data=json.dumps(payload).encode("utf-8"),
@@ -120,6 +127,9 @@ class OpenAICompatibleProvider:
                 f"(completion_tokens={usage.get('completion_tokens', 'unknown')})"
             )
         message = choice["message"]
+        if self.selection_decoding is not None:
+            from .selection_decoding_v2 import verify_response
+            verify_response(result, system, prompt)
         content = message.get("content")
         if content:
             return content

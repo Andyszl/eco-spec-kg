@@ -41,7 +41,7 @@ def checked_selection(text, candidates):
     return selection
 
 
-def probe(previous_run: Path, out: Path, *, repetition_penalty=1.1, timeout=600):
+def probe(previous_run: Path, out: Path, *, repetition_penalty=1.1, timeout=600, unique_candidates=False):
     previous_run, out = previous_run.resolve(), out.resolve()
     if out.exists():
         raise FileExistsError(f"output already exists: {out}")
@@ -71,6 +71,7 @@ def probe(previous_run: Path, out: Path, *, repetition_penalty=1.1, timeout=600)
     require(config["backend"] == "llm" and config.get("enable_thinking") is False,
             "expected a non-thinking LLM run")
     require("repetition_penalty" not in config, "previous run already changed repetition control")
+    require("selection_decoding" not in config, "previous run already used selection constraints")
     src = REPO / "src/ecospec_kg"
     for name, expected in previous["implementation"].items():
         if name not in {"providers.py", "extractor_v2.py"}:
@@ -87,17 +88,30 @@ def probe(previous_run: Path, out: Path, *, repetition_penalty=1.1, timeout=600)
     require(not provider.append_no_think, "unset ECOSPEC_LLM_APPEND_NO_THINK before replay")
     provider.model, provider.seed = config["model"], config["seed"]
     provider.temperature, provider.max_tokens = config["temperature"], config["max_tokens"]
-    provider.enable_thinking, provider.repetition_penalty, provider.timeout = False, repetition_penalty, timeout
+    change = {"repetition_penalty": repetition_penalty}
+    if unique_candidates:
+        from ecospec_kg.selection_decoding_v2 import VERSION, implementation_hashes
+        change = {"selection_decoding": VERSION}
+        provider.selection_decoding = VERSION
+    provider.enable_thinking, provider.repetition_penalty, provider.timeout = False, None if unique_candidates else repetition_penalty, timeout
     request = urllib.request.Request(provider.base_url.rstrip("/") + "/models",
                                     headers={"Authorization": f"Bearer {provider.api_key}"})
     with urllib.request.urlopen(request, timeout=10) as response:
         ids = [r["id"] for r in json.load(response)["data"]]
     require(provider.model in ids, f"target adapter is not listed: {provider.model}")
+    if unique_candidates:
+        request = urllib.request.Request(provider.base_url.rstrip("/") + "/ecospec-selection-decoding",
+                                        headers={"Authorization": f"Bearer {provider.api_key}"})
+        with urllib.request.urlopen(request, timeout=10) as response:
+            capability = json.load(response)
+        require(capability.get("version") == VERSION and capability.get("backend") == "transformers"
+                and capability.get("implementation") == implementation_hashes(),
+                "selection_decoding plugin is missing or its implementation differs")
 
     out.mkdir(parents=True, exist_ok=False)
     messages = [{"role": "system", "content": system}, {"role": "user", "content": prompt}]
     write_json(out / "messages.json", messages)
-    write_json(out / "resolved_config.json", {**config, "repetition_penalty": repetition_penalty})
+    write_json(out / "resolved_config.json", {**config, **change})
     result = {
         "kind": "single_unit_decoding_probe", "formal_evaluation": False, "probe_passed": False,
         "started_at": utc_now(), "unit_id": unit["unit_id"], "unit_type": unit["unit_type"],
@@ -105,13 +119,16 @@ def probe(previous_run: Path, out: Path, *, repetition_penalty=1.1, timeout=600)
         "input": previous["input"], "candidate_hash": candidate_hash, "prompt_hash": prompt_hash,
         "original_config_sha256": previous["config"]["sha256"],
         "config_sha256": sha256_path(out / "resolved_config.json"),
-        "decoding_change": {"repetition_penalty": repetition_penalty}, "request_timeout_seconds": timeout,
+        "decoding_change": change, "request_timeout_seconds": timeout,
         "runtime": runtime_metadata(REPO),
         "implementation": {n: sha256_path(src / n) for n in previous["implementation"]},
         "probe_tool_sha256": sha256_path(Path(__file__)), "out": str(out),
     }
+    if unique_candidates:
+        result["decoding_implementation"] = implementation_hashes()
+        result["server_capability"] = capability
     write_json(out / "probe_manifest.json", result)
-    print(f"Single-unit probe; repetition_penalty={repetition_penalty}; output: {out}", flush=True)
+    print(f"Single-unit probe; decoding_change={change}; output: {out}", flush=True)
     try:
         text = provider.complete(system, prompt)
         (out / "response.txt").write_text(text, encoding="utf-8")
@@ -129,6 +146,8 @@ def probe(previous_run: Path, out: Path, *, repetition_penalty=1.1, timeout=600)
             result["provider_response_sha256"] = sha256_path(out / "provider_response.json")
             result["usage"] = raw.get("usage")
             result["finish_reason"] = (raw.get("choices") or [{}])[0].get("finish_reason")
+            if unique_candidates:
+                result["server_decoding_proof"] = raw.get("ecospec_selection_decoding")
         result["finished_at"] = utc_now()
         write_json(out / "probe_manifest.json", result)
     return result
@@ -138,12 +157,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--previous-run", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--repetition-penalty", type=float, default=1.1)
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--repetition-penalty", type=float, default=1.1)
+    group.add_argument("--unique-candidates", action="store_true")
     parser.add_argument("--timeout", type=int, default=600)
     args = parser.parse_args()
-    result = probe(args.previous_run, args.out, repetition_penalty=args.repetition_penalty, timeout=args.timeout)
+    result = probe(args.previous_run, args.out, repetition_penalty=args.repetition_penalty, timeout=args.timeout,
+                   unique_candidates=args.unique_candidates)
     summary_keys = ("probe_passed", "unit_id", "decoding_change", "finish_reason", "usage",
-                    "selected_entity_count", "selected_relation_count", "error_type", "error_message", "out")
+                    "selected_entity_count", "selected_relation_count", "server_decoding_proof", "error_type", "error_message", "out")
     print(json.dumps({k: result[k] for k in summary_keys if k in result}, ensure_ascii=False, indent=2))
     return 0 if result["probe_passed"] else 1
 

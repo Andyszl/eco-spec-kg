@@ -1591,6 +1591,11 @@ def extract_v2(
         penalty = config["repetition_penalty"]
         if type(penalty) not in (int, float) or not math.isfinite(penalty) or penalty <= 0:
             raise ValueError("repetition_penalty must be a finite positive number")
+    if "selection_decoding" in config:
+        from .selection_decoding_v2 import VERSION as DECODING_VERSION
+        if (config["selection_decoding"] != DECODING_VERSION or config["backend"] != "llm"
+                or config.get("enable_thinking") is not False or temperature != 0):
+            raise ValueError("selection_decoding requires its supported version, backend=llm, enable_thinking=false, temperature=0")
     if config["candidate_generator"] != CANDIDATE_GENERATOR_VERSION:
         raise ValueError(f"candidate_generator must match loaded code: {CANDIDATE_GENERATOR_VERSION}")
 
@@ -1603,6 +1608,8 @@ def extract_v2(
         provider.max_tokens = int(config["max_tokens"])
         if "repetition_penalty" in config:
             provider.repetition_penalty = config["repetition_penalty"]
+        if "selection_decoding" in config:
+            provider.selection_decoding = config["selection_decoding"]
         if provider.max_tokens < 1:
             raise ValueError("max_tokens must be a positive integer")
         if "enable_thinking" in config:
@@ -1630,6 +1637,8 @@ def extract_v2(
                         "prompt_hash": prompt_hash,
                         "response_sha256": sha256_json(raw),
                         "raw_response": raw,
+                        **({"provider_response": provider.last_raw_response}
+                           if "selection_decoding" in config else {}),
                     }
                 )
             prediction["experiment_id"] = config["experiment_id"]
@@ -1734,6 +1743,10 @@ def extract_v2(
         },
         "summary": summary,
     }
+    if "selection_decoding" in config:
+        from .selection_decoding_v2 import implementation_hashes
+        manifest["decoding_implementation"] = implementation_hashes()
+        manifest["implementation"]["selection_decoding_v2.py"] = manifest["decoding_implementation"]["selection_decoding_v2.py"]
     write_json(out_dir / "run_manifest.json", manifest)
     return manifest
 
