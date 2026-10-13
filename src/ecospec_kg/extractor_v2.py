@@ -26,8 +26,8 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.8"
-SELECTION_POLICY_VERSION = "ecospec-selection-v2.5"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.9"
+SELECTION_POLICY_VERSION = "ecospec-selection-v2.6"
 
 OBSERVATION_CODES = {
     "HJ 1166-2021",
@@ -1104,6 +1104,20 @@ class RuleCandidateExtractorV2:
             if (target := builder.add_entity(ecosystem, EntityTypeV2.ECOSYSTEM_TYPE, spans))
             is not None
         ]
+        # Procedure scopes also apply to observation clauses and methods without
+        # an assessment subject. These are candidates; selection stays with the model.
+        spatial_entities = [
+            target
+            for space in _dynamic_spatial_scopes(text)
+            if (target := builder.add_entity(space, EntityTypeV2.SPATIAL_SCOPE, spans))
+            is not None
+        ]
+        space_methods = scoped_methods if quality_entities else method_entities
+        for target in spatial_entities:
+            for method in space_methods:
+                builder.add_relation(
+                    method, RelationTypeV2.APPLIES_TO_SPACE, target, spans
+                )
         if code in OBSERVATION_CODES:
             match = re.search(r"观测指标[：:]\s*([^；;，,]+)", text)
             section = unit["provenance"].get("section", "")
@@ -1180,16 +1194,10 @@ class RuleCandidateExtractorV2:
                     builder.add_relation(
                         indicator, RelationTypeV2.APPLIES_TO_ECOSYSTEM, target, spans
                     )
-            for space in _dynamic_spatial_scopes(text):
-                target = builder.add_entity(space, EntityTypeV2.SPATIAL_SCOPE, spans)
+            for target in spatial_entities:
                 for indicator in indicators:
                     builder.add_relation(
                         indicator, RelationTypeV2.APPLIES_TO_SPACE, target, spans
-                    )
-                space_methods = scoped_methods if quality_entities else method_entities
-                for method in space_methods:
-                    builder.add_relation(
-                        method, RelationTypeV2.APPLIES_TO_SPACE, target, spans
                     )
 
     def _quality(self, builder: PredictionBuilder) -> None:
@@ -1330,7 +1338,7 @@ def _prompt_entity(
 def _formula_output_bindings(
     unit: dict[str, Any], candidates: dict[str, Any]
 ) -> list[dict[str, Any]]:
-    """Expose exact local symbol definitions for existing, distinct candidate edges."""
+    """Match local output definitions, allowing only an explicit unit suffix."""
     if unit.get("unit_type") != "formula_package":
         return []
     entities = {(e["name"], e["entity_type"]): e["entity_id"]
@@ -1343,6 +1351,12 @@ def _formula_output_bindings(
             continue
         name = _clean(definition.get("definition", "")).rstrip("；;，,。.")
         indicator_id = entities.get((name, EntityTypeV2.ASSESSMENT_INDICATOR.value))
+        unit_text = _clean(definition.get("unit", "")).rstrip("；;，,。.")
+        parts = re.split(r"[，,]", name, maxsplit=1)
+        if (not indicator_id and unit_text and len(parts) == 2
+                and _clean(parts[1]) == unit_text):
+            indicator_id = entities.get(
+                (_clean(parts[0]), EntityTypeV2.ASSESSMENT_INDICATOR.value))
         for variable in _split_variable(definition):
             variable_id = entities.get((variable.get("symbol"), EntityTypeV2.MODEL_VARIABLE.value))
             if not indicator_id or not variable_id:

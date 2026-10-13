@@ -34,7 +34,8 @@ def _ids(values):
 
 def candidate_ids(prompt):
     data = json.loads(prompt)
-    require(data.get("selection_policy", {}).get("version") == "ecospec-selection-v2.5",
+    require(data.get("selection_policy", {}).get("version") in (
+                "ecospec-selection-v2.5", "ecospec-selection-v2.6"),
             "unsupported selection prompt version")
     require(set(data.get("output_schema", {})) == set(KEYS), "unexpected output schema")
     return tuple(_ids(r["id"] for r in data[field])

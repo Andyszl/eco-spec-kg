@@ -1,0 +1,57 @@
+{
+  "status": "draft_requires_full_server_tokenizer_preflight",
+  "model_training_started": false,
+  "ready_for_training": false,
+  "files": {
+    "all693.jsonl": "00c4898898c8f9d9c5176a9ead4945c50e9632a17ee8b1c98f826b1ede3f972c",
+    "control_train.jsonl": "3bbd475171b7e2e2b20d3c1986cdd4c7515e6d74b33c7dcd15ed88f370c6f63d",
+    "control_validation.jsonl": "c1010276b01ed916cb49aaef148421a30101c9e09c4aea6ed750591b1843930b",
+    "long_views.jsonl": "4d5a38f914a8a9f002b7fae7cf3e204728745d062370983e30196c847b1c37fa",
+    "repair_train.jsonl": "e2ab0c9d9c598a522958e2120acc618f6fdec082c38e2d4a530c133303c7fe70",
+    "repair_validation.jsonl": "6f3eee8ac0061c1f78c5d259e10493fdf22fe9a657299684fd50457896a6a5d6"
+  },
+  "source_sha256_lf": {
+    "extractor_v2.py": "ef8453281d4824972bf753836750768f3206472e18a2f5a89ea7e26a62eadc8e",
+    "selection_decoding_v2.py": "e899bf628713a2e8e42cac0106a0dc739ec7541415ceef5a7f1921192da14a73",
+    "training_v2.py": "c0f4a454eb4aa1ae5513a232868c49eb27a7ebfe46549f59059845d77597c40d"
+  },
+  "frozen_sha256": {
+    "blind/train_units.jsonl": "6cb286dd48a36d478f68eaf2ed7e1ec28cd8bbd31fdef9ae33359e0446a52162",
+    "gold/train_annotations.jsonl": "dde317b9f1c57cea2a35c5721638cca14b4ddcd0c495c8b38b45d9b16e2eb6c0"
+  },
+  "preflight_sha256": "9d4ae461ad585639c7d70aec9817781a50f6dcc51c08eb5b125026f26c1ec98f",
+  "tokenizer_config_sha256": {
+    "config.json": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+    "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+    "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+    "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+  },
+  "parent_unit_id": "3b87291bafd7da90",
+  "child_unit_ids": [
+    "6f2c40ba174a9b41",
+    "42d8dd466182a9ea",
+    "44bfa21cdeba8677"
+  ],
+  "counts": {
+    "control_train": 623,
+    "repair_train": 626,
+    "validation": 69
+  },
+  "partition_rule": "inherit saved split and child-parent membership; never split again",
+  "annotation_policy": "retain method-selection constraint; no spatial gold inferred solely from selection conditions",
+  "planned_pair": {
+    "seed": 42,
+    "max_steps": 200,
+    "gradient_accumulation_steps": 16,
+    "per_device_train_batch_size": 1,
+    "shared_inference_candidate_version": "structure-aware-rule-v2.9",
+    "shared_inference_selection_policy": "ecospec-selection-v2.6",
+    "interpretation": "combined candidate coverage and long-record repair, not an isolated component ablation"
+  },
+  "pending": [
+    "actual full CPU tokenization and fixed-partition validation",
+    "remaining canonical method/constraint candidate audit",
+    "explicit paired training and evaluation launcher"
+  ]
+}

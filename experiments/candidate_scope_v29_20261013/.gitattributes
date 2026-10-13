@@ -1,0 +1,2 @@
+*.jsonl binary -filter
+*.json text eol=lf

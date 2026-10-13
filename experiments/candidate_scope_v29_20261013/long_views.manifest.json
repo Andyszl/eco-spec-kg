@@ -1,0 +1,64 @@
+{
+  "annotations": "D:\\else\\lky\\生态论文重写版本\\output\\服务器结果\\next_step_results_20261013_113024_034601484\\bindings_v26_20261012_110721\\next_checks_20261013_113018_065970540\\long_views\\derived_train_annotations.jsonl",
+  "annotations_sha256": "918fb1f70243c7b8b30589cbecf942a86de433ed121056d596f7f20c4656db19",
+  "candidate_coverage": {
+    "covered_entities": 33,
+    "covered_relations": 38,
+    "entity_recall_upper_bound": 1.0,
+    "gold_entities": 33,
+    "gold_relations": 38,
+    "relation_recall_upper_bound": 1.0
+  },
+  "candidate_generator": "structure-aware-rule-v2.9",
+  "created_at": "2026-10-13T07:05:38.094502+00:00",
+  "output": "D:\\else\\lky\\生态论文重写版本\\output\\候选修复_v29\\eco-spec-kg\\experiments\\candidate_scope_v29_20261013\\long_views.jsonl",
+  "schema_version": "ecospec-lora-training-v2.2",
+  "selection_focus_coverage": {
+    "boundary_risk_entities": {
+      "candidate_count": 0,
+      "hard_negative_count": 0,
+      "selected_count": 0,
+      "selected_unit_count": 0,
+      "unit_count": 0
+    },
+    "context_only_entities": {
+      "candidate_count": 3,
+      "hard_negative_count": 3,
+      "selected_count": 0,
+      "selected_unit_count": 0,
+      "unit_count": 3
+    },
+    "formula_relations": {
+      "candidate_count": 30,
+      "hard_negative_count": 2,
+      "selected_count": 28,
+      "selected_unit_count": 3,
+      "unit_count": 3
+    },
+    "has_indicator": {
+      "candidate_count": 3,
+      "hard_negative_count": 3,
+      "selected_count": 0,
+      "selected_unit_count": 0,
+      "unit_count": 3
+    },
+    "method": {
+      "candidate_count": 3,
+      "hard_negative_count": 3,
+      "selected_count": 0,
+      "selected_unit_count": 0,
+      "unit_count": 3
+    },
+    "precision_relations": {
+      "candidate_count": 10,
+      "hard_negative_count": 10,
+      "selected_count": 0,
+      "selected_unit_count": 0,
+      "unit_count": 3
+    }
+  },
+  "selection_policy_version": "ecospec-selection-v2.6",
+  "source_units": "D:\\else\\lky\\生态论文重写版本\\output\\服务器结果\\next_step_results_20261013_113024_034601484\\bindings_v26_20261012_110721\\next_checks_20261013_113018_065970540\\long_views\\source_units.jsonl",
+  "source_units_sha256": "657a3712c08d006a30df9d3ef4209338613f3068e5df1d32664e7cc9f183caa7",
+  "training_records": 3
+}

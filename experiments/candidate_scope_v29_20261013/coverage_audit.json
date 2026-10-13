@@ -1,0 +1,931 @@
+{
+  "model_calls": 0,
+  "old_candidate_objects_preserved": true,
+  "frozen_annotations_unchanged": true,
+  "scope": "train and its original internal validation only; no dev/test rule tuning",
+  "groups": {
+    "all693": {
+      "unit_count": 693,
+      "roles": {
+        "observation_variable|measured_with|instrument": {
+          "gold": 52,
+          "old_covered": 48,
+          "new_covered": 48,
+          "old_candidates": 62,
+          "new_candidates": 62
+        },
+        "method|applies_to_space|spatial_scope": {
+          "gold": 20,
+          "old_covered": 0,
+          "new_covered": 5,
+          "old_candidates": 11,
+          "new_candidates": 203
+        },
+        "method|constrained_by|quality_rule": {
+          "gold": 9,
+          "old_covered": 1,
+          "new_covered": 1,
+          "old_candidates": 1,
+          "new_candidates": 1
+        },
+        "observation_variable|obtained_by|method": {
+          "gold": 88,
+          "old_covered": 56,
+          "new_covered": 56,
+          "old_candidates": 233,
+          "new_candidates": 233
+        },
+        "observation_variable|observed_every|frequency": {
+          "gold": 171,
+          "old_covered": 170,
+          "new_covered": 170,
+          "old_candidates": 170,
+          "new_candidates": 170
+        },
+        "observation_variable|observed_during|temporal_scope": {
+          "gold": 121,
+          "old_covered": 120,
+          "new_covered": 120,
+          "old_candidates": 120,
+          "new_candidates": 120
+        },
+        "observation_variable|has_unit|unit": {
+          "gold": 48,
+          "old_covered": 44,
+          "new_covered": 44,
+          "old_candidates": 61,
+          "new_candidates": 61
+        },
+        "data_source|constrained_by|quality_rule": {
+          "gold": 65,
+          "old_covered": 47,
+          "new_covered": 47,
+          "old_candidates": 49,
+          "new_candidates": 49
+        },
+        "observation_variable|sourced_from|data_source": {
+          "gold": 16,
+          "old_covered": 5,
+          "new_covered": 5,
+          "old_candidates": 37,
+          "new_candidates": 37
+        },
+        "formula|applies_to_ecosystem|ecosystem_type": {
+          "gold": 5,
+          "old_covered": 1,
+          "new_covered": 1,
+          "old_candidates": 8,
+          "new_candidates": 8
+        },
+        "formula|has_output|model_variable": {
+          "gold": 32,
+          "old_covered": 32,
+          "new_covered": 32,
+          "old_candidates": 32,
+          "new_candidates": 32
+        },
+        "model_variable|obtained_by|method": {
+          "gold": 2,
+          "old_covered": 2,
+          "new_covered": 2,
+          "old_candidates": 40,
+          "new_candidates": 40
+        },
+        "formula|has_input|model_variable": {
+          "gold": 77,
+          "old_covered": 77,
+          "new_covered": 77,
+          "old_candidates": 80,
+          "new_candidates": 80
+        },
+        "assessment_subject|has_indicator|assessment_indicator": {
+          "gold": 7,
+          "old_covered": 3,
+          "new_covered": 3,
+          "old_candidates": 72,
+          "new_candidates": 72
+        },
+        "assessment_indicator|calculated_by|formula": {
+          "gold": 6,
+          "old_covered": 4,
+          "new_covered": 4,
+          "old_candidates": 27,
+          "new_candidates": 27
+        },
+        "model_variable|calculated_by|formula": {
+          "gold": 32,
+          "old_covered": 32,
+          "new_covered": 32,
+          "old_candidates": 32,
+          "new_candidates": 32
+        },
+        "method|applies_to_ecosystem|ecosystem_type": {
+          "gold": 11,
+          "old_covered": 5,
+          "new_covered": 5,
+          "old_candidates": 171,
+          "new_candidates": 171
+        },
+        "model_variable|has_unit|unit": {
+          "gold": 41,
+          "old_covered": 40,
+          "new_covered": 40,
+          "old_candidates": 41,
+          "new_candidates": 41
+        },
+        "formula|applies_to_space|spatial_scope": {
+          "gold": 5,
+          "old_covered": 2,
+          "new_covered": 2,
+          "old_candidates": 6,
+          "new_candidates": 6
+        },
+        "assessment_indicator|applies_to_space|spatial_scope": {
+          "gold": 4,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 18,
+          "new_candidates": 18
+        },
+        "assessment_indicator|has_unit|unit": {
+          "gold": 2,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 0,
+          "new_candidates": 0
+        },
+        "observation_variable|constrained_by|quality_rule": {
+          "gold": 7,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 0,
+          "new_candidates": 0
+        },
+        "model_variable|sourced_from|data_source": {
+          "gold": 5,
+          "old_covered": 2,
+          "new_covered": 2,
+          "old_candidates": 3,
+          "new_candidates": 3
+        },
+        "assessment_indicator|classified_by|classification_rule": {
+          "gold": 1,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 0,
+          "new_candidates": 0
+        },
+        "assessment_indicator|applies_to_ecosystem|ecosystem_type": {
+          "gold": 13,
+          "old_covered": 13,
+          "new_covered": 13,
+          "old_candidates": 22,
+          "new_candidates": 22
+        }
+      }
+    },
+    "effective_train623": {
+      "unit_count": 623,
+      "roles": {
+        "observation_variable|measured_with|instrument": {
+          "gold": 49,
+          "old_covered": 45,
+          "new_covered": 45,
+          "old_candidates": 59,
+          "new_candidates": 59
+        },
+        "method|applies_to_space|spatial_scope": {
+          "gold": 17,
+          "old_covered": 0,
+          "new_covered": 4,
+          "old_candidates": 11,
+          "new_candidates": 186
+        },
+        "method|constrained_by|quality_rule": {
+          "gold": 8,
+          "old_covered": 1,
+          "new_covered": 1,
+          "old_candidates": 1,
+          "new_candidates": 1
+        },
+        "observation_variable|obtained_by|method": {
+          "gold": 78,
+          "old_covered": 47,
+          "new_covered": 47,
+          "old_candidates": 214,
+          "new_candidates": 214
+        },
+        "observation_variable|observed_every|frequency": {
+          "gold": 155,
+          "old_covered": 154,
+          "new_covered": 154,
+          "old_candidates": 154,
+          "new_candidates": 154
+        },
+        "observation_variable|observed_during|temporal_scope": {
+          "gold": 112,
+          "old_covered": 111,
+          "new_covered": 111,
+          "old_candidates": 111,
+          "new_candidates": 111
+        },
+        "observation_variable|has_unit|unit": {
+          "gold": 42,
+          "old_covered": 39,
+          "new_covered": 39,
+          "old_candidates": 56,
+          "new_candidates": 56
+        },
+        "data_source|constrained_by|quality_rule": {
+          "gold": 56,
+          "old_covered": 41,
+          "new_covered": 41,
+          "old_candidates": 42,
+          "new_candidates": 42
+        },
+        "observation_variable|sourced_from|data_source": {
+          "gold": 11,
+          "old_covered": 4,
+          "new_covered": 4,
+          "old_candidates": 34,
+          "new_candidates": 34
+        },
+        "formula|applies_to_ecosystem|ecosystem_type": {
+          "gold": 5,
+          "old_covered": 1,
+          "new_covered": 1,
+          "old_candidates": 8,
+          "new_candidates": 8
+        },
+        "formula|has_output|model_variable": {
+          "gold": 24,
+          "old_covered": 24,
+          "new_covered": 24,
+          "old_candidates": 24,
+          "new_candidates": 24
+        },
+        "model_variable|obtained_by|method": {
+          "gold": 2,
+          "old_covered": 2,
+          "new_covered": 2,
+          "old_candidates": 33,
+          "new_candidates": 33
+        },
+        "formula|has_input|model_variable": {
+          "gold": 62,
+          "old_covered": 62,
+          "new_covered": 62,
+          "old_candidates": 65,
+          "new_candidates": 65
+        },
+        "assessment_subject|has_indicator|assessment_indicator": {
+          "gold": 7,
+          "old_covered": 3,
+          "new_covered": 3,
+          "old_candidates": 58,
+          "new_candidates": 58
+        },
+        "assessment_indicator|calculated_by|formula": {
+          "gold": 5,
+          "old_covered": 3,
+          "new_covered": 3,
+          "old_candidates": 23,
+          "new_candidates": 23
+        },
+        "model_variable|calculated_by|formula": {
+          "gold": 24,
+          "old_covered": 24,
+          "new_covered": 24,
+          "old_candidates": 24,
+          "new_candidates": 24
+        },
+        "method|applies_to_ecosystem|ecosystem_type": {
+          "gold": 11,
+          "old_covered": 5,
+          "new_covered": 5,
+          "old_candidates": 153,
+          "new_candidates": 153
+        },
+        "model_variable|has_unit|unit": {
+          "gold": 35,
+          "old_covered": 34,
+          "new_covered": 34,
+          "old_candidates": 35,
+          "new_candidates": 35
+        },
+        "formula|applies_to_space|spatial_scope": {
+          "gold": 5,
+          "old_covered": 2,
+          "new_covered": 2,
+          "old_candidates": 6,
+          "new_candidates": 6
+        },
+        "assessment_indicator|applies_to_space|spatial_scope": {
+          "gold": 4,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 18,
+          "new_candidates": 18
+        },
+        "assessment_indicator|has_unit|unit": {
+          "gold": 2,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 0,
+          "new_candidates": 0
+        },
+        "model_variable|sourced_from|data_source": {
+          "gold": 5,
+          "old_covered": 2,
+          "new_covered": 2,
+          "old_candidates": 3,
+          "new_candidates": 3
+        },
+        "observation_variable|constrained_by|quality_rule": {
+          "gold": 3,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 0,
+          "new_candidates": 0
+        },
+        "assessment_indicator|classified_by|classification_rule": {
+          "gold": 1,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 0,
+          "new_candidates": 0
+        },
+        "assessment_indicator|applies_to_ecosystem|ecosystem_type": {
+          "gold": 13,
+          "old_covered": 13,
+          "new_covered": 13,
+          "old_candidates": 22,
+          "new_candidates": 22
+        }
+      }
+    },
+    "validation69": {
+      "unit_count": 69,
+      "roles": {
+        "observation_variable|observed_during|temporal_scope": {
+          "gold": 9,
+          "old_covered": 9,
+          "new_covered": 9,
+          "old_candidates": 9,
+          "new_candidates": 9
+        },
+        "observation_variable|observed_every|frequency": {
+          "gold": 16,
+          "old_covered": 16,
+          "new_covered": 16,
+          "old_candidates": 16,
+          "new_candidates": 16
+        },
+        "data_source|constrained_by|quality_rule": {
+          "gold": 9,
+          "old_covered": 6,
+          "new_covered": 6,
+          "old_candidates": 7,
+          "new_candidates": 7
+        },
+        "method|applies_to_space|spatial_scope": {
+          "gold": 3,
+          "old_covered": 0,
+          "new_covered": 1,
+          "old_candidates": 0,
+          "new_candidates": 17
+        },
+        "observation_variable|obtained_by|method": {
+          "gold": 10,
+          "old_covered": 9,
+          "new_covered": 9,
+          "old_candidates": 19,
+          "new_candidates": 19
+        },
+        "assessment_subject|has_indicator|assessment_indicator": {
+          "gold": 0,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 13,
+          "new_candidates": 13
+        },
+        "observation_variable|has_unit|unit": {
+          "gold": 6,
+          "old_covered": 5,
+          "new_covered": 5,
+          "old_candidates": 5,
+          "new_candidates": 5
+        },
+        "observation_variable|constrained_by|quality_rule": {
+          "gold": 4,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 0,
+          "new_candidates": 0
+        },
+        "observation_variable|measured_with|instrument": {
+          "gold": 3,
+          "old_covered": 3,
+          "new_covered": 3,
+          "old_candidates": 3,
+          "new_candidates": 3
+        },
+        "method|constrained_by|quality_rule": {
+          "gold": 1,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 0,
+          "new_candidates": 0
+        },
+        "observation_variable|sourced_from|data_source": {
+          "gold": 5,
+          "old_covered": 1,
+          "new_covered": 1,
+          "old_candidates": 3,
+          "new_candidates": 3
+        },
+        "method|applies_to_ecosystem|ecosystem_type": {
+          "gold": 0,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 18,
+          "new_candidates": 18
+        },
+        "formula|has_input|model_variable": {
+          "gold": 2,
+          "old_covered": 2,
+          "new_covered": 2,
+          "old_candidates": 2,
+          "new_candidates": 2
+        },
+        "model_variable|calculated_by|formula": {
+          "gold": 1,
+          "old_covered": 1,
+          "new_covered": 1,
+          "old_candidates": 1,
+          "new_candidates": 1
+        },
+        "assessment_indicator|calculated_by|formula": {
+          "gold": 0,
+          "old_covered": 0,
+          "new_covered": 0,
+          "old_candidates": 1,
+          "new_candidates": 1
+        },
+        "formula|has_output|model_variable": {
+          "gold": 1,
+          "old_covered": 1,
+          "new_covered": 1,
+          "old_candidates": 1,
+          "new_candidates": 1
+        }
+      }
+    }
+  },
+  "changed_units": [
+    {
+      "unit_id": "0081047e007c3fed",
+      "added_relation_count": 4,
+      "recovered_gold": [
+        [
+          "叶面积指数仪器测量",
+          "method",
+          "applies_to_space",
+          "样地",
+          "spatial_scope"
+        ]
+      ],
+      "added_without_gold_match": 3
+    },
+    {
+      "unit_id": "023b36165b25780e",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "07856ad63e588a8a",
+      "added_relation_count": 1,
+      "recovered_gold": [],
+      "added_without_gold_match": 1
+    },
+    {
+      "unit_id": "0aafb6d05dc964a8",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "0afaf8c5d3b51e03",
+      "added_relation_count": 4,
+      "recovered_gold": [],
+      "added_without_gold_match": 4
+    },
+    {
+      "unit_id": "0d123d81733cf243",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "118aead15314d652",
+      "added_relation_count": 1,
+      "recovered_gold": [],
+      "added_without_gold_match": 1
+    },
+    {
+      "unit_id": "166c48d7f9991769",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "1ab8feb860412750",
+      "added_relation_count": 8,
+      "recovered_gold": [],
+      "added_without_gold_match": 8
+    },
+    {
+      "unit_id": "1acaf3c9cad2f54d",
+      "added_relation_count": 7,
+      "recovered_gold": [
+        [
+          "样方内所有林木测量",
+          "method",
+          "applies_to_space",
+          "样方",
+          "spatial_scope"
+        ]
+      ],
+      "added_without_gold_match": 6
+    },
+    {
+      "unit_id": "1c164401388b3ae3",
+      "added_relation_count": 7,
+      "recovered_gold": [],
+      "added_without_gold_match": 7
+    },
+    {
+      "unit_id": "26bd5a6173379ada",
+      "added_relation_count": 12,
+      "recovered_gold": [],
+      "added_without_gold_match": 12
+    },
+    {
+      "unit_id": "2c64c35d3064f6ce",
+      "added_relation_count": 3,
+      "recovered_gold": [],
+      "added_without_gold_match": 3
+    },
+    {
+      "unit_id": "356422df53895926",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "4608c5ff28cea370",
+      "added_relation_count": 4,
+      "recovered_gold": [
+        [
+          "测径尺测量",
+          "method",
+          "applies_to_space",
+          "乔木样方",
+          "spatial_scope"
+        ]
+      ],
+      "added_without_gold_match": 3
+    },
+    {
+      "unit_id": "48e47996499da4eb",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "496e64b5be014a81",
+      "added_relation_count": 2,
+      "recovered_gold": [],
+      "added_without_gold_match": 2
+    },
+    {
+      "unit_id": "499a72852681f48b",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "4a01333aabd98ee3",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "4c300214f3443f2b",
+      "added_relation_count": 8,
+      "recovered_gold": [],
+      "added_without_gold_match": 8
+    },
+    {
+      "unit_id": "4e6e40677f98cdef",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "536bdbf7b77c52d3",
+      "added_relation_count": 6,
+      "recovered_gold": [],
+      "added_without_gold_match": 6
+    },
+    {
+      "unit_id": "5488ef5ccb505f82",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "5686af4b7c001a8a",
+      "added_relation_count": 6,
+      "recovered_gold": [],
+      "added_without_gold_match": 6
+    },
+    {
+      "unit_id": "573a22af31bbadf9",
+      "added_relation_count": 12,
+      "recovered_gold": [],
+      "added_without_gold_match": 12
+    },
+    {
+      "unit_id": "5c0b351c9c182cf7",
+      "added_relation_count": 1,
+      "recovered_gold": [
+        [
+          "计数法",
+          "method",
+          "applies_to_space",
+          "样方",
+          "spatial_scope"
+        ]
+      ],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "5cd8f148a98bda58",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "62ff0e9ab9e65099",
+      "added_relation_count": 1,
+      "recovered_gold": [],
+      "added_without_gold_match": 1
+    },
+    {
+      "unit_id": "67775b3dccbee4fc",
+      "added_relation_count": 1,
+      "recovered_gold": [],
+      "added_without_gold_match": 1
+    },
+    {
+      "unit_id": "69eadf9471d20450",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "6aef2c58716b139f",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "6d3f33ae5e9a6eb6",
+      "added_relation_count": 2,
+      "recovered_gold": [],
+      "added_without_gold_match": 2
+    },
+    {
+      "unit_id": "6e2076ca82b35538",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "7105e45fd5a69173",
+      "added_relation_count": 2,
+      "recovered_gold": [],
+      "added_without_gold_match": 2
+    },
+    {
+      "unit_id": "7b21e909eabfac56",
+      "added_relation_count": 7,
+      "recovered_gold": [],
+      "added_without_gold_match": 7
+    },
+    {
+      "unit_id": "85cea0edbc51311f",
+      "added_relation_count": 8,
+      "recovered_gold": [],
+      "added_without_gold_match": 8
+    },
+    {
+      "unit_id": "862ba53c0114ce1a",
+      "added_relation_count": 5,
+      "recovered_gold": [],
+      "added_without_gold_match": 5
+    },
+    {
+      "unit_id": "8763255d75b110fa",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "88e2184ae967b569",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "96e6603e532ca7a6",
+      "added_relation_count": 8,
+      "recovered_gold": [],
+      "added_without_gold_match": 8
+    },
+    {
+      "unit_id": "971da6e208108a42",
+      "added_relation_count": 1,
+      "recovered_gold": [],
+      "added_without_gold_match": 1
+    },
+    {
+      "unit_id": "9ef8a1a39243def9",
+      "added_relation_count": 8,
+      "recovered_gold": [],
+      "added_without_gold_match": 8
+    },
+    {
+      "unit_id": "a5a407897ab282bf",
+      "added_relation_count": 6,
+      "recovered_gold": [],
+      "added_without_gold_match": 6
+    },
+    {
+      "unit_id": "a62615db36cb9ab9",
+      "added_relation_count": 1,
+      "recovered_gold": [],
+      "added_without_gold_match": 1
+    },
+    {
+      "unit_id": "a6c918045372acf9",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "a8dd89b908749733",
+      "added_relation_count": 3,
+      "recovered_gold": [],
+      "added_without_gold_match": 3
+    },
+    {
+      "unit_id": "aa6a41230e5f9486",
+      "added_relation_count": 3,
+      "recovered_gold": [],
+      "added_without_gold_match": 3
+    },
+    {
+      "unit_id": "ab1743456005f761",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "ae31d6fc062379d3",
+      "added_relation_count": 1,
+      "recovered_gold": [],
+      "added_without_gold_match": 1
+    },
+    {
+      "unit_id": "af904fca5ccbefd0",
+      "added_relation_count": 3,
+      "recovered_gold": [],
+      "added_without_gold_match": 3
+    },
+    {
+      "unit_id": "b4f241a042acb50f",
+      "added_relation_count": 2,
+      "recovered_gold": [],
+      "added_without_gold_match": 2
+    },
+    {
+      "unit_id": "b53cebf680da2fcf",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "b5a35e335935bd13",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "b6bf7caecb9a08b5",
+      "added_relation_count": 8,
+      "recovered_gold": [],
+      "added_without_gold_match": 8
+    },
+    {
+      "unit_id": "c2d232769b6b24da",
+      "added_relation_count": 5,
+      "recovered_gold": [],
+      "added_without_gold_match": 5
+    },
+    {
+      "unit_id": "c7aa0b963f8d7bec",
+      "added_relation_count": 4,
+      "recovered_gold": [],
+      "added_without_gold_match": 4
+    },
+    {
+      "unit_id": "c8baa114052d3824",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "c9bcc4fb85c9d6d4",
+      "added_relation_count": 2,
+      "recovered_gold": [
+        [
+          "测高仪测量",
+          "method",
+          "applies_to_space",
+          "样方",
+          "spatial_scope"
+        ]
+      ],
+      "added_without_gold_match": 1
+    },
+    {
+      "unit_id": "dc867aaca56c2165",
+      "added_relation_count": 6,
+      "recovered_gold": [],
+      "added_without_gold_match": 6
+    },
+    {
+      "unit_id": "de888864462daf57",
+      "added_relation_count": 2,
+      "recovered_gold": [],
+      "added_without_gold_match": 2
+    },
+    {
+      "unit_id": "eac1491354550abd",
+      "added_relation_count": 5,
+      "recovered_gold": [],
+      "added_without_gold_match": 5
+    },
+    {
+      "unit_id": "ef01ea359755a8c6",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "f6741f5548b6f184",
+      "added_relation_count": 0,
+      "recovered_gold": [],
+      "added_without_gold_match": 0
+    },
+    {
+      "unit_id": "f82f833c26e390af",
+      "added_relation_count": 5,
+      "recovered_gold": [],
+      "added_without_gold_match": 5
+    },
+    {
+      "unit_id": "f9dc8a6fa4946a0a",
+      "added_relation_count": 3,
+      "recovered_gold": [],
+      "added_without_gold_match": 3
+    },
+    {
+      "unit_id": "ffe1f989e5c9da19",
+      "added_relation_count": 4,
+      "recovered_gold": [],
+      "added_without_gold_match": 4
+    }
+  ],
+  "training_projection_coverage": {
+    "gold_entities": 1389,
+    "covered_entities": 1211,
+    "entity_recall_upper_bound": 0.8718502519798416,
+    "gold_relations": 840,
+    "covered_relations": 709,
+    "relation_recall_upper_bound": 0.844047619047619
+  }
+}
