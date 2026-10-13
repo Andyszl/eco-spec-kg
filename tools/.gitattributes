@@ -1,1 +1,2 @@
 verify_sum_candidates_20260930.sh text eol=lf
+next_checks_20261013.py text eol=lf
