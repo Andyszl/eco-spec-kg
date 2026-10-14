@@ -1,3 +1,5 @@
 verify_sum_candidates_20260930.sh text eol=lf
 check_scope_inputs_20261013.py text eol=lf
 run_scope_preflight_20261013.sh text eol=lf
+train_reviewed_pair_20261014.py text eol=lf
+run_reviewed_pair_20261014.sh text eol=lf
