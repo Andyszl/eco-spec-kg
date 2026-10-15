@@ -26,7 +26,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.9"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.10"
 SELECTION_POLICY_VERSION = "ecospec-selection-v2.6"
 
 OBSERVATION_CODES = {
@@ -215,6 +215,14 @@ def _all_spans(value: Any) -> dict[str, dict[str, Any]]:
 
 def _span_ids(unit: dict[str, Any]) -> list[str]:
     return list(_all_spans(unit))
+
+
+def _mention_span_ids(unit: dict[str, Any], name: str) -> list[str]:
+    """Locate existing source mentions; layout whitespace is not semantic."""
+    compact = lambda text: re.sub(r"\s+", "", str(text))
+    needle = compact(name)
+    return [ident for ident, span in _all_spans(unit).items()
+            if needle and needle in compact(span.get("text", ""))]
 
 
 def _heading_title(unit: dict[str, Any]) -> str:
@@ -883,17 +891,21 @@ class RuleCandidateExtractorV2:
                         variable_spans,
                     )
             for method_name in _method_candidates(package_text):
-                method = builder.add_entity(method_name, EntityTypeV2.METHOD, formula_spans)
+                method_spans = _mention_span_ids(unit, method_name)
+                method = builder.add_entity(
+                    method_name, EntityTypeV2.METHOD, formula_spans + method_spans
+                )
                 for variable_entity in output_variable_entities:
                     builder.add_relation(
                         variable_entity,
                         RelationTypeV2.OBTAINED_BY,
                         method,
-                        formula_spans,
+                        formula_spans + variable_entity["evidence_span_ids"] + method_spans,
                     )
             for source in _candidate_terms(package_text, DATA_SOURCE_TERMS):
+                source_spans = _mention_span_ids(unit, source)
                 source_entity = builder.add_entity(
-                    source, EntityTypeV2.DATA_SOURCE, formula_spans
+                    source, EntityTypeV2.DATA_SOURCE, formula_spans + source_spans
                 )
                 source_keywords = _source_keywords(source)
                 for variable_entity, definition in sourced_variable_entities:
@@ -902,7 +914,7 @@ class RuleCandidateExtractorV2:
                             variable_entity,
                             RelationTypeV2.SOURCED_FROM,
                             source_entity,
-                            formula_spans,
+                            formula_spans + variable_entity["evidence_span_ids"] + source_spans,
                         )
             for ecosystem in _dynamic_ecosystems(package_text):
                 target = builder.add_entity(
