@@ -1,5 +1,12 @@
 # Training-source semantic evidence follow-up
 
+This file records the initial v2.10 evidence repair. The subsequent v2.11 paired
+inputs and grouped validation have now been built under
+`experiments/semantic_pair_v211_20261015`; see its README and input manifest for
+the current delivery. Real server tokenizer preflight is still required before
+the guarded training launch. Statements below about inputs not yet rebuilt
+describe the earlier v2.10 stage.
+
 The completed seed42 paired dev22 run did not meet its preregistered expanded
 method/source path requirement (0/3). It is not eligible for three-seed expansion.
 Results were received on branch `codex/seed42-pair-dev-20261015-100752-1631711`,
