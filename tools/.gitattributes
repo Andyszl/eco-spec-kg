@@ -3,3 +3,6 @@ check_scope_inputs_20261013.py text eol=lf
 run_scope_preflight_20261013.sh text eol=lf
 train_reviewed_pair_20261014.py text eol=lf
 run_reviewed_pair_20261014.sh text eol=lf
+semantic_pair_20261015.py text eol=lf
+run_semantic_preflight_20261015.sh text eol=lf
+run_semantic_pair_20261015.sh text eol=lf

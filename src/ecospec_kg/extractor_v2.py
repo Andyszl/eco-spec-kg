@@ -26,7 +26,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.10"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.11"
 SELECTION_POLICY_VERSION = "ecospec-selection-v2.6"
 
 OBSERVATION_CODES = {
@@ -423,6 +423,11 @@ def _method_candidates(text: str) -> list[str]:
         match = re.search(re.escape(instrument) + r"\s*(?:等工具)?(?:进行)?(测量|测定|观测)", text)
         if match:
             methods.append(instrument + match.group(1))
+    for name in list(methods):
+        if name.startswith("基于"):
+            canonical = name[len("基于"):]
+            if re.fullmatch(r".+(?:方法|方程|模型|技术)(?:[（(][A-Za-z][A-Za-z0-9 -]{1,15}[）)])?", canonical):
+                methods.append(canonical)
     return _unique(
         normalized
         for method in methods
@@ -908,6 +913,14 @@ class RuleCandidateExtractorV2:
                     source, EntityTypeV2.DATA_SOURCE, formula_spans + source_spans
                 )
                 source_keywords = _source_keywords(source)
+                # A package's explicitly declared output may derive from a
+                # named input source in its introduction. This is a candidate,
+                # never an automatic provenance decision for every variable.
+                for variable_entity in output_variable_entities:
+                    builder.add_relation(
+                        variable_entity, RelationTypeV2.SOURCED_FROM, source_entity,
+                        formula_spans + variable_entity["evidence_span_ids"] + source_spans,
+                    )
                 for variable_entity, definition in sourced_variable_entities:
                     if any(keyword in definition for keyword in source_keywords):
                         builder.add_relation(
