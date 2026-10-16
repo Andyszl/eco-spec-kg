@@ -1,0 +1,360 @@
+{
+  "reviewer": "assistant_not_independent_human",
+  "cases": [
+    {
+      "unit_id": "d197013000c245ea",
+      "source_sha256": "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425",
+      "split": "train",
+      "methods": [
+        "回归模型",
+        "异速生长方程",
+        "异速生长方程法",
+        "最小二乘法",
+        "机器学习方法",
+        "植被指数法",
+        "统计模型"
+      ],
+      "positive": [
+        [
+          "B",
+          "obtained_by",
+          "回归模型"
+        ],
+        [
+          "B",
+          "obtained_by",
+          "植被指数法"
+        ],
+        [
+          "B",
+          "obtained_by",
+          "统计模型"
+        ],
+        [
+          "α",
+          "obtained_by",
+          "最小二乘法"
+        ],
+        [
+          "β",
+          "obtained_by",
+          "最小二乘法"
+        ],
+        [
+          "γ",
+          "obtained_by",
+          "最小二乘法"
+        ],
+        [
+          "B",
+          "sourced_from",
+          "遥感数据"
+        ]
+      ],
+      "rationale": "正文明确生物量经植被指数/回归统计模型反演，回归系数经最小二乘法得到，生物量流程使用遥感数据。其他方法选项不强加给该公式；不将实地测量校准数据的方法当成模型输出的直接方法。",
+      "unknown_relation_ids": [
+        "f16b94c72409d093",
+        "31353f2b11ef0b08",
+        "139d639e6c62cf75",
+        "7af93736532973f0",
+        "5461ddb932778a06",
+        "3d3dcdbc61fba5c3"
+      ],
+      "confirmed_negative_relations": [
+        {
+          "relation_id": "3e7396a342b4f50a",
+          "edge": [
+            "B",
+            "obtained_by",
+            "可根据区域植被特点和数据基础确定具体方法"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "9324430e8953cd33",
+          "edge": [
+            "B",
+            "obtained_by",
+            "可根据区域特点选用模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "a6001642e68405e0",
+          "edge": [
+            "B",
+            "obtained_by",
+            "回归系数常用最小二乘法"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "12ff82e2a5c28b42",
+          "edge": [
+            "B",
+            "obtained_by",
+            "地上生物量估算可采用植被指数法"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "9786448f2c5119d4",
+          "edge": [
+            "B",
+            "obtained_by",
+            "实地测量"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "2734ad0b19cd75c8",
+          "edge": [
+            "B",
+            "obtained_by",
+            "常用NDVI和地面实测生物量建立回归模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "f7d1826fb75da868",
+          "edge": [
+            "B",
+            "obtained_by",
+            "异速生长方程法和机器学习等方法"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "aab666014085f6d4",
+          "edge": [
+            "B",
+            "obtained_by",
+            "机器学习等方法"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "cd1eae720b8b67a4",
+          "edge": [
+            "B",
+            "obtained_by",
+            "机器学习等方法进行计算"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "6f0ec65df0664a51",
+          "edge": [
+            "B",
+            "obtained_by",
+            "植被指数估算"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "1d9c62aeb3270d5e",
+          "edge": [
+            "B",
+            "obtained_by",
+            "植被指数估算生物量目前已发展多个经验模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "52224369e23eb267",
+          "edge": [
+            "B",
+            "obtained_by",
+            "植被指数法、异速生长方程法和机器学习等方法计算"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "18fe544675055c43",
+          "edge": [
+            "B",
+            "obtained_by",
+            "植被指数法即采用实地测量的植被生物量数据和遥感植被指数建立统计模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "1de0401be436c8b9",
+          "edge": [
+            "B",
+            "obtained_by",
+            "遥感植被指数建立统计模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        }
+      ],
+      "confirmed_negative_entity_ids": [
+        "f539f4d368be96c0",
+        "e91c33aec4c692cd",
+        "59dbf1626e29b27f",
+        "8e2a99730459bc61",
+        "af1361f91ace675c",
+        "748d20f0523ca8f3",
+        "2b4ef43d5fab9312",
+        "ba1d2f4083be2694",
+        "cff4a8590667f282",
+        "8b0715ca7f557565",
+        "71cfb115861a6119",
+        "cf1a8045300b259c",
+        "1fbe27d09a83cd6c",
+        "4590e2293c7ff62d"
+      ]
+    },
+    {
+      "unit_id": "fce734e267614afa",
+      "source_sha256": "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425",
+      "split": "validation",
+      "methods": [
+        "BEPS模型",
+        "BIOME-BGC模型",
+        "CASA模型",
+        "Miami模型",
+        "过程模型"
+      ],
+      "positive": [
+        [
+          "NPP",
+          "obtained_by",
+          "CASA模型"
+        ]
+      ],
+      "rationale": "公式（3）前一行明确通过CASA模型计算NPP；段落列出的其他可选模型保留未知，不能当成当前公式已经采用。",
+      "unknown_relation_ids": [
+        "5efab5d9c5fad12e",
+        "6ec687d6cc23d979",
+        "f6ca4cdab6554def",
+        "a40d9c66d4882e41"
+      ],
+      "confirmed_negative_relations": [
+        {
+          "relation_id": "6f6792d3928fa463",
+          "edge": [
+            "NPP",
+            "obtained_by",
+            "BEPS模型）和光能利用率模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "f4acf5db4cf9a5a2",
+          "edge": [
+            "NPP",
+            "obtained_by",
+            "CASA模型计算"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "90cfe32c47eab226",
+          "edge": [
+            "NPP",
+            "obtained_by",
+            "净初级生产力（NPP）可利用统计模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "e32347df24d41c60",
+          "edge": [
+            "NPP",
+            "obtained_by",
+            "可根据区域植被特点和数据基础确定具体方法"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        }
+      ],
+      "confirmed_negative_entity_ids": [
+        "f4c1a877bd2dfd85",
+        "88e0c1e5d9364d9a",
+        "62854ea14ebb264e",
+        "ecdd2a293d959b9f"
+      ]
+    },
+    {
+      "unit_id": "cdd361be6b9b6037",
+      "source_sha256": "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425",
+      "split": "validation",
+      "methods": [],
+      "positive": [
+        [
+          "CHM",
+          "sourced_from",
+          "DEM"
+        ],
+        [
+          "CHM",
+          "sourced_from",
+          "数字高程模型"
+        ],
+        [
+          "CHM",
+          "sourced_from",
+          "数字高程模型（DEM）"
+        ]
+      ],
+      "rationale": "正文与公式明示CHM使用DEM。三个来源候选只是同一数据源的三种拼写，统计逻辑覆盖时仅计一项。CHM/DSM/DEM在这里是输出/输入表面，不是获取算法；DEM符号与同名数据源的自指来源关系待裁决。",
+      "unknown_relation_ids": [
+        "255d51f9b206a901"
+      ],
+      "confirmed_negative_relations": [
+        {
+          "relation_id": "c745e6fd93ad5924",
+          "edge": [
+            "CHM",
+            "obtained_by",
+            "冠层高度模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "2d22c6bc9e096dee",
+          "edge": [
+            "CHM",
+            "obtained_by",
+            "冠层高度模型 数字表面模型 数字高程模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "fe5ca70241e2388e",
+          "edge": [
+            "CHM",
+            "obtained_by",
+            "冠层高度模型（CHM）基于数字表面模型（DSM）和数字高程模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "9bb106edb9426afc",
+          "edge": [
+            "CHM",
+            "obtained_by",
+            "数字表面模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        },
+        {
+          "relation_id": "2561f77a703f1bb5",
+          "edge": [
+            "CHM",
+            "obtained_by",
+            "数字高程模型"
+          ],
+          "reason": "invalid entity boundary or wrong method type in this source; reject"
+        }
+      ],
+      "confirmed_negative_entity_ids": [
+        "2bf0e8d4cdd19dab",
+        "4d77dad71538fc0b",
+        "68cc69033507b4d1",
+        "27b12d86a8700de4",
+        "dac4766ae0a5e71b"
+      ]
+    }
+  ]
+}

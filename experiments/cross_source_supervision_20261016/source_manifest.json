@@ -1,0 +1,22 @@
+{
+  "source_url": "https://www.mee.gov.cn/ywgz/fgbz/bz/bzwb/stzl/202401/W020240116406711481253.pdf",
+  "source_sha256": "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425",
+  "pdf_bytes": 1052071,
+  "transcription": "assistant_visual_review_not_independent_human_gold",
+  "verified_pdf_pages": [
+    19,
+    20
+  ],
+  "manual_expression_transcription": true,
+  "source_fields_normalized_layout_spaces": true,
+  "train_sections": [
+    "C.2.2"
+  ],
+  "internal_validation_sections": [
+    "C.2.3",
+    "C.2.5"
+  ],
+  "excluded_section": "C.2.1: same FVC formula family as previously used internal holdout; no new FVC training",
+  "independent_final_test": false,
+  "source_review_precedes_internal_split": true
+}

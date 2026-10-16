@@ -1,0 +1,3 @@
+*.json -text -filter
+*.jsonl -text -filter
+*.md text eol=lf

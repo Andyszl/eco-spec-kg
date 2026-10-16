@@ -1,0 +1,4 @@
+*.json -text -filter
+*.jsonl -text -filter
+*.pdf -text -filter
+*.md text eol=lf
