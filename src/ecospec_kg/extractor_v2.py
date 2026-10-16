@@ -26,7 +26,7 @@ from .providers import OpenAICompatibleProvider
 
 
 RUN_MANIFEST_VERSION = "ecospec-extraction-run-v2.0"
-CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.11"
+CANDIDATE_GENERATOR_VERSION = "structure-aware-rule-v2.12"
 SELECTION_POLICY_VERSION = "ecospec-selection-v2.6"
 
 OBSERVATION_CODES = {
@@ -409,6 +409,14 @@ def _method_candidates(text: str) -> list[str]:
             methods.append(name)
             if match.group(2):
                 methods.append(name + match.group(2))
+    # A variable definition may say "以 Latin-Name 方程加以计算".
+    # Preserve old candidates and add the bounded proper name, without its verb.
+    for match in re.finditer(
+        r"(?:以|采用|运用|利用|通过|依据|使用)\s*"
+        r"([A-Za-z][A-Za-z0-9]*(?:[-–—][A-Za-z][A-Za-z0-9]*)*\s*(?:方程|模型))"
+        r"(?=\s*(?:加以|进行|来)?(?:计算|估算|估测|测定|处理|模拟))", text,
+    ):
+        methods.append(re.sub(r"\s+(?=方程|模型)", "", _clean(match.group(1))))
     # Method names can also be explicit observation-content fields.
     for match in re.finditer(r"(?:观测内容|观测方法|测定方法)[：:]\s*([^；;。]{2,40})", text):
         value = _clean(match.group(1))

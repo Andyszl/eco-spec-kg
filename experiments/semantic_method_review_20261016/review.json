@@ -1,0 +1,56 @@
+{
+  "unit_id": "9c2e417cb59a8b3e",
+  "split": "train",
+  "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+  "source_definition": {
+    "definition": "土垄糙度，以 Smith-Carson 方程加以计算，cm；",
+    "evidence_span": {
+      "bbox": [
+        95.424,
+        148.629,
+        350.23,
+        160.763
+      ],
+      "line_ids": [
+        "4f2eb252e534f4c6",
+        "118455d2fdc2d3b6"
+      ],
+      "page": 11,
+      "printed_page": "8",
+      "span_id": "9ae73dd7c956a55e",
+      "text": "K ——土垄糙度，以 Smith-Carson 方程加以计算，cm；\nr"
+    },
+    "symbol": "K_r",
+    "unit": "cm"
+  },
+  "added_entity": {
+    "entity_id": "da844f442b59338e",
+    "name": "Smith-Carson方程",
+    "entity_type": "method",
+    "evidence_span_ids": [
+      "9ae73dd7c956a55e"
+    ]
+  },
+  "added_relation": {
+    "head_id": "dd52e36d13e2a2eb",
+    "head_name": "K_r",
+    "head_type": "model_variable",
+    "relation_type": "obtained_by",
+    "tail_id": "da844f442b59338e",
+    "tail_name": "Smith-Carson方程",
+    "tail_type": "method",
+    "evidence_span_ids": [
+      "9ae73dd7c956a55e"
+    ]
+  },
+  "old_candidate_covered": false,
+  "new_candidate_covered": true,
+  "frozen_labels_changed": false,
+  "already_used_in_training": false,
+  "training_ready": false,
+  "remaining": [
+    "Review name variants and unresolved supervision.",
+    "Expand cross-source positive and negative coverage.",
+    "Rebuild paired inputs and real tokenizer preflight before training."
+  ]
+}
