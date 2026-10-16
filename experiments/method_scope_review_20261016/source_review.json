@@ -1,0 +1,1823 @@
+{
+  "scope": "effective training inputs only; no dev or test labels used",
+  "current_manifest_sha256": "e0ae94464707f09121e3e78624c129276a755ee7d729e785d40919bd70934ea2",
+  "cases": [
+    {
+      "unit_id": "113680dd91edf495",
+      "source_parent_id": "113680dd91edf495",
+      "candidate_relation_id": "540ae6e8da87d962",
+      "head": "K",
+      "type": "obtained_by",
+      "tail": "侵蚀-生产力评价模型",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            373.622,
+            531.7,
+            565.631
+          ],
+          "line_ids": [
+            "44584d9fd6f1e448",
+            "8d7383404081d516",
+            "f8a08639b0b773bf",
+            "ee940429019602df",
+            "d4354a5728f7fc04",
+            "03df8be574a5a8b4",
+            "be8f394d1fd3e4de",
+            "12998e843ee928fa",
+            "9e334a74eb97358f",
+            "e6fc099bdabcf7a5",
+            "23442c28d0fbb4c1",
+            "5c79388663c55d9b",
+            "f03fc04603556a41",
+            "0e338c91d378b285",
+            "3ca8cbc4054561c6",
+            "a51a608df892e581",
+            "a99e58903b44a56c"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "91635a797032b124",
+          "text": "K = {0.2 + 0.3exp[−0.0256m (1− m / 100)]}×[m / (m + m )]0.3\nEPIC s silt silt c silt\n×{1− 0.25orgC/[orgC + exp(3.72 − 2.95orgC)]} （A.7）\n×{1− 0.7(1− m / 100) / {(1− m / 100) + exp[−5.51+ 22.9(1− m / 100)]}}\ns s s\nK = (−0.013 83 + 0.515 75K ) × 0.1317 （A.8）\nEPIC\n式中： K ——采用侵蚀-生产力评价模型计算的土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nEPIC\nm ——砂粒（0.05～2 mm）百分含量，%；\ns\nm ——粉粒（0.002～0.05 mm）百分含量，%；\nsilt\nm ——黏粒（＜0.002 mm）百分含量，%；\nc\norgC ——有机碳的百分含量，%。\nK——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；"
+        }
+      ]
+    },
+    {
+      "unit_id": "113680dd91edf495",
+      "source_parent_id": "113680dd91edf495",
+      "candidate_relation_id": "2f9a124e3c9c59b4",
+      "head": "K",
+      "type": "obtained_by",
+      "tail": "侵蚀-生产力评价模型计算",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            373.622,
+            531.7,
+            565.631
+          ],
+          "line_ids": [
+            "44584d9fd6f1e448",
+            "8d7383404081d516",
+            "f8a08639b0b773bf",
+            "ee940429019602df",
+            "d4354a5728f7fc04",
+            "03df8be574a5a8b4",
+            "be8f394d1fd3e4de",
+            "12998e843ee928fa",
+            "9e334a74eb97358f",
+            "e6fc099bdabcf7a5",
+            "23442c28d0fbb4c1",
+            "5c79388663c55d9b",
+            "f03fc04603556a41",
+            "0e338c91d378b285",
+            "3ca8cbc4054561c6",
+            "a51a608df892e581",
+            "a99e58903b44a56c"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "91635a797032b124",
+          "text": "K = {0.2 + 0.3exp[−0.0256m (1− m / 100)]}×[m / (m + m )]0.3\nEPIC s silt silt c silt\n×{1− 0.25orgC/[orgC + exp(3.72 − 2.95orgC)]} （A.7）\n×{1− 0.7(1− m / 100) / {(1− m / 100) + exp[−5.51+ 22.9(1− m / 100)]}}\ns s s\nK = (−0.013 83 + 0.515 75K ) × 0.1317 （A.8）\nEPIC\n式中： K ——采用侵蚀-生产力评价模型计算的土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nEPIC\nm ——砂粒（0.05～2 mm）百分含量，%；\ns\nm ——粉粒（0.002～0.05 mm）百分含量，%；\nsilt\nm ——黏粒（＜0.002 mm）百分含量，%；\nc\norgC ——有机碳的百分含量，%。\nK——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；"
+        }
+      ]
+    },
+    {
+      "unit_id": "113680dd91edf495",
+      "source_parent_id": "113680dd91edf495",
+      "candidate_relation_id": "3f63432a763bfe8c",
+      "head": "K_EPIC",
+      "type": "obtained_by",
+      "tail": "侵蚀-生产力评价模型",
+      "selected_in_current_target": true,
+      "review_status": "retain_reviewed_positive",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            373.622,
+            531.7,
+            565.631
+          ],
+          "line_ids": [
+            "44584d9fd6f1e448",
+            "8d7383404081d516",
+            "f8a08639b0b773bf",
+            "ee940429019602df",
+            "d4354a5728f7fc04",
+            "03df8be574a5a8b4",
+            "be8f394d1fd3e4de",
+            "12998e843ee928fa",
+            "9e334a74eb97358f",
+            "e6fc099bdabcf7a5",
+            "23442c28d0fbb4c1",
+            "5c79388663c55d9b",
+            "f03fc04603556a41",
+            "0e338c91d378b285",
+            "3ca8cbc4054561c6",
+            "a51a608df892e581",
+            "a99e58903b44a56c"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "91635a797032b124",
+          "text": "K = {0.2 + 0.3exp[−0.0256m (1− m / 100)]}×[m / (m + m )]0.3\nEPIC s silt silt c silt\n×{1− 0.25orgC/[orgC + exp(3.72 − 2.95orgC)]} （A.7）\n×{1− 0.7(1− m / 100) / {(1− m / 100) + exp[−5.51+ 22.9(1− m / 100)]}}\ns s s\nK = (−0.013 83 + 0.515 75K ) × 0.1317 （A.8）\nEPIC\n式中： K ——采用侵蚀-生产力评价模型计算的土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nEPIC\nm ——砂粒（0.05～2 mm）百分含量，%；\ns\nm ——粉粒（0.002～0.05 mm）百分含量，%；\nsilt\nm ——黏粒（＜0.002 mm）百分含量，%；\nc\norgC ——有机碳的百分含量，%。\nK——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；"
+        }
+      ]
+    },
+    {
+      "unit_id": "113680dd91edf495",
+      "source_parent_id": "113680dd91edf495",
+      "candidate_relation_id": "56ddfca7ac4051be",
+      "head": "K_EPIC",
+      "type": "obtained_by",
+      "tail": "侵蚀-生产力评价模型计算",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            373.622,
+            531.7,
+            565.631
+          ],
+          "line_ids": [
+            "44584d9fd6f1e448",
+            "8d7383404081d516",
+            "f8a08639b0b773bf",
+            "ee940429019602df",
+            "d4354a5728f7fc04",
+            "03df8be574a5a8b4",
+            "be8f394d1fd3e4de",
+            "12998e843ee928fa",
+            "9e334a74eb97358f",
+            "e6fc099bdabcf7a5",
+            "23442c28d0fbb4c1",
+            "5c79388663c55d9b",
+            "f03fc04603556a41",
+            "0e338c91d378b285",
+            "3ca8cbc4054561c6",
+            "a51a608df892e581",
+            "a99e58903b44a56c"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "91635a797032b124",
+          "text": "K = {0.2 + 0.3exp[−0.0256m (1− m / 100)]}×[m / (m + m )]0.3\nEPIC s silt silt c silt\n×{1− 0.25orgC/[orgC + exp(3.72 − 2.95orgC)]} （A.7）\n×{1− 0.7(1− m / 100) / {(1− m / 100) + exp[−5.51+ 22.9(1− m / 100)]}}\ns s s\nK = (−0.013 83 + 0.515 75K ) × 0.1317 （A.8）\nEPIC\n式中： K ——采用侵蚀-生产力评价模型计算的土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nEPIC\nm ——砂粒（0.05～2 mm）百分含量，%；\ns\nm ——粉粒（0.002～0.05 mm）百分含量，%；\nsilt\nm ——黏粒（＜0.002 mm）百分含量，%；\nc\norgC ——有机碳的百分含量，%。\nK——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；"
+        }
+      ]
+    },
+    {
+      "unit_id": "9c2e417cb59a8b3e",
+      "source_parent_id": "9c2e417cb59a8b3e",
+      "candidate_relation_id": "82ed777c3314b1b0",
+      "head": "K_r",
+      "type": "obtained_by",
+      "tail": "）的计算方法",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            84.864,
+            710.309,
+            531.7,
+            761.761
+          ],
+          "line_ids": [
+            "d7e04ff9e56be7cf",
+            "ee1a9c795e5dea68",
+            "494fe65a6669f9f0"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "65780f3850741fac",
+          "text": "取 −0.076 8，沙地取 −0.065 8，农田取 −0.043 8。\n地表粗糙度因子（K’）的计算方法如下：\nK′ = e(1.86Kr −2.41Kr 0.934−0.127Crr) （A.21）"
+        },
+        {
+          "bbox": [
+            63.864,
+            102.205,
+            531.7,
+            206.781
+          ],
+          "line_ids": [
+            "531e300d0688532f",
+            "edd37445920f0444",
+            "599f61801096528f",
+            "e77930f9b6576376",
+            "4f2eb252e534f4c6",
+            "118455d2fdc2d3b6",
+            "8678e91af77e3c4d",
+            "6841dab01321e1ab",
+            "4cb532f3c4844a3b"
+          ],
+          "page": 11,
+          "printed_page": "8",
+          "span_id": "ab96a10d07576cce",
+          "text": "(ΔH )2\nK = 0.2 · （A.22）\nr L\n式中：K’ ——地表粗糙度因子；\nK ——土垄糙度，以 Smith-Carson 方程加以计算，cm；\nr\nCrr ——随机糙度因子，取 0，cm；\nL ——地势起伏参数；\nΔH ——距离 L 范围内的海拔高程差。"
+        }
+      ]
+    },
+    {
+      "unit_id": "9c2e417cb59a8b3e",
+      "source_parent_id": "9c2e417cb59a8b3e",
+      "candidate_relation_id": "dccb06f2985262e5",
+      "head": "K’",
+      "type": "obtained_by",
+      "tail": "）的计算方法",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            84.864,
+            710.309,
+            531.7,
+            761.761
+          ],
+          "line_ids": [
+            "d7e04ff9e56be7cf",
+            "ee1a9c795e5dea68",
+            "494fe65a6669f9f0"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "65780f3850741fac",
+          "text": "取 −0.076 8，沙地取 −0.065 8，农田取 −0.043 8。\n地表粗糙度因子（K’）的计算方法如下：\nK′ = e(1.86Kr −2.41Kr 0.934−0.127Crr) （A.21）"
+        },
+        {
+          "bbox": [
+            63.864,
+            102.205,
+            531.7,
+            206.781
+          ],
+          "line_ids": [
+            "531e300d0688532f",
+            "edd37445920f0444",
+            "599f61801096528f",
+            "e77930f9b6576376",
+            "4f2eb252e534f4c6",
+            "118455d2fdc2d3b6",
+            "8678e91af77e3c4d",
+            "6841dab01321e1ab",
+            "4cb532f3c4844a3b"
+          ],
+          "page": 11,
+          "printed_page": "8",
+          "span_id": "ab96a10d07576cce",
+          "text": "(ΔH )2\nK = 0.2 · （A.22）\nr L\n式中：K’ ——地表粗糙度因子；\nK ——土垄糙度，以 Smith-Carson 方程加以计算，cm；\nr\nCrr ——随机糙度因子，取 0，cm；\nL ——地势起伏参数；\nΔH ——距离 L 范围内的海拔高程差。"
+        }
+      ]
+    },
+    {
+      "unit_id": "6f75b0171eab95e6",
+      "source_parent_id": "6f75b0171eab95e6",
+      "candidate_relation_id": "9d7cfadc90c3a311",
+      "head": "x′",
+      "type": "obtained_by",
+      "tail": "归一化处理",
+      "selected_in_current_target": true,
+      "review_status": "retain_reviewed_positive",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            117.673,
+            531.7,
+            175.397
+          ],
+          "line_ids": [
+            "6f6aee2fcf46ba4f",
+            "14e1bc682ddfc1b1",
+            "8188508a0d8119b0",
+            "ce88fce0c2f3d15d",
+            "62eaf53f75c54c49"
+          ],
+          "page": 6,
+          "printed_page": "3",
+          "span_id": "e5b03e17f376d737",
+          "text": "x − min(x)\nx′ = （2）\nmax(x) − min(x)\n式中： x′ ——为归一化处理后指数；\nx ——为原指数。"
+        }
+      ]
+    },
+    {
+      "unit_id": "6f2c40ba174a9b41",
+      "source_parent_id": "3b87291bafd7da90",
+      "candidate_relation_id": "17d50f30756c3360",
+      "head": "SR",
+      "type": "obtained_by",
+      "tail": "修正风蚀方程",
+      "selected_in_current_target": true,
+      "review_status": "retain_reviewed_positive",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            481.799,
+            531.7,
+            759.663
+          ],
+          "line_ids": [
+            "3cdc28388072c9ac",
+            "45fbb393e8f29854",
+            "1a8e12c214a4033e",
+            "bb0ab5c9eaf4a86d",
+            "aa0cc946022509c8",
+            "afa0c1bf8d8bf260",
+            "325370018fcba2d8",
+            "b0f7bf3c55c37947",
+            "650851c249aefdfd",
+            "bae0e3d615a570c8",
+            "550a3ab3b3ec5f2e",
+            "1de56046f5fd2e20",
+            "093e05499935d64b",
+            "61f7cb39b443aa70",
+            "d2f46b80e42f7431",
+            "dee803d9f05ab745",
+            "8be9345e6d6444c3",
+            "fae69c25f21e3c7c",
+            "97341474f0a8b0f2",
+            "86fb3f940b89b141",
+            "363632abda9d952c",
+            "a132f41fc3d43e58",
+            "55e4f95009880c0b",
+            "1b4bbbf38c5d2299",
+            "423b1dd68d2ae5ba",
+            "5700cfdba482a6a6",
+            "4d501325c38b984f"
+          ],
+          "page": 9,
+          "printed_page": "6",
+          "span_id": "cbfe31a12d3f456e",
+          "text": "采用修正风蚀方程 RWEQ 进行评价。\n防风固沙量：\nSR = S − S （A.14）\nL潜 L\n潜在风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s潜)2\nL潜 S 2 MAX潜\n潜\nQ = 109.8[WF × EF × SCF × K′] （A.15）\nMAX潜\nS = 150.71( WF × EF × SCF × K′) −0.3711\n潜\n实际风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s)2\nL S 2 MAX\nS = 150.71(WF × EF × SCF× K′× C) −0.3711 （A.16）\nQ = 109.8[WF × EF × SCF × K′× C]\nMAX\n式中：SR——固沙量，t/（km2∙a）；\nS ——潜在风力侵蚀量，t/（km2∙a）；\nL潜"
+        },
+        {
+          "bbox": [
+            95.064,
+            100.163,
+            266.21,
+            222.381
+          ],
+          "line_ids": [
+            "6bd86cd84aaedaa1",
+            "ee7aa394bbafc5ce",
+            "0f1667a145286b61",
+            "040c0d6253dc0518",
+            "84fbf615fad03255",
+            "c737c396c45116c6",
+            "3e658884926fa605",
+            "844013e527dbc40b",
+            "b18d825638c702f1",
+            "6bd4086a96deaaf8"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "7530be5d027b082f",
+          "text": "S ——实际风力侵蚀量，t/（km2∙a）；\nL\nQ ——最大转移量，kg/m；\nMAX\nZ ——最大风蚀出现距离，m；\nWF ——气候因子，kg/m；\nK′ ——地表粗糙度因子；\nEF ——土壤可蚀因子；\nSCF ——土壤结皮因子；\nC ——植被覆盖因子。"
+        }
+      ]
+    },
+    {
+      "unit_id": "42d8dd466182a9ea",
+      "source_parent_id": "3b87291bafd7da90",
+      "candidate_relation_id": "fd5c7747f0c4a729",
+      "head": "Q_MAX潜",
+      "type": "obtained_by",
+      "tail": "修正风蚀方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            481.799,
+            531.7,
+            759.663
+          ],
+          "line_ids": [
+            "3cdc28388072c9ac",
+            "45fbb393e8f29854",
+            "1a8e12c214a4033e",
+            "bb0ab5c9eaf4a86d",
+            "aa0cc946022509c8",
+            "afa0c1bf8d8bf260",
+            "325370018fcba2d8",
+            "b0f7bf3c55c37947",
+            "650851c249aefdfd",
+            "bae0e3d615a570c8",
+            "550a3ab3b3ec5f2e",
+            "1de56046f5fd2e20",
+            "093e05499935d64b",
+            "61f7cb39b443aa70",
+            "d2f46b80e42f7431",
+            "dee803d9f05ab745",
+            "8be9345e6d6444c3",
+            "fae69c25f21e3c7c",
+            "97341474f0a8b0f2",
+            "86fb3f940b89b141",
+            "363632abda9d952c",
+            "a132f41fc3d43e58",
+            "55e4f95009880c0b",
+            "1b4bbbf38c5d2299",
+            "423b1dd68d2ae5ba",
+            "5700cfdba482a6a6",
+            "4d501325c38b984f"
+          ],
+          "page": 9,
+          "printed_page": "6",
+          "span_id": "cbfe31a12d3f456e",
+          "text": "采用修正风蚀方程 RWEQ 进行评价。\n防风固沙量：\nSR = S − S （A.14）\nL潜 L\n潜在风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s潜)2\nL潜 S 2 MAX潜\n潜\nQ = 109.8[WF × EF × SCF × K′] （A.15）\nMAX潜\nS = 150.71( WF × EF × SCF × K′) −0.3711\n潜\n实际风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s)2\nL S 2 MAX\nS = 150.71(WF × EF × SCF× K′× C) −0.3711 （A.16）\nQ = 109.8[WF × EF × SCF × K′× C]\nMAX\n式中：SR——固沙量，t/（km2∙a）；\nS ——潜在风力侵蚀量，t/（km2∙a）；\nL潜"
+        },
+        {
+          "bbox": [
+            95.064,
+            100.163,
+            266.21,
+            222.381
+          ],
+          "line_ids": [
+            "6bd86cd84aaedaa1",
+            "ee7aa394bbafc5ce",
+            "0f1667a145286b61",
+            "040c0d6253dc0518",
+            "84fbf615fad03255",
+            "c737c396c45116c6",
+            "3e658884926fa605",
+            "844013e527dbc40b",
+            "b18d825638c702f1",
+            "6bd4086a96deaaf8"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "7530be5d027b082f",
+          "text": "S ——实际风力侵蚀量，t/（km2∙a）；\nL\nQ ——最大转移量，kg/m；\nMAX\nZ ——最大风蚀出现距离，m；\nWF ——气候因子，kg/m；\nK′ ——地表粗糙度因子；\nEF ——土壤可蚀因子；\nSCF ——土壤结皮因子；\nC ——植被覆盖因子。"
+        }
+      ]
+    },
+    {
+      "unit_id": "42d8dd466182a9ea",
+      "source_parent_id": "3b87291bafd7da90",
+      "candidate_relation_id": "4c3e4df45355cca9",
+      "head": "S_L潜",
+      "type": "obtained_by",
+      "tail": "修正风蚀方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            481.799,
+            531.7,
+            759.663
+          ],
+          "line_ids": [
+            "3cdc28388072c9ac",
+            "45fbb393e8f29854",
+            "1a8e12c214a4033e",
+            "bb0ab5c9eaf4a86d",
+            "aa0cc946022509c8",
+            "afa0c1bf8d8bf260",
+            "325370018fcba2d8",
+            "b0f7bf3c55c37947",
+            "650851c249aefdfd",
+            "bae0e3d615a570c8",
+            "550a3ab3b3ec5f2e",
+            "1de56046f5fd2e20",
+            "093e05499935d64b",
+            "61f7cb39b443aa70",
+            "d2f46b80e42f7431",
+            "dee803d9f05ab745",
+            "8be9345e6d6444c3",
+            "fae69c25f21e3c7c",
+            "97341474f0a8b0f2",
+            "86fb3f940b89b141",
+            "363632abda9d952c",
+            "a132f41fc3d43e58",
+            "55e4f95009880c0b",
+            "1b4bbbf38c5d2299",
+            "423b1dd68d2ae5ba",
+            "5700cfdba482a6a6",
+            "4d501325c38b984f"
+          ],
+          "page": 9,
+          "printed_page": "6",
+          "span_id": "cbfe31a12d3f456e",
+          "text": "采用修正风蚀方程 RWEQ 进行评价。\n防风固沙量：\nSR = S − S （A.14）\nL潜 L\n潜在风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s潜)2\nL潜 S 2 MAX潜\n潜\nQ = 109.8[WF × EF × SCF × K′] （A.15）\nMAX潜\nS = 150.71( WF × EF × SCF × K′) −0.3711\n潜\n实际风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s)2\nL S 2 MAX\nS = 150.71(WF × EF × SCF× K′× C) −0.3711 （A.16）\nQ = 109.8[WF × EF × SCF × K′× C]\nMAX\n式中：SR——固沙量，t/（km2∙a）；\nS ——潜在风力侵蚀量，t/（km2∙a）；\nL潜"
+        },
+        {
+          "bbox": [
+            95.064,
+            100.163,
+            266.21,
+            222.381
+          ],
+          "line_ids": [
+            "6bd86cd84aaedaa1",
+            "ee7aa394bbafc5ce",
+            "0f1667a145286b61",
+            "040c0d6253dc0518",
+            "84fbf615fad03255",
+            "c737c396c45116c6",
+            "3e658884926fa605",
+            "844013e527dbc40b",
+            "b18d825638c702f1",
+            "6bd4086a96deaaf8"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "7530be5d027b082f",
+          "text": "S ——实际风力侵蚀量，t/（km2∙a）；\nL\nQ ——最大转移量，kg/m；\nMAX\nZ ——最大风蚀出现距离，m；\nWF ——气候因子，kg/m；\nK′ ——地表粗糙度因子；\nEF ——土壤可蚀因子；\nSCF ——土壤结皮因子；\nC ——植被覆盖因子。"
+        }
+      ]
+    },
+    {
+      "unit_id": "42d8dd466182a9ea",
+      "source_parent_id": "3b87291bafd7da90",
+      "candidate_relation_id": "312379f88316f41d",
+      "head": "S潜",
+      "type": "obtained_by",
+      "tail": "修正风蚀方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            481.799,
+            531.7,
+            759.663
+          ],
+          "line_ids": [
+            "3cdc28388072c9ac",
+            "45fbb393e8f29854",
+            "1a8e12c214a4033e",
+            "bb0ab5c9eaf4a86d",
+            "aa0cc946022509c8",
+            "afa0c1bf8d8bf260",
+            "325370018fcba2d8",
+            "b0f7bf3c55c37947",
+            "650851c249aefdfd",
+            "bae0e3d615a570c8",
+            "550a3ab3b3ec5f2e",
+            "1de56046f5fd2e20",
+            "093e05499935d64b",
+            "61f7cb39b443aa70",
+            "d2f46b80e42f7431",
+            "dee803d9f05ab745",
+            "8be9345e6d6444c3",
+            "fae69c25f21e3c7c",
+            "97341474f0a8b0f2",
+            "86fb3f940b89b141",
+            "363632abda9d952c",
+            "a132f41fc3d43e58",
+            "55e4f95009880c0b",
+            "1b4bbbf38c5d2299",
+            "423b1dd68d2ae5ba",
+            "5700cfdba482a6a6",
+            "4d501325c38b984f"
+          ],
+          "page": 9,
+          "printed_page": "6",
+          "span_id": "cbfe31a12d3f456e",
+          "text": "采用修正风蚀方程 RWEQ 进行评价。\n防风固沙量：\nSR = S − S （A.14）\nL潜 L\n潜在风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s潜)2\nL潜 S 2 MAX潜\n潜\nQ = 109.8[WF × EF × SCF × K′] （A.15）\nMAX潜\nS = 150.71( WF × EF × SCF × K′) −0.3711\n潜\n实际风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s)2\nL S 2 MAX\nS = 150.71(WF × EF × SCF× K′× C) −0.3711 （A.16）\nQ = 109.8[WF × EF × SCF × K′× C]\nMAX\n式中：SR——固沙量，t/（km2∙a）；\nS ——潜在风力侵蚀量，t/（km2∙a）；\nL潜"
+        },
+        {
+          "bbox": [
+            95.064,
+            100.163,
+            266.21,
+            222.381
+          ],
+          "line_ids": [
+            "6bd86cd84aaedaa1",
+            "ee7aa394bbafc5ce",
+            "0f1667a145286b61",
+            "040c0d6253dc0518",
+            "84fbf615fad03255",
+            "c737c396c45116c6",
+            "3e658884926fa605",
+            "844013e527dbc40b",
+            "b18d825638c702f1",
+            "6bd4086a96deaaf8"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "7530be5d027b082f",
+          "text": "S ——实际风力侵蚀量，t/（km2∙a）；\nL\nQ ——最大转移量，kg/m；\nMAX\nZ ——最大风蚀出现距离，m；\nWF ——气候因子，kg/m；\nK′ ——地表粗糙度因子；\nEF ——土壤可蚀因子；\nSCF ——土壤结皮因子；\nC ——植被覆盖因子。"
+        }
+      ]
+    },
+    {
+      "unit_id": "44bfa21cdeba8677",
+      "source_parent_id": "3b87291bafd7da90",
+      "candidate_relation_id": "c3562b217dedd1ad",
+      "head": "Q_MAX",
+      "type": "obtained_by",
+      "tail": "修正风蚀方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            481.799,
+            531.7,
+            759.663
+          ],
+          "line_ids": [
+            "3cdc28388072c9ac",
+            "45fbb393e8f29854",
+            "1a8e12c214a4033e",
+            "bb0ab5c9eaf4a86d",
+            "aa0cc946022509c8",
+            "afa0c1bf8d8bf260",
+            "325370018fcba2d8",
+            "b0f7bf3c55c37947",
+            "650851c249aefdfd",
+            "bae0e3d615a570c8",
+            "550a3ab3b3ec5f2e",
+            "1de56046f5fd2e20",
+            "093e05499935d64b",
+            "61f7cb39b443aa70",
+            "d2f46b80e42f7431",
+            "dee803d9f05ab745",
+            "8be9345e6d6444c3",
+            "fae69c25f21e3c7c",
+            "97341474f0a8b0f2",
+            "86fb3f940b89b141",
+            "363632abda9d952c",
+            "a132f41fc3d43e58",
+            "55e4f95009880c0b",
+            "1b4bbbf38c5d2299",
+            "423b1dd68d2ae5ba",
+            "5700cfdba482a6a6",
+            "4d501325c38b984f"
+          ],
+          "page": 9,
+          "printed_page": "6",
+          "span_id": "cbfe31a12d3f456e",
+          "text": "采用修正风蚀方程 RWEQ 进行评价。\n防风固沙量：\nSR = S − S （A.14）\nL潜 L\n潜在风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s潜)2\nL潜 S 2 MAX潜\n潜\nQ = 109.8[WF × EF × SCF × K′] （A.15）\nMAX潜\nS = 150.71( WF × EF × SCF × K′) −0.3711\n潜\n实际风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s)2\nL S 2 MAX\nS = 150.71(WF × EF × SCF× K′× C) −0.3711 （A.16）\nQ = 109.8[WF × EF × SCF × K′× C]\nMAX\n式中：SR——固沙量，t/（km2∙a）；\nS ——潜在风力侵蚀量，t/（km2∙a）；\nL潜"
+        },
+        {
+          "bbox": [
+            95.064,
+            100.163,
+            266.21,
+            222.381
+          ],
+          "line_ids": [
+            "6bd86cd84aaedaa1",
+            "ee7aa394bbafc5ce",
+            "0f1667a145286b61",
+            "040c0d6253dc0518",
+            "84fbf615fad03255",
+            "c737c396c45116c6",
+            "3e658884926fa605",
+            "844013e527dbc40b",
+            "b18d825638c702f1",
+            "6bd4086a96deaaf8"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "7530be5d027b082f",
+          "text": "S ——实际风力侵蚀量，t/（km2∙a）；\nL\nQ ——最大转移量，kg/m；\nMAX\nZ ——最大风蚀出现距离，m；\nWF ——气候因子，kg/m；\nK′ ——地表粗糙度因子；\nEF ——土壤可蚀因子；\nSCF ——土壤结皮因子；\nC ——植被覆盖因子。"
+        }
+      ]
+    },
+    {
+      "unit_id": "44bfa21cdeba8677",
+      "source_parent_id": "3b87291bafd7da90",
+      "candidate_relation_id": "97f0a78bb70091da",
+      "head": "S",
+      "type": "obtained_by",
+      "tail": "修正风蚀方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            481.799,
+            531.7,
+            759.663
+          ],
+          "line_ids": [
+            "3cdc28388072c9ac",
+            "45fbb393e8f29854",
+            "1a8e12c214a4033e",
+            "bb0ab5c9eaf4a86d",
+            "aa0cc946022509c8",
+            "afa0c1bf8d8bf260",
+            "325370018fcba2d8",
+            "b0f7bf3c55c37947",
+            "650851c249aefdfd",
+            "bae0e3d615a570c8",
+            "550a3ab3b3ec5f2e",
+            "1de56046f5fd2e20",
+            "093e05499935d64b",
+            "61f7cb39b443aa70",
+            "d2f46b80e42f7431",
+            "dee803d9f05ab745",
+            "8be9345e6d6444c3",
+            "fae69c25f21e3c7c",
+            "97341474f0a8b0f2",
+            "86fb3f940b89b141",
+            "363632abda9d952c",
+            "a132f41fc3d43e58",
+            "55e4f95009880c0b",
+            "1b4bbbf38c5d2299",
+            "423b1dd68d2ae5ba",
+            "5700cfdba482a6a6",
+            "4d501325c38b984f"
+          ],
+          "page": 9,
+          "printed_page": "6",
+          "span_id": "cbfe31a12d3f456e",
+          "text": "采用修正风蚀方程 RWEQ 进行评价。\n防风固沙量：\nSR = S − S （A.14）\nL潜 L\n潜在风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s潜)2\nL潜 S 2 MAX潜\n潜\nQ = 109.8[WF × EF × SCF × K′] （A.15）\nMAX潜\nS = 150.71( WF × EF × SCF × K′) −0.3711\n潜\n实际风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s)2\nL S 2 MAX\nS = 150.71(WF × EF × SCF× K′× C) −0.3711 （A.16）\nQ = 109.8[WF × EF × SCF × K′× C]\nMAX\n式中：SR——固沙量，t/（km2∙a）；\nS ——潜在风力侵蚀量，t/（km2∙a）；\nL潜"
+        },
+        {
+          "bbox": [
+            95.064,
+            100.163,
+            266.21,
+            222.381
+          ],
+          "line_ids": [
+            "6bd86cd84aaedaa1",
+            "ee7aa394bbafc5ce",
+            "0f1667a145286b61",
+            "040c0d6253dc0518",
+            "84fbf615fad03255",
+            "c737c396c45116c6",
+            "3e658884926fa605",
+            "844013e527dbc40b",
+            "b18d825638c702f1",
+            "6bd4086a96deaaf8"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "7530be5d027b082f",
+          "text": "S ——实际风力侵蚀量，t/（km2∙a）；\nL\nQ ——最大转移量，kg/m；\nMAX\nZ ——最大风蚀出现距离，m；\nWF ——气候因子，kg/m；\nK′ ——地表粗糙度因子；\nEF ——土壤可蚀因子；\nSCF ——土壤结皮因子；\nC ——植被覆盖因子。"
+        }
+      ]
+    },
+    {
+      "unit_id": "44bfa21cdeba8677",
+      "source_parent_id": "3b87291bafd7da90",
+      "candidate_relation_id": "f0226e1302ac845c",
+      "head": "S_L",
+      "type": "obtained_by",
+      "tail": "修正风蚀方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            481.799,
+            531.7,
+            759.663
+          ],
+          "line_ids": [
+            "3cdc28388072c9ac",
+            "45fbb393e8f29854",
+            "1a8e12c214a4033e",
+            "bb0ab5c9eaf4a86d",
+            "aa0cc946022509c8",
+            "afa0c1bf8d8bf260",
+            "325370018fcba2d8",
+            "b0f7bf3c55c37947",
+            "650851c249aefdfd",
+            "bae0e3d615a570c8",
+            "550a3ab3b3ec5f2e",
+            "1de56046f5fd2e20",
+            "093e05499935d64b",
+            "61f7cb39b443aa70",
+            "d2f46b80e42f7431",
+            "dee803d9f05ab745",
+            "8be9345e6d6444c3",
+            "fae69c25f21e3c7c",
+            "97341474f0a8b0f2",
+            "86fb3f940b89b141",
+            "363632abda9d952c",
+            "a132f41fc3d43e58",
+            "55e4f95009880c0b",
+            "1b4bbbf38c5d2299",
+            "423b1dd68d2ae5ba",
+            "5700cfdba482a6a6",
+            "4d501325c38b984f"
+          ],
+          "page": 9,
+          "printed_page": "6",
+          "span_id": "cbfe31a12d3f456e",
+          "text": "采用修正风蚀方程 RWEQ 进行评价。\n防风固沙量：\nSR = S − S （A.14）\nL潜 L\n潜在风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s潜)2\nL潜 S 2 MAX潜\n潜\nQ = 109.8[WF × EF × SCF × K′] （A.15）\nMAX潜\nS = 150.71( WF × EF × SCF × K′) −0.3711\n潜\n实际风力侵蚀量：\nS =\n2 · z\nQ ·\ne−(z/s)2\nL S 2 MAX\nS = 150.71(WF × EF × SCF× K′× C) −0.3711 （A.16）\nQ = 109.8[WF × EF × SCF × K′× C]\nMAX\n式中：SR——固沙量，t/（km2∙a）；\nS ——潜在风力侵蚀量，t/（km2∙a）；\nL潜"
+        },
+        {
+          "bbox": [
+            95.064,
+            100.163,
+            266.21,
+            222.381
+          ],
+          "line_ids": [
+            "6bd86cd84aaedaa1",
+            "ee7aa394bbafc5ce",
+            "0f1667a145286b61",
+            "040c0d6253dc0518",
+            "84fbf615fad03255",
+            "c737c396c45116c6",
+            "3e658884926fa605",
+            "844013e527dbc40b",
+            "b18d825638c702f1",
+            "6bd4086a96deaaf8"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "7530be5d027b082f",
+          "text": "S ——实际风力侵蚀量，t/（km2∙a）；\nL\nQ ——最大转移量，kg/m；\nMAX\nZ ——最大风蚀出现距离，m；\nWF ——气候因子，kg/m；\nK′ ——地表粗糙度因子；\nEF ——土壤可蚀因子；\nSCF ——土壤结皮因子；\nC ——植被覆盖因子。"
+        }
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "source_parent_id": "5954b773ec29497b",
+      "candidate_relation_id": "2f74144c64fc39d9",
+      "head": "R",
+      "type": "obtained_by",
+      "tail": "如下公式计算",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            117.51,
+            531.801,
+            362.019
+          ],
+          "line_ids": [
+            "7fffff95736ed3d8",
+            "a185a0d8630f487d",
+            "16673717a1acb1af",
+            "8b2f40f7d6e61e25",
+            "3aa4a7ee75df236a",
+            "f76491663a5f3382",
+            "c0bcbb5b2d91e232",
+            "188c34987e6fabc4",
+            "c63c5174cf5e44a5",
+            "45a5887f9ae970ed",
+            "8bd7fb1351131246",
+            "604bfdd343b47452",
+            "910423a6e7178094",
+            "3d8b505d431c3862",
+            "1255c12be1156ac7",
+            "3b24edd721fc3404",
+            "50ca9fc0fa2591bb",
+            "29646708f9bf4645",
+            "5b288451c9233f65",
+            "a7de6985fcb2e09b",
+            "cd86ccf1a123ebd8"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "99857f4808ce5903",
+          "text": "24\nR = ∑R （A.5）\n半月k\nk=1\n1 n m\nR = ∑∑( α· P1.726 5 ) （A.6）\n半月k n i, j,k\ni=1 j=0\n式中： R ——多年平均年降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\nR ——第 k 个半月的降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\n半月k\nk ——一年的 24 个半月，即 k=1,2,…,24；\ni ——所用降雨资料的年份，即 i＝1,2,…,n；\nj ——第 i 年第 k 个半月侵蚀性降雨日的天数，即 j=1,2,…,m；\nP ——第 i 年第 k 个半月第 j 个侵蚀性日降雨量，mm；\ni,j,k\nα 为参数，暖季 α=0.393 7，冷季 α=0.310 1。\n降雨侵蚀力空间数据可以根据全国范围内气象站点多年的逐日降雨量资料，通过插值获得。\n土壤可蚀性因子（K）反映了土壤颗粒被水力分离和搬运的难易程度，是评价土壤对侵蚀敏感程度\n的重要指标，主要与土壤质地、有机质含量、土体结构、渗透性等土壤理化性质有关。采用如下公式进\n行计算。"
+        }
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "source_parent_id": "5954b773ec29497b",
+      "candidate_relation_id": "4b7cf40feb3fab15",
+      "head": "R",
+      "type": "obtained_by",
+      "tail": "如下公式进行计算",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            117.51,
+            531.801,
+            362.019
+          ],
+          "line_ids": [
+            "7fffff95736ed3d8",
+            "a185a0d8630f487d",
+            "16673717a1acb1af",
+            "8b2f40f7d6e61e25",
+            "3aa4a7ee75df236a",
+            "f76491663a5f3382",
+            "c0bcbb5b2d91e232",
+            "188c34987e6fabc4",
+            "c63c5174cf5e44a5",
+            "45a5887f9ae970ed",
+            "8bd7fb1351131246",
+            "604bfdd343b47452",
+            "910423a6e7178094",
+            "3d8b505d431c3862",
+            "1255c12be1156ac7",
+            "3b24edd721fc3404",
+            "50ca9fc0fa2591bb",
+            "29646708f9bf4645",
+            "5b288451c9233f65",
+            "a7de6985fcb2e09b",
+            "cd86ccf1a123ebd8"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "99857f4808ce5903",
+          "text": "24\nR = ∑R （A.5）\n半月k\nk=1\n1 n m\nR = ∑∑( α· P1.726 5 ) （A.6）\n半月k n i, j,k\ni=1 j=0\n式中： R ——多年平均年降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\nR ——第 k 个半月的降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\n半月k\nk ——一年的 24 个半月，即 k=1,2,…,24；\ni ——所用降雨资料的年份，即 i＝1,2,…,n；\nj ——第 i 年第 k 个半月侵蚀性降雨日的天数，即 j=1,2,…,m；\nP ——第 i 年第 k 个半月第 j 个侵蚀性日降雨量，mm；\ni,j,k\nα 为参数，暖季 α=0.393 7，冷季 α=0.310 1。\n降雨侵蚀力空间数据可以根据全国范围内气象站点多年的逐日降雨量资料，通过插值获得。\n土壤可蚀性因子（K）反映了土壤颗粒被水力分离和搬运的难易程度，是评价土壤对侵蚀敏感程度\n的重要指标，主要与土壤质地、有机质含量、土体结构、渗透性等土壤理化性质有关。采用如下公式进\n行计算。"
+        }
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "source_parent_id": "5954b773ec29497b",
+      "candidate_relation_id": "6a13851242312553",
+      "head": "R_半月k",
+      "type": "obtained_by",
+      "tail": "如下公式计算",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            117.51,
+            531.801,
+            362.019
+          ],
+          "line_ids": [
+            "7fffff95736ed3d8",
+            "a185a0d8630f487d",
+            "16673717a1acb1af",
+            "8b2f40f7d6e61e25",
+            "3aa4a7ee75df236a",
+            "f76491663a5f3382",
+            "c0bcbb5b2d91e232",
+            "188c34987e6fabc4",
+            "c63c5174cf5e44a5",
+            "45a5887f9ae970ed",
+            "8bd7fb1351131246",
+            "604bfdd343b47452",
+            "910423a6e7178094",
+            "3d8b505d431c3862",
+            "1255c12be1156ac7",
+            "3b24edd721fc3404",
+            "50ca9fc0fa2591bb",
+            "29646708f9bf4645",
+            "5b288451c9233f65",
+            "a7de6985fcb2e09b",
+            "cd86ccf1a123ebd8"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "99857f4808ce5903",
+          "text": "24\nR = ∑R （A.5）\n半月k\nk=1\n1 n m\nR = ∑∑( α· P1.726 5 ) （A.6）\n半月k n i, j,k\ni=1 j=0\n式中： R ——多年平均年降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\nR ——第 k 个半月的降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\n半月k\nk ——一年的 24 个半月，即 k=1,2,…,24；\ni ——所用降雨资料的年份，即 i＝1,2,…,n；\nj ——第 i 年第 k 个半月侵蚀性降雨日的天数，即 j=1,2,…,m；\nP ——第 i 年第 k 个半月第 j 个侵蚀性日降雨量，mm；\ni,j,k\nα 为参数，暖季 α=0.393 7，冷季 α=0.310 1。\n降雨侵蚀力空间数据可以根据全国范围内气象站点多年的逐日降雨量资料，通过插值获得。\n土壤可蚀性因子（K）反映了土壤颗粒被水力分离和搬运的难易程度，是评价土壤对侵蚀敏感程度\n的重要指标，主要与土壤质地、有机质含量、土体结构、渗透性等土壤理化性质有关。采用如下公式进\n行计算。"
+        }
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "source_parent_id": "5954b773ec29497b",
+      "candidate_relation_id": "87af11f987a318a6",
+      "head": "R_半月k",
+      "type": "obtained_by",
+      "tail": "如下公式进行计算",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            117.51,
+            531.801,
+            362.019
+          ],
+          "line_ids": [
+            "7fffff95736ed3d8",
+            "a185a0d8630f487d",
+            "16673717a1acb1af",
+            "8b2f40f7d6e61e25",
+            "3aa4a7ee75df236a",
+            "f76491663a5f3382",
+            "c0bcbb5b2d91e232",
+            "188c34987e6fabc4",
+            "c63c5174cf5e44a5",
+            "45a5887f9ae970ed",
+            "8bd7fb1351131246",
+            "604bfdd343b47452",
+            "910423a6e7178094",
+            "3d8b505d431c3862",
+            "1255c12be1156ac7",
+            "3b24edd721fc3404",
+            "50ca9fc0fa2591bb",
+            "29646708f9bf4645",
+            "5b288451c9233f65",
+            "a7de6985fcb2e09b",
+            "cd86ccf1a123ebd8"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "99857f4808ce5903",
+          "text": "24\nR = ∑R （A.5）\n半月k\nk=1\n1 n m\nR = ∑∑( α· P1.726 5 ) （A.6）\n半月k n i, j,k\ni=1 j=0\n式中： R ——多年平均年降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\nR ——第 k 个半月的降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\n半月k\nk ——一年的 24 个半月，即 k=1,2,…,24；\ni ——所用降雨资料的年份，即 i＝1,2,…,n；\nj ——第 i 年第 k 个半月侵蚀性降雨日的天数，即 j=1,2,…,m；\nP ——第 i 年第 k 个半月第 j 个侵蚀性日降雨量，mm；\ni,j,k\nα 为参数，暖季 α=0.393 7，冷季 α=0.310 1。\n降雨侵蚀力空间数据可以根据全国范围内气象站点多年的逐日降雨量资料，通过插值获得。\n土壤可蚀性因子（K）反映了土壤颗粒被水力分离和搬运的难易程度，是评价土壤对侵蚀敏感程度\n的重要指标，主要与土壤质地、有机质含量、土体结构、渗透性等土壤理化性质有关。采用如下公式进\n行计算。"
+        }
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "source_parent_id": "5954b773ec29497b",
+      "candidate_relation_id": "253b1fd2b101d664",
+      "head": "P_i,j,k",
+      "type": "sourced_from",
+      "tail": "降雨量资料",
+      "selected_in_current_target": true,
+      "review_status": "retain_reviewed_positive",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            117.51,
+            531.801,
+            362.019
+          ],
+          "line_ids": [
+            "7fffff95736ed3d8",
+            "a185a0d8630f487d",
+            "16673717a1acb1af",
+            "8b2f40f7d6e61e25",
+            "3aa4a7ee75df236a",
+            "f76491663a5f3382",
+            "c0bcbb5b2d91e232",
+            "188c34987e6fabc4",
+            "c63c5174cf5e44a5",
+            "45a5887f9ae970ed",
+            "8bd7fb1351131246",
+            "604bfdd343b47452",
+            "910423a6e7178094",
+            "3d8b505d431c3862",
+            "1255c12be1156ac7",
+            "3b24edd721fc3404",
+            "50ca9fc0fa2591bb",
+            "29646708f9bf4645",
+            "5b288451c9233f65",
+            "a7de6985fcb2e09b",
+            "cd86ccf1a123ebd8"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "99857f4808ce5903",
+          "text": "24\nR = ∑R （A.5）\n半月k\nk=1\n1 n m\nR = ∑∑( α· P1.726 5 ) （A.6）\n半月k n i, j,k\ni=1 j=0\n式中： R ——多年平均年降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\nR ——第 k 个半月的降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\n半月k\nk ——一年的 24 个半月，即 k=1,2,…,24；\ni ——所用降雨资料的年份，即 i＝1,2,…,n；\nj ——第 i 年第 k 个半月侵蚀性降雨日的天数，即 j=1,2,…,m；\nP ——第 i 年第 k 个半月第 j 个侵蚀性日降雨量，mm；\ni,j,k\nα 为参数，暖季 α=0.393 7，冷季 α=0.310 1。\n降雨侵蚀力空间数据可以根据全国范围内气象站点多年的逐日降雨量资料，通过插值获得。\n土壤可蚀性因子（K）反映了土壤颗粒被水力分离和搬运的难易程度，是评价土壤对侵蚀敏感程度\n的重要指标，主要与土壤质地、有机质含量、土体结构、渗透性等土壤理化性质有关。采用如下公式进\n行计算。"
+        }
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "source_parent_id": "5954b773ec29497b",
+      "candidate_relation_id": "38e0338f5275b1c4",
+      "head": "R",
+      "type": "sourced_from",
+      "tail": "降雨量资料",
+      "selected_in_current_target": true,
+      "review_status": "retain_reviewed_positive",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            117.51,
+            531.801,
+            362.019
+          ],
+          "line_ids": [
+            "7fffff95736ed3d8",
+            "a185a0d8630f487d",
+            "16673717a1acb1af",
+            "8b2f40f7d6e61e25",
+            "3aa4a7ee75df236a",
+            "f76491663a5f3382",
+            "c0bcbb5b2d91e232",
+            "188c34987e6fabc4",
+            "c63c5174cf5e44a5",
+            "45a5887f9ae970ed",
+            "8bd7fb1351131246",
+            "604bfdd343b47452",
+            "910423a6e7178094",
+            "3d8b505d431c3862",
+            "1255c12be1156ac7",
+            "3b24edd721fc3404",
+            "50ca9fc0fa2591bb",
+            "29646708f9bf4645",
+            "5b288451c9233f65",
+            "a7de6985fcb2e09b",
+            "cd86ccf1a123ebd8"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "99857f4808ce5903",
+          "text": "24\nR = ∑R （A.5）\n半月k\nk=1\n1 n m\nR = ∑∑( α· P1.726 5 ) （A.6）\n半月k n i, j,k\ni=1 j=0\n式中： R ——多年平均年降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\nR ——第 k 个半月的降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\n半月k\nk ——一年的 24 个半月，即 k=1,2,…,24；\ni ——所用降雨资料的年份，即 i＝1,2,…,n；\nj ——第 i 年第 k 个半月侵蚀性降雨日的天数，即 j=1,2,…,m；\nP ——第 i 年第 k 个半月第 j 个侵蚀性日降雨量，mm；\ni,j,k\nα 为参数，暖季 α=0.393 7，冷季 α=0.310 1。\n降雨侵蚀力空间数据可以根据全国范围内气象站点多年的逐日降雨量资料，通过插值获得。\n土壤可蚀性因子（K）反映了土壤颗粒被水力分离和搬运的难易程度，是评价土壤对侵蚀敏感程度\n的重要指标，主要与土壤质地、有机质含量、土体结构、渗透性等土壤理化性质有关。采用如下公式进\n行计算。"
+        }
+      ]
+    },
+    {
+      "unit_id": "5954b773ec29497b",
+      "source_parent_id": "5954b773ec29497b",
+      "candidate_relation_id": "b267a0e4ccfdb1e4",
+      "head": "R_半月k",
+      "type": "sourced_from",
+      "tail": "降雨量资料",
+      "selected_in_current_target": true,
+      "review_status": "retain_reviewed_positive",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            117.51,
+            531.801,
+            362.019
+          ],
+          "line_ids": [
+            "7fffff95736ed3d8",
+            "a185a0d8630f487d",
+            "16673717a1acb1af",
+            "8b2f40f7d6e61e25",
+            "3aa4a7ee75df236a",
+            "f76491663a5f3382",
+            "c0bcbb5b2d91e232",
+            "188c34987e6fabc4",
+            "c63c5174cf5e44a5",
+            "45a5887f9ae970ed",
+            "8bd7fb1351131246",
+            "604bfdd343b47452",
+            "910423a6e7178094",
+            "3d8b505d431c3862",
+            "1255c12be1156ac7",
+            "3b24edd721fc3404",
+            "50ca9fc0fa2591bb",
+            "29646708f9bf4645",
+            "5b288451c9233f65",
+            "a7de6985fcb2e09b",
+            "cd86ccf1a123ebd8"
+          ],
+          "page": 8,
+          "printed_page": "5",
+          "span_id": "99857f4808ce5903",
+          "text": "24\nR = ∑R （A.5）\n半月k\nk=1\n1 n m\nR = ∑∑( α· P1.726 5 ) （A.6）\n半月k n i, j,k\ni=1 j=0\n式中： R ——多年平均年降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\nR ——第 k 个半月的降雨侵蚀力，MJ∙mm/（hm2∙h∙a）；\n半月k\nk ——一年的 24 个半月，即 k=1,2,…,24；\ni ——所用降雨资料的年份，即 i＝1,2,…,n；\nj ——第 i 年第 k 个半月侵蚀性降雨日的天数，即 j=1,2,…,m；\nP ——第 i 年第 k 个半月第 j 个侵蚀性日降雨量，mm；\ni,j,k\nα 为参数，暖季 α=0.393 7，冷季 α=0.310 1。\n降雨侵蚀力空间数据可以根据全国范围内气象站点多年的逐日降雨量资料，通过插值获得。\n土壤可蚀性因子（K）反映了土壤颗粒被水力分离和搬运的难易程度，是评价土壤对侵蚀敏感程度\n的重要指标，主要与土壤质地、有机质含量、土体结构、渗透性等土壤理化性质有关。采用如下公式进\n行计算。"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "0b810f0c971991cc",
+      "head": "Q_se_a",
+      "type": "obtained_by",
+      "tail": "修正土壤流失方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "149e4b5c4061e84f",
+      "head": "Q_se_a",
+      "type": "obtained_by",
+      "tail": "修正土壤流失方程（RUSLE）",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "0b14352180a86205",
+      "head": "Q_se_a",
+      "type": "obtained_by",
+      "tail": "基于修正土壤流失方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "57da8c7eab9932a2",
+      "head": "Q_se_a",
+      "type": "obtained_by",
+      "tail": "基于修正土壤流失方程（RUSLE）",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "251dfbf087654883",
+      "head": "Q_se_p",
+      "type": "obtained_by",
+      "tail": "修正土壤流失方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "534719fd3ee0c6a4",
+      "head": "Q_se_p",
+      "type": "obtained_by",
+      "tail": "修正土壤流失方程（RUSLE）",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "8bf8786555211705",
+      "head": "Q_se_p",
+      "type": "obtained_by",
+      "tail": "基于修正土壤流失方程",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "4e6939b48d2dd375",
+      "head": "Q_se_p",
+      "type": "obtained_by",
+      "tail": "基于修正土壤流失方程（RUSLE）",
+      "selected_in_current_target": false,
+      "review_status": "unresolved_attribution_not_confirmed_negative",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "c80fb6ac62e6425b",
+      "head": "Q_sr",
+      "type": "obtained_by",
+      "tail": "修正土壤流失方程",
+      "selected_in_current_target": false,
+      "review_status": "same_method_name_variant_requires_canonicalization",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "26c7a6f2ce7440a3",
+      "head": "Q_sr",
+      "type": "obtained_by",
+      "tail": "修正土壤流失方程（RUSLE）",
+      "selected_in_current_target": true,
+      "review_status": "retain_reviewed_positive",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "fd906035855c7a21",
+      "head": "Q_sr",
+      "type": "obtained_by",
+      "tail": "基于修正土壤流失方程",
+      "selected_in_current_target": false,
+      "review_status": "same_method_name_variant_requires_canonicalization",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "source_parent_id": "e10dfb07c04c0214",
+      "candidate_relation_id": "d290bf871987adee",
+      "head": "Q_sr",
+      "type": "obtained_by",
+      "tail": "基于修正土壤流失方程（RUSLE）",
+      "selected_in_current_target": false,
+      "review_status": "same_method_name_variant_requires_canonicalization",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            491.879,
+            531.7,
+            721.661
+          ],
+          "line_ids": [
+            "4ba2650acf3b52a6",
+            "09786b583e573e08",
+            "c5c20aecaefe616a",
+            "fa9a93394c1f9a01",
+            "04630fcfe38bbd53",
+            "d8262e034675d3b9",
+            "fd45bff7a3b39b10",
+            "b5ac9c137d6bfe3c",
+            "9cfc767f125459fa",
+            "7b8f690900e3ba77",
+            "d49e2c6b387874f6",
+            "bc26600bcb8acecb",
+            "3c5164c68c4246de",
+            "8052d3cbd864a284",
+            "623680da8361abae",
+            "54fe6cf65f8469c5",
+            "897ec2dd8f1eab32",
+            "e2a632faa8f83c3b"
+          ],
+          "page": 7,
+          "printed_page": "4",
+          "span_id": "f1c05e793826b95c",
+          "text": "基于修正土壤流失方程（RUSLE）计算。\nQ = Q − Q （A.2）\nsr se_p se_a\nQ = R × K × L × S （A.3）\nse_p\nQ = R × K × L × S × C （A.4）\nse_a\n式中： Q ——土壤保持量，t/（hm2∙a）；\nsr\nQ ——潜在土壤侵蚀量，t/（hm2∙a）；\nse_p\nQ ——实际土壤侵蚀量，t/（hm2∙a）；\nse_a\nR ——降雨侵蚀力因子，MJ∙mm/（hm2∙h∙a）；\nK ——土壤可蚀性因子，t∙hm2∙h/（hm2∙MJ∙mm）；\nL ——坡长因子，量纲一；\nS ——坡度因子，量纲一；\nC ——植被覆盖因子，量纲一；"
+        }
+      ]
+    },
+    {
+      "unit_id": "06b6d65bf49ecb8d",
+      "source_parent_id": "06b6d65bf49ecb8d",
+      "candidate_relation_id": "edf8b8bd8566b9ec",
+      "head": "C",
+      "type": "obtained_by",
+      "tail": "植被覆盖因子（C）的计算方法",
+      "selected_in_current_target": false,
+      "review_status": "exclude_generic_or_bad_boundary",
+      "action_status": "review_packet_only_no_training_changes",
+      "source_sha256": "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+      "source_spans": [
+        {
+          "bbox": [
+            63.864,
+            616.709,
+            531.703,
+            706.843
+          ],
+          "line_ids": [
+            "0d3f22a2dbf1fc5b",
+            "46289c11c96ae6fe",
+            "d7b3cd2f16028f9b",
+            "a1b9a904bb9eb2df",
+            "c71cfa8af0f6ff4f",
+            "b0bcc4f0f38aa967"
+          ],
+          "page": 10,
+          "printed_page": "7",
+          "span_id": "c4340c38c6d3f0a8",
+          "text": "植被覆盖因子（C）的计算方法如下：\nC = eai (SC) （A.20）\n式中：C ——植被覆盖因子；\nSC ——植被覆盖度；\na ——不同植被类型的系数，分别为：林地取 −0.153 5，草地取 −0.115 1，灌丛取 −0.092 1，裸地\ni"
+        }
+      ]
+    }
+  ],
+  "decision_counts": {
+    "unresolved_attribution_not_confirmed_negative": 15,
+    "exclude_generic_or_bad_boundary": 9,
+    "retain_reviewed_positive": 7,
+    "same_method_name_variant_requires_canonicalization": 3
+  },
+  "train_formula_views": 19,
+  "confirmed_runtime_changes": [],
+  "proposed_next_steps": [
+    "Canonicalize explicitly equivalent method names with source evidence before changing targets.",
+    "Keep unresolved attribution separate from confirmed negatives; implement a reviewed candidate supervision scope rather than turning them into positives.",
+    "Add independently sourced remote-sensing/model examples and source discrimination; do not move the heldout FVC unit back to train."
+  ],
+  "training_ready": false
+}

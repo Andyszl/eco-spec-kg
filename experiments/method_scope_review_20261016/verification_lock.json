@@ -1,0 +1,8 @@
+{
+  "sha256_lf": {
+    "src/ecospec_kg/method_supervision_scope_v2.py": "38c8123feb257c02477c2c87ef4b2dfb0c019200c4e54ba0079404c444e03e08",
+    "tools/verify_method_scope_20261016.py": "c7552b2a7c0ec940485be3cc48b99a86817c6e93f7d2c22e7f5f8bf44d20a14d",
+    "experiments/method_scope_review_20261016/source_review.json": "79c2a6d855732b017d91a8027cb337e2b2ff97b384d7504a47def97ff9e84eb4",
+    "experiments/method_scope_review_20261016/verified_report.json": "6ab4f86d1c965cedafc794bf4f0683c9b1540d2b883eb5474d53d5a038c25458"
+  }
+}

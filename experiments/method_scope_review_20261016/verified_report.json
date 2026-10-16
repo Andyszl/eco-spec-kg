@@ -1,0 +1,100 @@
+{
+  "status": "method_scope_review_verified",
+  "train_records": 625,
+  "validation_records": 70,
+  "reviewed_unknown_original_edges": 16,
+  "merged_method_entities": 5,
+  "merged_relations": 9,
+  "quarantined_canonical_training_edges": 10,
+  "control_known_train_method_source_positives": 3,
+  "repair_known_train_method_source_positives": 8,
+  "paired_changed_training_targets": 5,
+  "known_positive_edges_lost": 0,
+  "unknown_removed_from_inference": 0,
+  "input_preview_sha256": "56348dacd6ab638432258f460688b3846d0e31a447552242847a23906483f96d",
+  "changed_units": [
+    {
+      "unit_id": "adb971d6b8288465",
+      "split": "train",
+      "merged_entities": 1,
+      "merged_relations": 0,
+      "unknown_training_relation_ids": [],
+      "entity_aliases": {
+        "987e2399daaa0453": "86fb6c3a98dcb5ff"
+      }
+    },
+    {
+      "unit_id": "113680dd91edf495",
+      "split": "train",
+      "merged_entities": 0,
+      "merged_relations": 0,
+      "unknown_training_relation_ids": [
+        "540ae6e8da87d962"
+      ],
+      "entity_aliases": {}
+    },
+    {
+      "unit_id": "9c2e417cb59a8b3e",
+      "split": "train",
+      "merged_entities": 0,
+      "merged_relations": 0,
+      "unknown_training_relation_ids": [
+        "e72579c07829f282"
+      ],
+      "entity_aliases": {}
+    },
+    {
+      "unit_id": "6a072d40d3e470a1",
+      "split": "train",
+      "merged_entities": 1,
+      "merged_relations": 0,
+      "unknown_training_relation_ids": [],
+      "entity_aliases": {
+        "a29429b4af2d0ff0": "6fd68dca3bc1b4d1"
+      }
+    },
+    {
+      "unit_id": "42d8dd466182a9ea",
+      "split": "train",
+      "merged_entities": 0,
+      "merged_relations": 0,
+      "unknown_training_relation_ids": [
+        "312379f88316f41d",
+        "4c3e4df45355cca9",
+        "fd5c7747f0c4a729"
+      ],
+      "entity_aliases": {}
+    },
+    {
+      "unit_id": "44bfa21cdeba8677",
+      "split": "train",
+      "merged_entities": 0,
+      "merged_relations": 0,
+      "unknown_training_relation_ids": [
+        "97f0a78bb70091da",
+        "c3562b217dedd1ad",
+        "f0226e1302ac845c"
+      ],
+      "entity_aliases": {}
+    },
+    {
+      "unit_id": "e10dfb07c04c0214",
+      "split": "train",
+      "merged_entities": 3,
+      "merged_relations": 9,
+      "unknown_training_relation_ids": [
+        "149e4b5c4061e84f",
+        "534719fd3ee0c6a4"
+      ],
+      "entity_aliases": {
+        "15b2783080ac0981": "cddb5810f8af15b4",
+        "b13646313c0d583c": "cddb5810f8af15b4",
+        "2d9e5905137cc790": "cddb5810f8af15b4"
+      }
+    }
+  ],
+  "source_review": "assistant_review_not_independent_human_gold",
+  "training_inputs_written": false,
+  "cross_source_supplement_complete": false,
+  "training_ready": false
+}
