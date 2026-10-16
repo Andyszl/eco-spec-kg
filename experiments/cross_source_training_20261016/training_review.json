@@ -1,0 +1,31 @@
+{
+  "seed42_pair_authorized": true,
+  "authorization": "existing user request for reviewed single seed42 paired training after real preflight",
+  "preflight_sha256": "ab599bb5431f7113f740536d69fceaacab6dc69533d53ef7d90f9dfa243d5328",
+  "preflight_result_commit": "7dbf2de918ae6c03dd90eaffdeaeb009a26e1478",
+  "preflight_code_commit": "47cb39dbf67d4e90189dab0a7b498b95c2ac2c1a",
+  "input_manifest_sha256": "c9a4a6479728ca90b257cc3fdc3968a0ce260ef0bfc1808070343776df27cc4f",
+  "verified_max_tokens": {
+    "control_train": 6675,
+    "repair_train": 6692,
+    "validation": 5410
+  },
+  "minimum_supervised_tokens": 15,
+  "real_encoded_records": 1324,
+  "same_inputs_matching_previous_real_encodings": 1306,
+  "launcher_sha256_lf": {
+    "tools/train_cross_source_pair_20261016.py": "59ca669d9da9518bb64e5a0ae802f44c2cf1138da60f31e2fd0c6f15c56ab0e2",
+    "tools/run_cross_source_train_20261016.sh": "c8e1a06917d8476fa9df3f24346dc9c4606d5deb1e5ae6f4074159dfbe60ccfb"
+  },
+  "source_review_is_independent_human_gold": false,
+  "control_is_incomplete_supervision_ablation": true,
+  "training_budget": {
+    "seed": 42,
+    "max_steps_per_arm": 200,
+    "same_shared_validation_records": 72,
+    "best_checkpoint": "minimum shared validation loss; no dev-based selection"
+  },
+  "full_dev_gate_unchanged": true,
+  "three_seed_expansion_authorized": false,
+  "training_has_started": false
+}

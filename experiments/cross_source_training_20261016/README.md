@@ -1,0 +1,13 @@
+# 真实预检已审核：固定seed42配对训练交付
+
+真实服务器结果：codex/cross-source-preflight-20261016-132852-2326230，结果提交7dbf2de918ae6c03dd90eaffdeaeb009a26e1478，退出码0。原报告字节原样复制为reviewed_preflight_report.json，SHA ab599bb5431f7113f740536d69fceaacab6dc69533d53ef7d90f9dfa243d5328。1324条全部通过，0超长、0空监督；控制train最长6675、修复train6692、validation5410，监督tokens最低15。1306条未变化输入的编码长度及监督tokens计数与上一轮真实预检一致；报告未保存完整token序列，不能声称比较了序列。本地审核只重放输入/元数据，没有伪称重新分词或训练。
+
+输入清单SHA c9a4a6479728ca90b257cc3fdc3968a0ce260ef0bfc1808070343776df27cc4f；626/626/72、冻结数据、现有提示与候选均保持。原输入清单中training_ready=false是预检前的冻结状态，不改写它；由本目录training_review及固定报告哈希记录真实预检已审核并授权本次单种子配对。该目录没有新模型结果。
+
+新入口复用此前已实际成功训练的Swift4.4.2命令构造器，仅替换dataset/val_dataset/output路径：seed与data_seed均42，每臂200步，rank8/alpha16/dropout0.05，batch1/accumulation16，学习率0.0002，共享72条验证，每40步评估保存，按验证loss最小值选checkpoint，两臂均从同一本地基座新建LoRA，不续训旧适配器。原训练参数truncation_strategy=delete保留，但预检已用raise逐条确认当前锁定输入最长6692<8192；输入/代码/模板配置改变会在模型启动前拒绝，不允许以删除超长输入来悄悄改变配对数据。
+
+启动前在服务器再次核验原报告/源码/输入/模型模板配置SHA，核对Swift参数存在、实际数据读取的626/626/72条及ID顺序，随后检查GPU0空闲及bf16支持。两个训练进程顺序执行；控制失败即停止，不启动修复。每臂结束复核200步、40/80/120/160/200验证日程、最低共享验证loss及选定checkpoint、适配器配置/大小/SHA，并再次确认保护输入不变。原规范化候选图保留供后续基座/LoRA共用，不应用训练审核隔离名单于推理。
+
+控制仍是不完整监督消融，不是新金标；新来源审核仍是助手审核，不是独立人工标注。内部验证同来源且参与方案选择，不当最终独立验证。完整dev严格门槛、共同结构模块和不自动扩三种子保持；训练结束不等于完整dev通过。
+
+执行`bash tools/run_cross_source_train_20261016.sh`。该入口使用固定已审核报告副本，无需重新运行预检。保存新目录，成功、训练失败或启动前阻断均打包日志并通过Git上传；只收集trainer_state/args/adapter_config和日志，不上传模型/优化器权重。回传RESULTS_UPLOAD_OK、TRAINING_EXIT_CODE、PAIR_DIRECTORY三行。实际运行时仍需由服务器完成当前Swift/数据加载器检查；本地测试仅验证控制流程与命令构造，没有执行新GPU训练。
