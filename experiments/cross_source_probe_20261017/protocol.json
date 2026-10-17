@@ -1,0 +1,25 @@
+{
+  "training_manifest_sha256": "b54fe39c78c8f52f7b14593aa787c1f0ed09491968291dc33c16755b2c58e212",
+  "case_hashes": {
+    "113680dd91edf495:full": "865ea94207a7d40fa3be41f47ed716dcc9993130bc87213182434125d9224082",
+    "113680dd91edf495:as_supervised": "5a1b2a0bffdcab5a3262ad5f8b587059d110825234fb18ef07037c57dac4570a",
+    "9c2e417cb59a8b3e:full": "2ced177ed8d0d1bfdab309263678aad08b7c8c1eb14797c74e0d7b3f3e6993e6",
+    "9c2e417cb59a8b3e:as_supervised": "766db8ba1f28d26a7b9072b453fbcc7150d2cde93f11d2ea4b3f3c955b3434d4",
+    "6f75b0171eab95e6:full": "9be222d2e4e2b3b546d54d23119299c65fe9df74897cd8ac888df1a8c70744ce",
+    "6f2c40ba174a9b41:full": "4a2b71534e28f06b4f21f854284fa7c958f1b04d5bd1fb75fc53ea3c8a21d0b8",
+    "5954b773ec29497b:full": "b939e2fa329bdc2afc8f9cf9e5a2669b3899d936f1adce35cefa5ae21e111996",
+    "e10dfb07c04c0214:full": "b3870602579da49ef3a71b2bdaa3abb74d0db45edbb5d787948dde009ee6c51a",
+    "e10dfb07c04c0214:as_supervised": "120bdff4ea8957c603a9b19c2361e7ebf8e1bc1b3bd763976f2d5ccabdb176ce",
+    "d197013000c245ea:full": "7ca8fe0b6dc960b0ecd8cd3f0dddc1e2a83cc4897b8d6ee549a6e3b6022e613a",
+    "d197013000c245ea:as_supervised": "543c32582fdf9af4cbf54b158865a364ad06da0ab7fae8058d9a0ab52fe64c45",
+    "9fc3c8a70f70b39e:full": "99774f1a10a9341adfcca4ef4c1dfb1bddf44a5511c14e4f3f446c72f5604b7a",
+    "fce734e267614afa:full": "bbdf8ca1e4f3607d9683e95f4b307e35a9523280641c6654f61772a3eb433484",
+    "fce734e267614afa:as_supervised": "fba088e673b548f08c06c6800cfb2635f26d65254284e4e32db29b0eb0a23531",
+    "cdd361be6b9b6037:full": "e0b5dadc4e5a796e2a450ee74ca4736567a4d5f09aa52cca19a73c028ce1db25",
+    "cdd361be6b9b6037:as_supervised": "6bd0adcd5d4c53fd6f7962205c6c6592825b8a28a7f01e3606af96471cf55232"
+  },
+  "source_sha256_lf": {
+    "tools/probe_cross_source_learning_20261017.py": "5846777eab78524dd739e95ed0cde4e5a97c899c2d666c3b4c35bcee18590a4a",
+    "tools/run_cross_source_probe_20261017.sh": "de5b1cb174c1286f1ef40ef06627bc7a7ba3dcaf6c33eccce65ecbe90ae0da6a"
+  }
+}
