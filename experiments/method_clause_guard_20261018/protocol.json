@@ -1,0 +1,202 @@
+{
+  "files": {
+    "probe/cases.json": "5de5bfdbe0ecde6e45bface8da7054f91c8b519641c9eaf383c8ac8f426cc9b2",
+    "probe/predictions.jsonl": "5353984659791787cbae87e8567cd0c184256c5deb940753d35870e4d0a4b86f",
+    "probe/protocol.json": "e4470a313839389740f40ae0f314c3aa3a3c3ca9a662147b4ae327e7ae7fc476",
+    "probe/raw_responses.jsonl": "e90c0059190d878c5004679f8c5f5559bc996891c83aa6c3674ce83800f44af3",
+    "probe/summary.json": "54942d873fb8528b2c061300e39745a49a3b6ae7c16a0d59cf48771079a9ad63",
+    "dev/evaluation_config.json": "4d880649ba2c3e75e96afb70cc9a877ded9de47216a8631c9aceaf1ba9df5e80",
+    "dev/evaluation_protocol.json": "8a41b3a1d69acdd79ed61d2474392472760f798eeda8d6ea8aee20c8335cb8c0",
+    "dev/summary.json": "a87c6cd09782b1d0c1fb6b5fa06e1a66c1f55dd169c98975b56e69d397888d0c",
+    "dev/base/manifest.json": "0f841771449984fd0f93caa35c5aab7c30fff383e69f36c322db82b3d5c4d8a2",
+    "dev/base/predictions.jsonl": "2db592afa479bd035b5d7a80dbbae15dff1e57eb38dc6b27fce9946f7ff46f15",
+    "dev/base/raw_responses.jsonl": "ac04d9be4f7c76dafee2f438defeadd3eab3bfba7bf5820959dfd61691be9649",
+    "dev/base/resolved_config.json": "4d880649ba2c3e75e96afb70cc9a877ded9de47216a8631c9aceaf1ba9df5e80",
+    "dev/base/evaluation/errors.jsonl": "8635be929f69ebcbfbfe18bac04a405b3df5dc7ff135708781befb06121b80d3",
+    "dev/base/evaluation/evaluation_report.md": "bd8d9a1b74008f440d41d4b543886eb8fdd877b2beb6fe438715ab54217cab27",
+    "dev/base/evaluation/metrics.json": "446812d1459aeedf6e71a137294f8f75f8ce710b05feb7597ab2be9528e4c383",
+    "dev/base/hybrid/metrics_and_changes.json": "692934c00cc72b1bedb40fddedf4f6283b8f3a99584f3a1e654ba82fe129c1a5",
+    "dev/base/hybrid/predictions.jsonl": "838f37f29ec2b93752c12c9ccc1157904be564b743a5f0306d76f71ef4123a1d",
+    "dev/base/hybrid/structural_proofs.jsonl": "4766d40cbfe0aff2c87032d6237a7dd45393c33b2554b60e23e344d5355d5620",
+    "dev/base/validation/validated_predictions.jsonl": "2db592afa479bd035b5d7a80dbbae15dff1e57eb38dc6b27fce9946f7ff46f15",
+    "dev/base/validation/validation_failures.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dev/base/validation/validation_report.json": "44ffde0f779318442a1f17f320102aa96ba8c51352ac3ee3898b62c17802fb01",
+    "dev/control/manifest.json": "b175f4be23a6a67e96411340d7771704d81ffc7644e2544da4cd9b7ae369d389",
+    "dev/control/predictions.jsonl": "d3725d7e1832af9a83e2219ec680861d6cf340b5d5a6f60ffa4c5f9774da9538",
+    "dev/control/raw_responses.jsonl": "343b13f04fb5598c1d0c08868517b2f3e2e056a6c996e9a130b44bb4fa25d320",
+    "dev/control/resolved_config.json": "9bd26b23f1638f0f8a99d2576c404fcc279c059718d60c28e12bddfd015daec9",
+    "dev/control/evaluation/errors.jsonl": "9b52724a231fa9e6ca72432a8396dd58b2d1e3b8c5c6eba7a588fc64758b48cb",
+    "dev/control/evaluation/evaluation_report.md": "bdce56737086ba0001d11e5f7b9f0f7202f6daedcc8d4f1530434a42c2065463",
+    "dev/control/evaluation/metrics.json": "0d0b29d5f54d89e867a5d1f2e8063f04003ac6efbb5e4b36eebbd35a0ebe1f66",
+    "dev/control/hybrid/metrics_and_changes.json": "cb7ebd3a50efdb7492b210e2b9818e8832f52d1e4b5f39e9e314b2aafcf30717",
+    "dev/control/hybrid/predictions.jsonl": "8dbfad39d643aae6b84d4e03351838ec69f511d8ea24da1808ecd4c146b37184",
+    "dev/control/hybrid/structural_proofs.jsonl": "ec816531a4d101ceebd19d115f83c2b4b523809c42e2731eb9cc0eff7eeb2ce4",
+    "dev/control/validation/validated_predictions.jsonl": "d3725d7e1832af9a83e2219ec680861d6cf340b5d5a6f60ffa4c5f9774da9538",
+    "dev/control/validation/validation_failures.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dev/control/validation/validation_report.json": "587a1d5c56517aee264cdbc619f4e071cef0eb0495b0928112aa3968be071da5",
+    "dev/repair/manifest.json": "8743f8d7bb9d76bfbdce885253551ad4fb260d644a545a24d0ebfb826e6eb6a1",
+    "dev/repair/predictions.jsonl": "6e4988ff45fd75ac7046b9e98a891b2552422a273a53bd64a298bc854ee508fc",
+    "dev/repair/raw_responses.jsonl": "40d7b7ba67eae530c6b51f7bf65225b3c7826dd0d3f82fcb8417df1d71bbe1cb",
+    "dev/repair/resolved_config.json": "717ed263f2feca7ff440fdcc9d8f941edc7e33e754e43c402560ca5d00e2b974",
+    "dev/repair/evaluation/errors.jsonl": "12c5b8113f01023850df4e294540438cd13d52b31f9973864c04dd3b116fb57a",
+    "dev/repair/evaluation/evaluation_report.md": "d690100ea52bf51a84c74c5cb2a42a6ece4bb7f727ceb67ecb2199a3864c9626",
+    "dev/repair/evaluation/metrics.json": "ce1092103be8ce68ba2cc67b95218974c59bae9fad35f14b86328e6e00bc163d",
+    "dev/repair/hybrid/metrics_and_changes.json": "2c07aa9df2e03ce1c60880aebb9a54fd77afda8029640f161206567d128197ba",
+    "dev/repair/hybrid/predictions.jsonl": "0416ad0176e3e6c9d2463bff9cb701444396c315de722fff38ee52c89fd007c3",
+    "dev/repair/hybrid/structural_proofs.jsonl": "03b47ba23adbbe897addf7ca1580ca25b342a4b2d8475c3ab95effcdef933cbc",
+    "dev/repair/validation/validated_predictions.jsonl": "6e4988ff45fd75ac7046b9e98a891b2552422a273a53bd64a298bc854ee508fc",
+    "dev/repair/validation/validation_failures.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dev/repair/validation/validation_report.json": "b81179fe5d226372f33690746c4da561c11b254a90bab12d0bc4afafea098c9d"
+  },
+  "source_sha256_lf": {
+    "src/ecospec_kg/method_clause_guard_v218.py": "da4c8756cf06e2621f8f519d1cb7400965ef1e414e9d6d7a68508cc6b7eb5c0f",
+    "tools/audit_method_clause_guard_20261018.py": "40096656223d88c461d010b8d578ec45345e199b33116ca61708c5821b61da9c",
+    "tools/run_method_clause_offline_20261018.sh": "1cb772f1311e41d2badea91c21475791bda726b7d9224331b0b88ce0742a2b39"
+  },
+  "training_review": {
+    "records": 626,
+    "known_positive_method_occurrences": 109,
+    "known_positive_method_names": [
+      "GPS测量",
+      "Marxan 选址运算模型",
+      "Smith-Carson方程",
+      "人工观测",
+      "仪器测量",
+      "仪器测量和观察法",
+      "仪器直接观测",
+      "侵蚀-生产力评价模型",
+      "修正土壤流失方程（RUSLE）",
+      "修正风力侵蚀模型（REWQ）",
+      "修正风蚀方程",
+      "决策树",
+      "几何精校正",
+      "分层系统抽样方法",
+      "分类结果聚合",
+      "半微量凯氏法",
+      "叶面积指数仪器测量",
+      "吸管法",
+      "回归模型",
+      "图像增强",
+      "图像融合",
+      "图像配准",
+      "基于遥感影像分类的方法",
+      "基于遥感的植被覆盖度估算方法",
+      "大气校正",
+      "异速生长方程",
+      "异速生长方程法",
+      "异速生长方程计算",
+      "归一化处理",
+      "归一化方法",
+      "拼接",
+      "摄影成像技术",
+      "支持向量机",
+      "数字高程模型（DEM）提取",
+      "最小二乘法",
+      "机器学习方法",
+      "机器学习模型",
+      "机器学习法",
+      "样方内所有林木测量",
+      "样方法",
+      "森林生态系统野外观测",
+      "植被指数法",
+      "植被生态过程模型",
+      "每木检尺",
+      "水量平衡方程",
+      "波段合成",
+      "测高仪测量",
+      "涡度相关法",
+      "湍流交换法",
+      "烘干法",
+      "照相法",
+      "环刀法",
+      "现场调查",
+      "生长锥测定",
+      "电位法",
+      "目测法",
+      "神经网络",
+      "简单随机抽样",
+      "系统抽样",
+      "经验型植被指数模型",
+      "统计模型",
+      "罗盘测量",
+      "裁剪",
+      "观察法",
+      "计数法",
+      "调查统计",
+      "辐射校正",
+      "通量站连续观测",
+      "遥感估测总初级生产力模型",
+      "重铬酸钾氧化-分光光度法",
+      "重铬酸钾氧化法",
+      "野外目视判断",
+      "陆地生态过程模型估测"
+    ],
+    "rejected_known_positive_names": [],
+    "negative_witnesses": {
+      "leading_fragment": [
+        {
+          "unit_id": "9c2e417cb59a8b3e",
+          "name": "）的计算方法"
+        },
+        {
+          "unit_id": "9c2e417cb59a8b3e",
+          "name": "）的计算方法"
+        }
+      ],
+      "deictic_formula": [
+        {
+          "unit_id": "5954b773ec29497b",
+          "name": "如下公式计算"
+        },
+        {
+          "unit_id": "5954b773ec29497b",
+          "name": "如下公式进行计算"
+        },
+        {
+          "unit_id": "5954b773ec29497b",
+          "name": "如下公式计算"
+        },
+        {
+          "unit_id": "5954b773ec29497b",
+          "name": "如下公式进行计算"
+        }
+      ],
+      "descriptive_clause": [
+        {
+          "unit_id": "d197013000c245ea",
+          "name": "可根据区域植被特点和数据基础确定具体方法"
+        },
+        {
+          "unit_id": "d197013000c245ea",
+          "name": "可根据区域特点选用模型"
+        },
+        {
+          "unit_id": "d197013000c245ea",
+          "name": "回归系数常用最小二乘法"
+        },
+        {
+          "unit_id": "d197013000c245ea",
+          "name": "地上生物量估算可采用植被指数法"
+        },
+        {
+          "unit_id": "d197013000c245ea",
+          "name": "常用NDVI和地面实测生物量建立回归模型"
+        },
+        {
+          "unit_id": "d197013000c245ea",
+          "name": "机器学习等方法进行计算"
+        },
+        {
+          "unit_id": "d197013000c245ea",
+          "name": "植被指数估算生物量目前已发展多个经验模型"
+        },
+        {
+          "unit_id": "d197013000c245ea",
+          "name": "植被指数法即采用实地测量的植被生物量数据和遥感植被指数建立统计模型"
+        }
+      ]
+    },
+    "rule_design_sources": "Reviewed train only; no validation/dev name fitting; no blanket calculation-suffix or method whitelist rule."
+  },
+  "historical_dev_gate_unchanged": true
+}
