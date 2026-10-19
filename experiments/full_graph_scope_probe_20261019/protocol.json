@@ -1,0 +1,37 @@
+{
+  "training_manifest_sha256": "4c10145133573de50925d859f10152ef04c7396cec0f4a55d855ce21ad6186df",
+  "input_manifest_sha256": "0b3c79e533a57fa596a49e4bca0c53f1772c5c31ff270eabf78348395fd93ba5",
+  "case_hashes": {
+    "113680dd91edf495:full": "653fbd94efc4c73256a96ee1cfc9c3f463b3570ad61bf0ef81c114f4426d1470",
+    "113680dd91edf495:as_supervised": "3d192a9e8b7f4d71b18025e627a0aac0cecf836803ed3a66c32170f401db08a2",
+    "9c2e417cb59a8b3e:full": "dbaf8d281c8537dcdbe2fd279e139642f9648cc7cb06866167fb3507686fb254",
+    "9c2e417cb59a8b3e:as_supervised": "13aea302139a2e29ba18b7a2ed8783a0a2deb7c02073b1953cdb76e11316d390",
+    "6f75b0171eab95e6:full": "77d77559a81d702e695e012cd04134ffe0a7a6e0089ef39ae2b4127c9f1cb9e5",
+    "6f2c40ba174a9b41:full": "6530f8de3e035daf38abd73e0cbc26222a54b30ce876a6013dfa760df8551321",
+    "5954b773ec29497b:full": "e95f5c34245cdb22b7a506b30fb41d2f0ba912c52b4b7dd7a1df254815c976ba",
+    "e10dfb07c04c0214:full": "a186a16a802d732c8ca91c689e380267c1e46de77a6f0b9a92540fcce5f4186a",
+    "e10dfb07c04c0214:as_supervised": "1067b0df8b24788c0234103673b199e3b63bf0f9aab6b35ee3ce74ab1e257a78",
+    "d197013000c245ea:full": "e816ddd58ac0bae6c48ed127c491b7347c7f06a4417a167d4b3cdc54e302c84b",
+    "d197013000c245ea:as_supervised": "87bf4d6a3668e3b41dc5e1cb2ad2939b40217f870d95fdd85a5f4cd2628f8429",
+    "9fc3c8a70f70b39e:full": "b0ba2172d4a1c576b5331b645aa1ee91704e049d5b0f55b0fa1997446f1a85f8",
+    "fce734e267614afa:full": "b7ead536cfd4d443338e5a70daea75343ceafb2af34a19977a4d87dd45ea1122",
+    "fce734e267614afa:as_supervised": "3ca16b22f411aff889f1e44500c36b5327feb127c202b4e7dd3e2540af3a4ada",
+    "cdd361be6b9b6037:full": "23a5c3f7e773ae526fad6c613e627feac13244eb311d52d6c2f63e1acb72e115",
+    "cdd361be6b9b6037:as_supervised": "2b317ace1af4541ec352b1ec04f9dc111c9ed96962506f8461b34c65c51db0db"
+  },
+  "source_sha256_lf": {
+    "tools/probe_full_graph_scope_20261019.py": "314f78194f6dc3948802e57271946c892ffbed2984b5eb151ac38d66c03eb2df",
+    "tools/run_full_graph_scope_probe_20261019.sh": "a75e6296ba327f1045bd19b4b6ae8ae5fe09bd7c8958e6c41f125953fc60de8f",
+    "tools/probe_cross_source_learning_20261017.py": "5846777eab78524dd739e95ed0cde4e5a97c899c2d666c3b4c35bcee18590a4a",
+    "experiments/cross_source_probe_20261017/protocol.json": "0686a63f27427bf74bbfc8a0b7f8b0c8a5019a2c3ee8114981fc1fc892703ca8",
+    "tools/evaluate_full_graph_scope_pair_20261019.py": "8908823ed3ee17250a41cebd2fed3c5a849f130c68a6dcaeb291bd935e56e2c6",
+    "experiments/full_graph_scope_dev_20261019/protocol.json": "5d3391c1cc9304cc02cba9291e49cb7cd54205c6dac93f21344fbe1306b1e44e",
+    "tools/run_cross_source_probe_20261017.sh": "de5b1cb174c1286f1ef40ef06627bc7a7ba3dcaf6c33eccce65ecbe90ae0da6a"
+  },
+  "model_requests": 48,
+  "training_started": false,
+  "three_seed_eligible": false,
+  "context_limit": 16384,
+  "dev_context_limit": 8192,
+  "scope": "Same complete graph; only unscored list changes. Existing 7 train views, 3 internal validation units. No dev/test-derived references."
+}
