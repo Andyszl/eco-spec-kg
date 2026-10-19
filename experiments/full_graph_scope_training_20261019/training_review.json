@@ -1,0 +1,33 @@
+{
+  "seed42_pair_authorized": true,
+  "authorization": "Existing user request for reviewed fixed seed42 paired training after successful real preflight",
+  "preflight_sha256": "c4e01add9babca6ef1722cf51ccd3fb455d6662e8d704dd353dafdbc0be34e7f",
+  "preflight_result_commit": "fc44471c90dd2bcc3f30932a608a0cc93d5a836f",
+  "preflight_code_commit": "f1d6cd6bc9b0fb7fc4235c4d613fee90f433bfb9",
+  "input_manifest_sha256": "0b3c79e533a57fa596a49e4bca0c53f1772c5c31ff270eabf78348395fd93ba5",
+  "verified_max_tokens": {
+    "control_train": 7315,
+    "repair_train": 7347,
+    "validation": 5550
+  },
+  "minimum_supervised_tokens": 15,
+  "real_encoded_records": 1324,
+  "launcher_sha256_lf": {
+    "tools/train_full_graph_scope_pair_20261019.py": "b36d63465fc58e39fd73836862dc68c90848bebfd56f74ca3bb41602fc8782f5",
+    "tools/run_full_graph_scope_train_20261019.sh": "b093737b051839a8a87186fe80e4c2c10ad1b1e4a42c9cb33404aba32d8108c7",
+    "tools/train_reviewed_pair_20261014.py": "2db7a2f946bf1c1b6b9892c4ff135003aacb2dd87eefcd1bfe1e7dc39fecd295"
+  },
+  "decision_scope_version": "ecospec-full-graph-decision-scope-v219",
+  "token_level_loss_masking": false,
+  "source_review_is_independent_human_gold": false,
+  "control_is_incomplete_supervision_ablation": true,
+  "training_budget": {
+    "seed": 42,
+    "max_steps_per_arm": 200,
+    "same_shared_validation_records": 72,
+    "best_checkpoint": "minimum shared validation loss; no dev-based selection"
+  },
+  "full_dev_gate_unchanged": true,
+  "three_seed_expansion_authorized": false,
+  "training_has_started": false
+}

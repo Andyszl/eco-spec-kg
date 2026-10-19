@@ -1,0 +1,2 @@
+*.json -text -filter
+*.md text eol=lf
