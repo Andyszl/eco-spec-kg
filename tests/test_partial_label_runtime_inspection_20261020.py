@@ -74,3 +74,8 @@ def test_cpu_entry_records_code_provenance_without_importing_swift(distribution,
     assert not any(n=='swift' or n.startswith('swift.') for n in set(sys.modules)-before)
     provenance=json.loads((out/'provenance.json').read_text())
     assert len(provenance['code_commit'])==40 and len(provenance['tool_sha256'])==64
+
+
+def test_wrapper_keeps_offline_environment_and_hides_gpu():
+    text=(ROOT/'tools/run_partial_label_runtime_inspection_20261020.sh').read_text(encoding='utf-8')
+    assert 'HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 CUDA_VISIBLE_DEVICES=""' in text

@@ -7,7 +7,7 @@ TRANSFER="${OUT}_git"
 REMOTE=https://github.com/Andyszl/eco-spec-kg.git
 BRANCH="codex/partial-label-runtime-inspect-${TAG}"
 export PYTHONPATH="$TASK_ROOT/src" PYTHONDONTWRITEBYTECODE=1 PYTHONIOENCODING=utf-8
-export HF_HUB_INSPECTION=1 TRANSFORMERS_INSPECTION=1 CUDA_VISIBLE_DEVICES="" TOKENIZERS_PARALLELISM=false
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 CUDA_VISIBLE_DEVICES="" TOKENIZERS_PARALLELISM=false
 export NO_PROXY=127.0.0.1,localhost no_proxy=127.0.0.1,localhost
 test ! -e "$OUT"
 mkdir -p "$OUT"
