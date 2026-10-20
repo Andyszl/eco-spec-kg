@@ -1,0 +1,8 @@
+{
+  "status": "user_confirmed_conservative_alias_quarantine",
+  "date": "2026-10-20",
+  "policy": "Keep existing positive anchors. Explicit literal aliases with unselected targets are unknown, not negatives. No alias becomes a positive automatically.",
+  "scope": "Current training and internal-validation source units only. No dev/test labels or ID whitelist.",
+  "reviewer": "assistant_source_review; human_user_confirmed_policy_not_independent_annotation",
+  "training_ready": false
+}

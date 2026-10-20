@@ -1,0 +1,513 @@
+{
+  "policy": {
+    "status": "user_confirmed_conservative_alias_quarantine",
+    "date": "2026-10-20",
+    "policy": "Keep existing positive anchors. Explicit literal aliases with unselected targets are unknown, not negatives. No alias becomes a positive automatically.",
+    "scope": "Current training and internal-validation source units only. No dev/test labels or ID whitelist.",
+    "reviewer": "assistant_source_review; human_user_confirmed_policy_not_independent_annotation",
+    "training_ready": false
+  },
+  "cases": [
+    {
+      "unit_id": "e5711af01c319f21",
+      "split": "train",
+      "source_sha256": "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7",
+      "standard_code": "HJ 1168-2021",
+      "review": {
+        "groups": [
+          {
+            "literal": "数字高程模型（DEM）",
+            "entity_type": "data_source",
+            "members": [
+              {
+                "entity_id": "cc918f11af19a6e9",
+                "name": "DEM"
+              },
+              {
+                "entity_id": "68c49694e338becf",
+                "name": "数字高程模型"
+              },
+              {
+                "entity_id": "2c60fdcef08fa1c3",
+                "name": "数字高程模型（DEM）"
+              }
+            ],
+            "positive_anchor_ids": [
+              "2c60fdcef08fa1c3"
+            ],
+            "unknown_entity_ids": [
+              "68c49694e338becf",
+              "cc918f11af19a6e9"
+            ],
+            "source_span_ids": [
+              "8a16a9e619da2643"
+            ]
+          }
+        ],
+        "unknown_entity_ids": [
+          "68c49694e338becf",
+          "cc918f11af19a6e9"
+        ],
+        "unknown_relation_ids": [
+          "1accfc2e4a0b59c0",
+          "30770006ed4a3068"
+        ],
+        "retained_confirmed_negative_ids": []
+      }
+    },
+    {
+      "unit_id": "06118961763a07e9",
+      "split": "train",
+      "source_sha256": "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21",
+      "standard_code": "HJ 1167-2021",
+      "review": {
+        "groups": [
+          {
+            "literal": "数字高程模型（DEM）",
+            "entity_type": "data_source",
+            "members": [
+              {
+                "entity_id": "8cea2431329bd1ae",
+                "name": "DEM"
+              },
+              {
+                "entity_id": "ff558033e5d4e667",
+                "name": "数字高程模型"
+              },
+              {
+                "entity_id": "6ca093d34c8cf9ba",
+                "name": "数字高程模型（DEM）"
+              }
+            ],
+            "positive_anchor_ids": [
+              "6ca093d34c8cf9ba"
+            ],
+            "unknown_entity_ids": [
+              "8cea2431329bd1ae",
+              "ff558033e5d4e667"
+            ],
+            "source_span_ids": [
+              "87218d1ec8d15b9c"
+            ]
+          }
+        ],
+        "unknown_entity_ids": [
+          "8cea2431329bd1ae",
+          "ff558033e5d4e667"
+        ],
+        "unknown_relation_ids": [
+          "995e7c24ec21073d",
+          "9b7b214f28b699c3"
+        ],
+        "retained_confirmed_negative_ids": []
+      }
+    },
+    {
+      "unit_id": "33cf6e8cfede5fb5",
+      "split": "train",
+      "source_sha256": "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7",
+      "standard_code": "HJ 1168-2021",
+      "review": {
+        "groups": [
+          {
+            "literal": "数字高程模型（DEM）",
+            "entity_type": "data_source",
+            "members": [
+              {
+                "entity_id": "2853a38b56646888",
+                "name": "DEM"
+              },
+              {
+                "entity_id": "d11810061f6792cf",
+                "name": "数字高程模型"
+              },
+              {
+                "entity_id": "e06de9e46e0abb3d",
+                "name": "数字高程模型（DEM）"
+              }
+            ],
+            "positive_anchor_ids": [
+              "e06de9e46e0abb3d"
+            ],
+            "unknown_entity_ids": [
+              "2853a38b56646888",
+              "d11810061f6792cf"
+            ],
+            "source_span_ids": [
+              "bf0399e6320c7913"
+            ]
+          }
+        ],
+        "unknown_entity_ids": [
+          "2853a38b56646888",
+          "d11810061f6792cf"
+        ],
+        "unknown_relation_ids": [
+          "497380337d06afbd",
+          "9de0ff001cce3e47"
+        ],
+        "retained_confirmed_negative_ids": []
+      }
+    },
+    {
+      "unit_id": "9db3f969573c12d9",
+      "split": "train",
+      "source_sha256": "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21",
+      "standard_code": "HJ 1167-2021",
+      "review": {
+        "groups": [
+          {
+            "literal": "数字高程模型（DEM）",
+            "entity_type": "data_source",
+            "members": [
+              {
+                "entity_id": "81567b16d82f647a",
+                "name": "DEM"
+              },
+              {
+                "entity_id": "0184257fe555587d",
+                "name": "数字高程模型"
+              },
+              {
+                "entity_id": "c0f01b4641c4ac41",
+                "name": "数字高程模型（DEM）"
+              }
+            ],
+            "positive_anchor_ids": [
+              "c0f01b4641c4ac41"
+            ],
+            "unknown_entity_ids": [
+              "0184257fe555587d",
+              "81567b16d82f647a"
+            ],
+            "source_span_ids": [
+              "ac0c4a3af2d4a522"
+            ]
+          }
+        ],
+        "unknown_entity_ids": [
+          "0184257fe555587d",
+          "81567b16d82f647a"
+        ],
+        "unknown_relation_ids": [
+          "6beb93f77da73ac5",
+          "81955d5225182145"
+        ],
+        "retained_confirmed_negative_ids": []
+      }
+    },
+    {
+      "unit_id": "5a2f6a920b459da7",
+      "split": "validation",
+      "source_sha256": "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21",
+      "standard_code": "HJ 1167-2021",
+      "review": {
+        "groups": [
+          {
+            "literal": "数字高程模型（DEM）",
+            "entity_type": "data_source",
+            "members": [
+              {
+                "entity_id": "70bc4994ba8a67d2",
+                "name": "DEM"
+              },
+              {
+                "entity_id": "72c51e1c7cc6f0f4",
+                "name": "数字高程模型"
+              },
+              {
+                "entity_id": "972eb3681f4288d4",
+                "name": "数字高程模型（DEM）"
+              }
+            ],
+            "positive_anchor_ids": [
+              "972eb3681f4288d4"
+            ],
+            "unknown_entity_ids": [
+              "70bc4994ba8a67d2",
+              "72c51e1c7cc6f0f4"
+            ],
+            "source_span_ids": [
+              "2defe5ab35dee393"
+            ]
+          }
+        ],
+        "unknown_entity_ids": [
+          "70bc4994ba8a67d2",
+          "72c51e1c7cc6f0f4"
+        ],
+        "unknown_relation_ids": [
+          "64314e22b96b31bb",
+          "f59d5fee219c265a"
+        ],
+        "retained_confirmed_negative_ids": []
+      }
+    }
+  ],
+  "semantic_positive_coverage": {
+    "control_train": {
+      "observation_variable->obtained_by": {
+        "positive_edges": 47,
+        "positive_units": 42,
+        "source_count": 5,
+        "unit_ids": [
+          "0081047e007c3fed",
+          "07856ad63e588a8a",
+          "0afaf8c5d3b51e03",
+          "0cabdf338b800677",
+          "17196b342996cfb7",
+          "1fef0aeceb45c1d9",
+          "26bd5a6173379ada",
+          "3e6eb90a19a7b03e",
+          "43e6bf21001cc29f",
+          "43f5864090f93f6b",
+          "445d4dc188946f74",
+          "4a55aae6264631c9",
+          "4e962a6ae454c9a7",
+          "573a22af31bbadf9",
+          "5b847ad2375f20ea",
+          "60e7b8710c44b924",
+          "6bf68425e5799c0d",
+          "7b47772a62b3d3fe",
+          "7bc2a55b68881bb0",
+          "88905d513e1535a2",
+          "8cba8089b9f7901a",
+          "911c169fb8a7db4a",
+          "915af5fcca327777",
+          "971da6e208108a42",
+          "9ceaff6ca1c66bc3",
+          "9db3f969573c12d9",
+          "a4a100db5dfeed90",
+          "a8dd89b908749733",
+          "af904fca5ccbefd0",
+          "b524221a14a76239",
+          "bceb2549d85ee038",
+          "c2d232769b6b24da",
+          "c7aa0b963f8d7bec",
+          "c9bcc4fb85c9d6d4",
+          "d34fce501d42e26e",
+          "de888864462daf57",
+          "e535ad35a738b6b8",
+          "eac1491354550abd",
+          "f49c99fe446b5255",
+          "f82f833c26e390af",
+          "fa4fc915c2bcd87e",
+          "fdd2eca9f013965b"
+        ],
+        "source_sha256": [
+          "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7",
+          "cc2c9b7f28a2175308d6b07bbd4da70442010ec84904d6335cfa21a8dd229d11",
+          "d28d559dbfc4321794611c612bba6c169551ff0b58e8d2b8edbeed7fdc646f18",
+          "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21",
+          "f72f1017e7e737e0f18a554dfa7c950bb16b9d476aa43b77292b27b136d3db99"
+        ]
+      },
+      "observation_variable->sourced_from": {
+        "positive_edges": 4,
+        "positive_units": 4,
+        "source_count": 2,
+        "unit_ids": [
+          "33cf6e8cfede5fb5",
+          "445d4dc188946f74",
+          "9db3f969573c12d9",
+          "e5711af01c319f21"
+        ],
+        "source_sha256": [
+          "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7",
+          "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21"
+        ]
+      },
+      "model_variable->obtained_by": {
+        "positive_edges": 1,
+        "positive_units": 1,
+        "source_count": 1,
+        "unit_ids": [
+          "6f75b0171eab95e6"
+        ],
+        "source_sha256": [
+          "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0"
+        ]
+      },
+      "model_variable->sourced_from": {
+        "positive_edges": 2,
+        "positive_units": 1,
+        "source_count": 1,
+        "unit_ids": [
+          "5954b773ec29497b"
+        ],
+        "source_sha256": [
+          "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b"
+        ]
+      }
+    },
+    "repair_train": {
+      "observation_variable->obtained_by": {
+        "positive_edges": 47,
+        "positive_units": 42,
+        "source_count": 5,
+        "unit_ids": [
+          "0081047e007c3fed",
+          "07856ad63e588a8a",
+          "0afaf8c5d3b51e03",
+          "0cabdf338b800677",
+          "17196b342996cfb7",
+          "1fef0aeceb45c1d9",
+          "26bd5a6173379ada",
+          "3e6eb90a19a7b03e",
+          "43e6bf21001cc29f",
+          "43f5864090f93f6b",
+          "445d4dc188946f74",
+          "4a55aae6264631c9",
+          "4e962a6ae454c9a7",
+          "573a22af31bbadf9",
+          "5b847ad2375f20ea",
+          "60e7b8710c44b924",
+          "6bf68425e5799c0d",
+          "7b47772a62b3d3fe",
+          "7bc2a55b68881bb0",
+          "88905d513e1535a2",
+          "8cba8089b9f7901a",
+          "911c169fb8a7db4a",
+          "915af5fcca327777",
+          "971da6e208108a42",
+          "9ceaff6ca1c66bc3",
+          "9db3f969573c12d9",
+          "a4a100db5dfeed90",
+          "a8dd89b908749733",
+          "af904fca5ccbefd0",
+          "b524221a14a76239",
+          "bceb2549d85ee038",
+          "c2d232769b6b24da",
+          "c7aa0b963f8d7bec",
+          "c9bcc4fb85c9d6d4",
+          "d34fce501d42e26e",
+          "de888864462daf57",
+          "e535ad35a738b6b8",
+          "eac1491354550abd",
+          "f49c99fe446b5255",
+          "f82f833c26e390af",
+          "fa4fc915c2bcd87e",
+          "fdd2eca9f013965b"
+        ],
+        "source_sha256": [
+          "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7",
+          "cc2c9b7f28a2175308d6b07bbd4da70442010ec84904d6335cfa21a8dd229d11",
+          "d28d559dbfc4321794611c612bba6c169551ff0b58e8d2b8edbeed7fdc646f18",
+          "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21",
+          "f72f1017e7e737e0f18a554dfa7c950bb16b9d476aa43b77292b27b136d3db99"
+        ]
+      },
+      "observation_variable->sourced_from": {
+        "positive_edges": 4,
+        "positive_units": 4,
+        "source_count": 2,
+        "unit_ids": [
+          "33cf6e8cfede5fb5",
+          "445d4dc188946f74",
+          "9db3f969573c12d9",
+          "e5711af01c319f21"
+        ],
+        "source_sha256": [
+          "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7",
+          "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21"
+        ]
+      },
+      "model_variable->obtained_by": {
+        "positive_edges": 11,
+        "positive_units": 6,
+        "source_count": 3,
+        "unit_ids": [
+          "113680dd91edf495",
+          "6f2c40ba174a9b41",
+          "6f75b0171eab95e6",
+          "9c2e417cb59a8b3e",
+          "d197013000c245ea",
+          "e10dfb07c04c0214"
+        ],
+        "source_sha256": [
+          "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425",
+          "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b",
+          "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0"
+        ]
+      },
+      "model_variable->sourced_from": {
+        "positive_edges": 4,
+        "positive_units": 2,
+        "source_count": 2,
+        "unit_ids": [
+          "5954b773ec29497b",
+          "d197013000c245ea"
+        ],
+        "source_sha256": [
+          "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425",
+          "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b"
+        ]
+      }
+    },
+    "validation": {
+      "observation_variable->obtained_by": {
+        "positive_edges": 9,
+        "positive_units": 7,
+        "source_count": 3,
+        "unit_ids": [
+          "2c64c35d3064f6ce",
+          "4608c5ff28cea370",
+          "5a2f6a920b459da7",
+          "abb035dfdab2895c",
+          "d441054b99ee0f89",
+          "df9e0e92483863c9",
+          "ffe1f989e5c9da19"
+        ],
+        "source_sha256": [
+          "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7",
+          "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21",
+          "f72f1017e7e737e0f18a554dfa7c950bb16b9d476aa43b77292b27b136d3db99"
+        ]
+      },
+      "observation_variable->sourced_from": {
+        "positive_edges": 1,
+        "positive_units": 1,
+        "source_count": 1,
+        "unit_ids": [
+          "5a2f6a920b459da7"
+        ],
+        "source_sha256": [
+          "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21"
+        ]
+      },
+      "model_variable->obtained_by": {
+        "positive_edges": 2,
+        "positive_units": 2,
+        "source_count": 2,
+        "unit_ids": [
+          "9fc3c8a70f70b39e",
+          "fce734e267614afa"
+        ],
+        "source_sha256": [
+          "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425",
+          "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0"
+        ]
+      },
+      "model_variable->sourced_from": {
+        "positive_edges": 4,
+        "positive_units": 2,
+        "source_count": 2,
+        "unit_ids": [
+          "9fc3c8a70f70b39e",
+          "cdd361be6b9b6037"
+        ],
+        "source_sha256": [
+          "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425",
+          "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0"
+        ]
+      }
+    }
+  },
+  "new_positive_relations": 0,
+  "new_supervision_sources": 0,
+  "training_ready": false,
+  "limitations": [
+    "Positive edge counts are not independent cases; shared-source internal validation is not final validation.",
+    "Alias quarantine removes disputed negative supervision but does not expand positive source coverage."
+  ]
+}
