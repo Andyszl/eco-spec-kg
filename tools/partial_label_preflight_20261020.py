@@ -138,6 +138,14 @@ def verify(root):
     return m
 
 
+def check_loaded_row(source, row):
+    # The observed RowPreprocessor Arrow schema may add null loss/loss_scale
+    # fields. These are padding, not a changed message; non-null overrides fail.
+    normalized = [{k: v for k, v in msg.items() if not (k in ('loss', 'loss_scale') and v is None)}
+                  for msg in row['messages']]
+    assert normalized == source['messages'] and row['channel'] == source['channel'], 'Loader changed question/answer/mask'
+
+
 def synthetic_loss_check(template, encoded, proof):
     """Use real SDK trainer/Template loss route with tiny synthetic logits.
 
@@ -222,7 +230,7 @@ def preflight(root, model, out):
             for source, row in zip(saved, loaded):
                 identity = {'file': name, 'unit_id': uid(source)}
                 try:
-                    assert row['messages'] == source['messages'] and row['channel'] == source['channel'], 'Loader changed question/answer/mask'
+                    check_loaded_row(source, row)
                     prompt, answer = row['messages'][1]['content'], row['messages'][2]['content']
                     baseline = plain.encode(deepcopy(row))
                     expected, proof = policy.mask_encoded(baseline, template.tokenizer, prompt, answer, row['channel'])

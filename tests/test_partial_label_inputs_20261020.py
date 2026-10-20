@@ -51,6 +51,14 @@ class Inputs(unittest.TestCase):
 
 
 class RuntimeGuards(unittest.TestCase):
+    def test_loader_null_schema_fields_allowed_but_loss_changes_rejected(self):
+        original = {'messages': [{'role': 'user', 'content': 'same'}], 'channel': 'mask'}
+        loaded = {'messages': [{'role': 'user', 'content': 'same', 'loss': None, 'loss_scale': None}], 'channel': 'mask'}
+        tool.check_loaded_row(original, loaded)
+        loaded['messages'][0]['loss'] = False
+        with self.assertRaises(AssertionError):
+            tool.check_loaded_row(original, loaded)
+
     def test_visible_gpu_blocks_before_creating_report(self):
         with tempfile.TemporaryDirectory() as d, patch.dict('os.environ', {'CUDA_VISIBLE_DEVICES': '0'}):
             out = Path(d) / 'job'

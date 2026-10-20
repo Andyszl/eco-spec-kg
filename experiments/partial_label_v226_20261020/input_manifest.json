@@ -2781,7 +2781,7 @@
   "source_sha256_lf": {
     "src/ecospec_kg/partial_label_v226.py": "ca5ca027af1bdea6a01c9e7aa1be107329ab835520d6c15b9c218cda9993b2b0",
     "tools/swift_partial_label_plugin_20261020.py": "32be57848b65715a73b482488503c606a44ca80a24e47a1806f5e7822cd71f17",
-    "tools/partial_label_preflight_20261020.py": "6e60c3b45a19744d245dd119675482adae5c6ad2a72a2a78e40232d80b0ca5aa",
+    "tools/partial_label_preflight_20261020.py": "5fe49d797a2be069747d3118c31f3f201505e9368d55d2b79782522b1c3f3464",
     "tools/run_partial_label_preflight_20261020.sh": "481c372e9e18e4d579f06c7f9abc4c701b4d4af1527e535eb77a8fed1b958263"
   },
   "review_sha256_lf": {
