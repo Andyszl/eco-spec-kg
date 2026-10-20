@@ -1,0 +1,112 @@
+{
+  "version": "method-name-boundary-review-v1-20261020",
+  "reviewer": "assistant_not_independent_human",
+  "status": "assistant_reviewed_revision_saved_separately_not_applied_to_training",
+  "frozen_input_manifest_sha256": "0b3c79e533a57fa596a49e4bca0c53f1772c5c31ff270eabf78348395fd93ba5",
+  "original_input_sha256": {
+    "control_train": "139ed35a4b6549e84ab7f7aa593629b47ab6c05036c36937897d2127d47e2758",
+    "repair_train": "cb81dc2b6f526e86f8a3ec855af5929706c9d72a455c15718e695160712f9df1"
+  },
+  "unit_id": "1acaf3c9cad2f54d",
+  "source_provenance": {
+    "document_title": "森林生态系统野外观测",
+    "evidence_spans": [
+      {
+        "bbox": [
+          63.864,
+          601.109,
+          537.087,
+          643.661
+        ],
+        "line_ids": [
+          "26fd59629f07303f",
+          "95988ae668513b7b",
+          "d0104452fc6afe0e"
+        ],
+        "page": 9,
+        "printed_page": "6",
+        "span_id": "9bbf6f0fe8a8428d",
+        "text": "a）立木的地上生物量观测：是通过样方内所有林木进行测量，获取其树高、胸径等地面观测数据，\n依据异速生长方程计算，采样及方程计算方法具体依据 LY/T 2258 和 LY/T 2259 相关要求执行，对所有\n立木生物量求取总值并除以样方面积，获取 1 m2 面积的立木生物量，"
+      }
+    ],
+    "heading_chain": [
+      "9 野外观测技术方法",
+      "9.19 生物量",
+      "9.19.1 森林生态系统地上生物量观测分为立木和冠层下部观测，立木与冠层下部生物量之和即为样"
+    ],
+    "pages": [
+      9
+    ],
+    "printed_pages": [
+      "6"
+    ],
+    "section": "9.19.1",
+    "source_file": "..\\全国生态状况调查评估技术规范\\全国生态状况调查评估技术规范—森林生态系统野外观测.pdf",
+    "source_sha256": "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21",
+    "standard_code": "HJ 1167-2021"
+  },
+  "original_selected_entity": {
+    "entity_id": "81677f8ab30adb93",
+    "name": "异速生长方程计算",
+    "entity_type": "method",
+    "evidence_span_ids": [
+      "9bbf6f0fe8a8428d"
+    ]
+  },
+  "revised_selected_entity": {
+    "entity_id": "42c3823dbe0cd908",
+    "name": "异速生长方程",
+    "entity_type": "method",
+    "evidence_span_ids": [
+      "9bbf6f0fe8a8428d"
+    ]
+  },
+  "source_evidence": [
+    {
+      "bbox": [
+        63.864,
+        601.109,
+        537.087,
+        643.661
+      ],
+      "line_ids": [
+        "26fd59629f07303f",
+        "95988ae668513b7b",
+        "d0104452fc6afe0e"
+      ],
+      "page": 9,
+      "printed_page": "6",
+      "span_id": "9bbf6f0fe8a8428d",
+      "text": "a）立木的地上生物量观测：是通过样方内所有林木进行测量，获取其树高、胸径等地面观测数据，\n依据异速生长方程计算，采样及方程计算方法具体依据 LY/T 2258 和 LY/T 2259 相关要求执行，对所有\n立木生物量求取总值并除以样方面积，获取 1 m2 面积的立木生物量，"
+    }
+  ],
+  "rationale": "原文“依据异速生长方程计算”中的“计算”为谓语。方法名称应为既有候选“异速生长方程”，与此前排除“侵蚀-生产力评价模型计算”的方法边界口径一致。此为单个训练原文标签修订，不新增全局计算后缀过滤规则。",
+  "patches": [
+    {
+      "arm": "control_train",
+      "unit_id": "1acaf3c9cad2f54d",
+      "before_assistant": "{\"selected_entity_ids\": [\"81677f8ab30adb93\"], \"selected_relation_ids\": [\"ac9ea1b41ca52471\"]}",
+      "after_assistant": "{\"selected_entity_ids\": [\"42c3823dbe0cd908\"], \"selected_relation_ids\": [\"ac9ea1b41ca52471\"]}",
+      "system_and_user_messages_sha256": "71fd852b68a89937df77b3faac1962b0eaa8182f53a236ba85634d015aead9b4"
+    },
+    {
+      "arm": "repair_train",
+      "unit_id": "1acaf3c9cad2f54d",
+      "before_assistant": "{\"selected_entity_ids\": [\"81677f8ab30adb93\"], \"selected_relation_ids\": [\"ac9ea1b41ca52471\"]}",
+      "after_assistant": "{\"selected_entity_ids\": [\"42c3823dbe0cd908\"], \"selected_relation_ids\": [\"ac9ea1b41ca52471\"]}",
+      "system_and_user_messages_sha256": "71fd852b68a89937df77b3faac1962b0eaa8182f53a236ba85634d015aead9b4"
+    }
+  ],
+  "changed_training_units": 1,
+  "changed_arm_records": 2,
+  "relations_changed": false,
+  "candidate_graph_changed": false,
+  "frozen_inputs_unchanged": true,
+  "new_training_started": false,
+  "training_ready": false,
+  "remaining_blockers": [
+    "需要消除训练/推理判断范围差异，同时不得把未裁决关系当成负例。",
+    "需要补足来源与有效留出覆盖，禁止用已分析dev/test补训练标签。",
+    "新输入重建后仍需真实模板长度和监督有效性预检。"
+  ]
+}
