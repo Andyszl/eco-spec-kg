@@ -1,0 +1,40 @@
+{
+  "status": "selection_plan_before_new_source_search",
+  "pipeline_frozen_at_commit": "e69048ac27565f52fe8b06326c7530312de683a0",
+  "scope": "two official source documents for a small project-held-out case study, not broad generalization",
+  "target_document_count": 2,
+  "eligibility": [
+    "official MEE ecological standard PDF",
+    "not project train/internal-val/dev/test or rule-design exposure",
+    "not new edition or near-duplicate of exposed source",
+    "contains numbered equations plus variable definitions in a continuous subsection"
+  ],
+  "selection_order": "web search results in returned order; retain first two eligible distinct standards; record every rejected inspected candidate and reason",
+  "passage_rule": "For each source retain first substantive subsection containing numbered equations with definitions, including entire subsection and directly referenced data/method/scope paragraphs; do not choose by predictions or candidate coverage.",
+  "annotation": "raw source and blank review ledger only; independent human review required before gold freeze",
+  "known_extra_exclusions": [
+    "HJ 1166-1176 national ecological survey series including prior test sources",
+    "HJ 1320-2023 consulted during design",
+    "HJ 1340-2023",
+    "HJ 1272-2022",
+    "2024 vegetation quality consultation draft and editions",
+    "2023 desert quality draft compilation explanation and editions"
+  ],
+  "model_calls": 0,
+  "gold_available": false,
+  "final_inference_ready": false,
+  "source_content_may_be_read_for_material_preparation_only": true,
+  "do_not_change": [
+    "candidate generation",
+    "model prompts",
+    "LoRA weights",
+    "structure rules",
+    "evidence rules",
+    "score definitions"
+  ],
+  "human_confirmation_required": [
+    "prior project source/design exposure including history not in hashed inventory",
+    "annotations made without seeing model predictions",
+    "complete passage labels and dispute resolution before inference"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "search_query": "site.mee.gov.cn 生态质量 评价 技术规范 标准 HJ 公式 附录",
+  "selection_plan_original_file": "selection_plan_before_search.json",
+  "inspected": [
+    {
+      "code": "HJ 1339-2023",
+      "status": "retained_pending_human_exposure_check",
+      "reason": "first eligible official ecological quality standard; first numbered formula subsection 5.1"
+    },
+    {
+      "code": "HJ 1338-2023",
+      "status": "excluded_before_full_pdf_read",
+      "reason": "formal version of desert draft family already used for design/validation"
+    },
+    {
+      "code": "HJ 1172-2021",
+      "status": "excluded_before_full_pdf_read",
+      "reason": "old train/dev"
+    },
+    {
+      "code": "HJ 663-2013 and 2026",
+      "status": "excluded",
+      "reason": "ambient air assessment outside ecological graph study"
+    },
+    {
+      "code": "wetland draft 202302",
+      "status": "excluded",
+      "reason": "draft not formal; same family as retained formal standard"
+    },
+    {
+      "code": "ecosystem stability draft 202407",
+      "status": "excluded",
+      "reason": "not formal"
+    },
+    {
+      "code": "desert draft 202302",
+      "status": "excluded",
+      "reason": "exposed source family"
+    },
+    {
+      "code": "HJ 192-2015",
+      "status": "excluded_after_full_pdf_text_read",
+      "sha256": "4129c8f97be392fbddb0f1d954f88572818de211cc449314565d85e66b838fe6",
+      "reason": "no printed equation numbers for computational formulas; does not meet predeclared numbered equation requirement. Original PDF retained locally in rejected-source history; no predictions."
+    },
+    {
+      "code": "official standards category index",
+      "status": "not_selected",
+      "reason": "not a source PDF"
+    },
+    {
+      "code": "HJ 1300-2023",
+      "status": "retained_pending_human_exposure_check",
+      "reason": "next eligible formal source in original returned order; marine environmental quality differs from terrestrial ecology and must be reported",
+      "sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042"
+    }
+  ],
+  "model_calls": 0,
+  "candidate_generation_calls": 0,
+  "selection_depends_on_scores": false,
+  "extra_note": "The 'HJ 192' numeric grep hits in old train files were hexadecimal IDs, not a source match; metadata identity inventory was checked separately. HJ 192 is rejected for the preregistered printed-equation-number criterion, not for model performance."
+}

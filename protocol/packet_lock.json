@@ -1,0 +1,22 @@
+{
+  "files": {
+    "packet/ontology_reference.md": "18b734bf9986285fe113a469d55a5f5278544f2ee827330e1203f82c4fca0542",
+    "packet/page_images/HJ1300-2023-p5.png": "b49a8dfdca15d6075d8fbbd73f3d74769dcfc0a95c3021319efa182b9b315aa7",
+    "packet/page_images/HJ1300-2023-p6.png": "537e1921d4ba2adf360b8bd127f654c4407b344a689f8634e3c261b2c5c3df5a",
+    "packet/page_images/HJ1339-2023-p12.png": "e1cee07d5d95047d2eabaf47aaca782ff5596f9677c93d1722771ab50ce11860",
+    "packet/page_images/HJ1339-2023-p13.png": "2735aad146d58ada0b7d4181399911a054001eded6e3c987573304cb073a35cf",
+    "packet/page_text/HJ1300-2023.json": "77a0f8063b6c143ba29fa7d0b496702d7a86d1327c9f038aa2d2a94aae18f352",
+    "packet/page_text/HJ1300-2023.txt": "313994bfd7f946363ad95730bba57b1ba8a7c3f74d25a89564cd91cf4a7ba7a3",
+    "packet/page_text/HJ1339-2023.json": "4ca0408754ea4eb3b5e5ce24e0ad8cbc20c15a28378a498f2bea2a54ea1c036b",
+    "packet/page_text/HJ1339-2023.txt": "4aca525b78cf5f0b290c6a69887762b99ec3f6875c7a5b943b1b2fa8e9dd6c2d",
+    "packet/README.md": "c62291d576425bc86dce135805bfae05fe43ec439b68dc44acd22a488868318f",
+    "packet/review/01_source_eligibility.md": "4fd19bd8257f2bd5bc9fc5f5b2fea4e23150bb963788199d45e442544162b297",
+    "packet/review/02_HJ1339-2023_review.md": "3e35a4bdd14d637763344b2c08163648912005c28352c8f048445214409574bd",
+    "packet/review/03_HJ1300-2023_review.md": "3a52f8c3c977b769fd4c66779771cfa42729d7019862abaf0f49df995e068a63",
+    "packet/review/04_adjudication_and_coverage.md": "1f59be351cd26041b87372af6bad311dd8dc35931ee5516b664237e3d23aee90",
+    "packet/review_scope.json": "53e14a728d9b41fc47b923c4063fc84695b149498e4f5a997784d67903c8a006",
+    "packet/source_manifest.json": "81e58b04699a614b75606c13e25a5d29074c81f566cc51151009ed0082a2f070",
+    "packet/sources/HJ1300-2023.pdf": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "packet/sources/HJ1339-2023.pdf": "9a05b4feeedb2d4a26b419fd461e08cbbc5b48045d665e7688ba722077e01098"
+  }
+}

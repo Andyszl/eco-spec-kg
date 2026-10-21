@@ -1,0 +1,77 @@
+{
+  "inference_code_commit": "e69048ac27565f52fe8b06326c7530312de683a0",
+  "base_model": "/home/hello/szl/models/Qwen3.5-9B",
+  "source_sha256_lf": {
+    "src/ecospec_kg/partial_label_v226.py": "ca5ca027af1bdea6a01c9e7aa1be107329ab835520d6c15b9c218cda9993b2b0",
+    "src/ecospec_kg/candidate_profile_v228.py": "2085c71a6c0c11eee93a50f59682bb94db5ccba5899adf2e4e89001b3ca9272b",
+    "src/ecospec_kg/binary_decoding_v230.py": "f50cee3b265b527fb50daa01de79acefe32284d3d85692378c094f4664fd3b5c",
+    "src/ecospec_kg/structural_selection_v2.py": "30d5e292d32d686e5ce10d1c7fb0309277d8a376247334aba0eb0f7a8699e924",
+    "src/ecospec_kg/definition_evidence_v223.py": "dbf8af686744eed8e4cf9d41e1fce7d0952b23eef96aff561b91fecf55618788",
+    "src/ecospec_kg/method_clause_guard_v218.py": "da4c8756cf06e2621f8f519d1cb7400965ef1e414e9d6d7a68508cc6b7eb5c0f",
+    "src/ecospec_kg/evaluation_v2.py": "5d1564f358e6e325c3a5531c9147874de597da27ee3ef1c2ac98570016edaa8a"
+  },
+  "training_manifest_sha256": "d4a0b56b78752e7d596dbddd7bab77b93570c57e20e94efc4277fad51e9ebddc",
+  "fixed_comparisons": {
+    "models": [
+      "base",
+      "control",
+      "repair"
+    ],
+    "same_candidate_and_question": true,
+    "seed": 42,
+    "temperature": 0,
+    "enable_thinking": false,
+    "max_length": 8192,
+    "max_new_tokens": 3072,
+    "postprocessors": [
+      "none",
+      "frozen structure",
+      "frozen definition evidence",
+      "frozen structure then definition evidence"
+    ],
+    "model_requests_per_new_unit": 3,
+    "extra_requests_for_postprocessing": 0,
+    "method_clause_filter_role": "secondary diagnostic only"
+  },
+  "final_metrics": [
+    "entity precision/recall/F1 and FP/FN",
+    "relation micro/macro and per-type precision/recall/F1 and FP/FN",
+    "core and expanded path coverage by independent unit/source",
+    "reference-span overlap (not semantic entailment)"
+  ],
+  "checkpoints": {
+    "control": {
+      "global_step": 200,
+      "best_checkpoint": "/home/hello/szl/eco-spec-runs/lora/source_supplement_seed42_pair_20261021-103244-529738/control/checkpoint-80",
+      "internal_validation_loss": 0.02464995,
+      "adapter_bytes": 86630872,
+      "adapter_sha256": "21730cac8ab604da269e91e2419ff2f1d7eb991512c6716b1f6c26d6ed5f8ce8",
+      "trainer_state_sha256": "3d50bc97165440a74984196c2568b3436a352cf285d88a2866d541a555a23ef2",
+      "validation_steps": [
+        40,
+        80,
+        120,
+        160,
+        200
+      ]
+    },
+    "repair": {
+      "global_step": 200,
+      "best_checkpoint": "/home/hello/szl/eco-spec-runs/lora/source_supplement_seed42_pair_20261021-103244-529738/repair/checkpoint-120",
+      "internal_validation_loss": 0.02218928,
+      "adapter_bytes": 86630872,
+      "adapter_sha256": "0fb8ba6f7d8670c254ea6615d9e9f2a4960f8f10de9165fd5dec76466b059261",
+      "trainer_state_sha256": "a2ccf4750457a3f21b1079ce08e253e1173b43c6abecb286948b672d260ab2d9",
+      "validation_steps": [
+        40,
+        80,
+        120,
+        160,
+        200
+      ]
+    }
+  },
+  "new_training_scheduled": false,
+  "gold_available": false,
+  "final_inference_ready": false
+}

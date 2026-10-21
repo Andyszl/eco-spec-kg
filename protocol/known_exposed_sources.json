@@ -1,0 +1,59 @@
+{
+  "sha256_inventory": {
+    "0e75216cef1ef745f6c65da1c157f21882b130a3bceb76b629920197dae35931": [
+      "experiments/source_supplement_v228_20261021/source_units.jsonl"
+    ],
+    "12a5c3f86414184e9c6c74c5838f337f0a8ff73e73b6c6732a68298f541cb8c7": [
+      "experiments/semantic_pair_v211_20261015/units.jsonl"
+    ],
+    "77a2e00e0ae224fe7aba8a3522e2737730a8b8d6c3d36a79db6e8e739d304425": [
+      "experiments/cross_source_supervision_20261016/source_units.jsonl"
+    ],
+    "87e323f1e2e80619ed57d5c1f639636833736053b7914bd8f59be603194a0c5b": [
+      "deliveries/human_confirmed_20261002/blind/dev_units.jsonl",
+      "experiments/semantic_pair_v211_20261015/units.jsonl"
+    ],
+    "9b284267408b8080337bb8185594aa443d2e97663e3f6f69d8b9f8c4df42d5e0": [
+      "deliveries/human_confirmed_20261002/blind/dev_units.jsonl",
+      "experiments/semantic_pair_v211_20261015/units.jsonl"
+    ],
+    "a28a64bb686d26ba62b2c3bda1f5baaf60804b1a9721a253d52a45def302f4e5": [
+      "experiments/semantic_pair_v211_20261015/units.jsonl"
+    ],
+    "cc2c9b7f28a2175308d6b07bbd4da70442010ec84904d6335cfa21a8dd229d11": [
+      "experiments/semantic_pair_v211_20261015/units.jsonl"
+    ],
+    "d28d559dbfc4321794611c612bba6c169551ff0b58e8d2b8edbeed7fdc646f18": [
+      "experiments/semantic_pair_v211_20261015/units.jsonl"
+    ],
+    "d56f9c91f953211eb258cc02257fa494415ba9c04e1d49291ab22edc73ef1e21": [
+      "experiments/semantic_pair_v211_20261015/units.jsonl"
+    ],
+    "db9f948604d280f5610878878f3222b3675a0a2044cbef36bd57b27cc69d8737": [
+      "experiments/source_supplement_v228_20261021/source_units.jsonl"
+    ],
+    "f1804fb16d94b90a4a16ec7b93fa2d36987cfd93ca761a54787e0f0ffcb726fe": [
+      "experiments/source_supplement_v228_20261021/source_units.jsonl"
+    ],
+    "f72f1017e7e737e0f18a554dfa7c950bb16b9d476aa43b77292b27b136d3db99": [
+      "experiments/semantic_pair_v211_20261015/units.jsonl"
+    ],
+    "6c988e5604b29d2bb8257b90f3c15147099b90cdc3bfaec6290ef4f65abb41c5": [
+      "prior test metadata: HJ 1174-2021"
+    ],
+    "be032dc8826c4d6efdf90b3025e040ebbe02fec81e264f7ab3adfeb0258e858c": [
+      "prior test metadata: HJ 1175-2021"
+    ],
+    "779a996bda30fbe4a714f0d6849be2f1930f9788c26071dc2d12e494714ee66c": [
+      "prior test metadata: HJ 1171-2021"
+    ],
+    "eca859c96d37da183b9797e08a4470a4bc9acb10b6d7f2550386484673d0c30a": [
+      "HJ 1320-2023 previously consulted during rule design"
+    ]
+  },
+  "inventory_exhaustive": false,
+  "metadata_checks_do_not_prove_absence_of_unrecorded_exposure": true,
+  "old_test_labels_read": false,
+  "new_raw_pdf_hash_match_count": 0,
+  "human_exposure_confirmation_required": true
+}
