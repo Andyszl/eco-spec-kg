@@ -1,0 +1,47 @@
+{
+  "type": "ValueError",
+  "message": "invalid decision response",
+  "unit_id": "1c23c5c29486f7ee",
+  "provider_response": {
+    "model": "Qwen3.5-9B",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "<think>\n\n</think>\n\n{\"entity_decisions\":\"1 1 0 0 0 0 0 0 0 0 0 0 0 0 0\",\"relation_decisions\":\"1 1 1 1\"}",
+          "tool_calls": null,
+          "reasoning_content": null
+        },
+        "finish_reason": "stop",
+        "logprobs": null,
+        "token_ids": null,
+        "routed_experts": null
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 2300,
+      "completion_tokens": 50,
+      "total_tokens": 2350
+    },
+    "id": "chatcmpl-bf564180cde140768dcabedebbf72410",
+    "object": "chat.completion",
+    "created": 1792565253,
+    "prompt_token_ids": null,
+    "prompt_logprobs": null,
+    "images_size": null,
+    "ecospec_binary_decoding": {
+      "version": "binary-candidate-json-v230",
+      "implementation": {
+        "src/ecospec_kg/binary_decoding_v230.py": "e6b58b410d75b3df66f103c1afc571e94942c7f13036af4a777c9fea180c3a51",
+        "src/ecospec_kg/selection_decoding_v2.py": "e899bf628713a2e8e42cac0106a0dc739ec7541415ceef5a7f1921192da14a73",
+        "src/ecospec_kg/partial_label_v226.py": "ca5ca027af1bdea6a01c9e7aa1be107329ab835520d6c15b9c218cda9993b2b0",
+        "tools/swift_binary_decision_plugin_20261021.py": "bc9a0f9eb80670da0b9309165b0c88c1a337090547aa16532db8caf8be5a113a"
+      },
+      "prompt_hash": "fd395322293615ff5443cd6faa9bdcd8fc717802ea56f5f382f2ba04cb66d598",
+      "candidate_ids_hash": "d98dce7d27a5259858373f69313256f1f17a5284f1c99a53f7757c054f940933",
+      "prefix_calls": 50,
+      "max_completion_tokens": 84
+    }
+  }
+}

@@ -64,6 +64,15 @@ def request_identity(system, prompt):
                 prompt_hash=sha256_json({'system': system, 'prompt': prompt}), candidate_ids_hash=sha256_json(ids))
 
 
+def _decision_content(response):
+    text = response['choices'][0]['message']['content']
+    require(isinstance(text, str), 'Binary response must contain text')
+    # Swift 4.4.2 Qwen3_5Template may prepend this exact non-thinking prefix
+    # during response decoding. Strip only that empty SDK wrapper, once.
+    prefix = '<think>\n\n</think>\n\n'
+    return text[len(prefix):] if text.startswith(prefix) else text
+
+
 def verify_response(response, system, prompt):
     proof = response.get(MARKER)
     require(isinstance(proof, dict) and all(proof.get(k) == v for k, v in request_identity(system, prompt).items()),
@@ -73,7 +82,7 @@ def verify_response(response, system, prompt):
             and bound == len(grammar(*candidate_ids(prompt))) + 1, 'Binary constraint was not applied')
     choice = response['choices'][0]
     require(choice.get('finish_reason') == 'stop', 'Binary response did not stop normally')
-    text = choice['message']['content']
+    text = _decision_content(response)
     chosen = policy.selection_for(prompt, text)
     require(text == policy.answer_for(prompt, chosen), 'Noncanonical binary response')
     return chosen
@@ -104,7 +113,7 @@ class BinaryProvider(OpenAICompatibleProvider):
         if response['choices'][0].get('finish_reason') == 'length':
             raise CompletionTruncatedError('Binary completion exceeded its output limit')
         verify_response(response, system, prompt)
-        return response['choices'][0]['message']['content']
+        return _decision_content(response)
 
 
 from dataclasses import asdict
