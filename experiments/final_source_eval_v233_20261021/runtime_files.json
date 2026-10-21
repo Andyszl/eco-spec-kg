@@ -1,0 +1,9 @@
+{
+  "tools/final_source_evaluation_20261021.py": "ababb1bea95b11361e476a980730b68dc220de4908c192789da4eced5dec6570",
+  "tools/final_source_preflight_20261021.py": "91b4c4bbab78f37aee67f56f6554fee3a667cfbc6445bdaefe9bb7aceda35861",
+  "tools/evaluate_source_supplement_pair_20261021.py": "020a4d73a20b4fa4c0236f6c1b0de80dcef7a02c7256aacba9650f554822b284",
+  "tools/source_supplement_dev_preflight_20261021.py": "3903b09491883ccd9b6cc2fe501f04f129c1832adb349f1ce38878c004109cd0",
+  "tools/swift_binary_decision_plugin_20261021.py": "bc9a0f9eb80670da0b9309165b0c88c1a337090547aa16532db8caf8be5a113a",
+  "experiments/final_source_eval_v233_20261021/scoring_policy.json": "43e8cbccff4887a4207b5de91792031942e8dc40622c760c4469ac503d44b0c2",
+  "tools/run_final_source_evaluation_20261021.sh": "4f3b6bda4b10724195e9e92ab0be06038ca982391ab98d69fef9857766d0a88b"
+}

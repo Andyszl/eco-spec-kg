@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "model_calls": 0,
+  "model_weights_loaded": false,
+  "training_started": false,
+  "final_inference_ready": false,
+  "records": [
+    {
+      "unit_id": "c4f59f687a323776",
+      "prompt_tokens": 2772,
+      "worst_case_output_tokens": 70,
+      "prefix_sha256": "eab9f5903e755a4fbbc5cf0941a4ec95e29cbbf6553e2785b3c6931c981a79f7",
+      "prompt_hash": "02a12a2bb92099f5fc9524ebcd43ad8d3c4fa7faf5acb0b4bf9d2cbfebd6911e",
+      "entity_candidates": 6,
+      "relation_candidates": 6
+    },
+    {
+      "unit_id": "687cddd586cff77a",
+      "prompt_tokens": 5141,
+      "worst_case_output_tokens": 114,
+      "prefix_sha256": "5f603d1747c195b4e449a754081ad8e8dd617346f4d244a7ddc4004123614104",
+      "prompt_hash": "61fc5a5591d0d6bed7862ef89718f8f0817fcc90a15eb078da197fa080fdd218",
+      "entity_candidates": 13,
+      "relation_candidates": 21
+    }
+  ],
+  "input_manifest_sha256": "92f4aa5fcfcf9e50a138fa9da9500e5586b882b5d89a4008ab57e0bd2b59a6c8",
+  "code_commit": "5631faf877a537a254059d138f337f3447a6a88b",
+  "candidate_diagnostic": {
+    "model_calls": 0,
+    "model_performance_measured": false,
+    "records": [
+      {
+        "unit_id": "c4f59f687a323776",
+        "gold_entities": 11,
+        "candidate_entities": 6,
+        "covered_entities": 6,
+        "missing_entities": [
+          [
+            "c4f59f687a323776",
+            "湿地生态质量指数",
+            "assessment_indicator"
+          ],
+          [
+            "c4f59f687a323776",
+            "生态功能指数",
+            "assessment_indicator"
+          ],
+          [
+            "c4f59f687a323776",
+            "生态格局指数",
+            "assessment_indicator"
+          ],
+          [
+            "c4f59f687a323776",
+            "生态结构指数",
+            "assessment_indicator"
+          ],
+          [
+            "c4f59f687a323776",
+            "自然环境指数",
+            "assessment_indicator"
+          ]
+        ],
+        "gold_relations": 7,
+        "candidate_relations": 6,
+        "covered_relations": 6,
+        "missing_relations": [
+          [
+            "c4f59f687a323776",
+            "湿地生态质量指数",
+            "assessment_indicator",
+            "calculated_by",
+            "公式（1）",
+            "formula"
+          ]
+        ],
+        "structural_proofs": 6,
+        "structural_known_positive": 6,
+        "structural_outside_known_positive": []
+      },
+      {
+        "unit_id": "687cddd586cff77a",
+        "gold_entities": 10,
+        "candidate_entities": 13,
+        "covered_entities": 9,
+        "missing_entities": [
+          [
+            "687cddd586cff77a",
+            "海水质量等级判定原则（表1）",
+            "classification_rule"
+          ]
+        ],
+        "gold_relations": 10,
+        "candidate_relations": 21,
+        "covered_relations": 10,
+        "missing_relations": [],
+        "structural_proofs": 9,
+        "structural_known_positive": 9,
+        "structural_outside_known_positive": []
+      }
+    ],
+    "note": "Candidate coverage and syntax-only proofs, not model scores. Unknown annotations are not negative labels."
+  },
+  "real_tokenizer": true,
+  "checked_units": 2,
+  "swift_version": "4.4.2",
+  "maximum_prompt_plus_output": 5255,
+  "original_inputs_unchanged": true
+}

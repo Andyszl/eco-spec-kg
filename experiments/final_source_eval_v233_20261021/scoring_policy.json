@@ -1,0 +1,41 @@
+{
+  "version": "final-partial-source-positive-recovery-v233",
+  "frozen_before_predictions": true,
+  "mode": "known_positive_only_no_implicit_negatives",
+  "known_positive_entities": 21,
+  "known_positive_relations": 17,
+  "model_requests": 6,
+  "postprocessing_requests": 0,
+  "unknown_scope": {
+    "c4f59f687a323776": [
+      "ecosystem_type and applies_to_ecosystem from context-only passages"
+    ],
+    "687cddd586cff77a": [
+      "B/X_i geometric reference roles",
+      "geometric quality_rule/constrained_by",
+      "specific indicator head for classified_by",
+      "data_source/sourced_from"
+    ]
+  },
+  "all_unmatched_predictions": "unadjudicated extra; retained with exact keys, never auto FP or auto correct",
+  "precision": null,
+  "false_positive": null,
+  "f1": null,
+  "macro_relation_f1": null,
+  "recovery_denominator": "All reviewed known positives, including candidate-missing positives; no reachable-only primary denominator.",
+  "entity_key": "Frozen v2 exact normalized name plus entity type, within unit",
+  "relation_key": "Frozen v2 exact typed endpoints and relation type, within unit",
+  "indicator_formula_paths": 1,
+  "variable_formula_subgraphs": 2,
+  "indicator_method_extension_support": 0,
+  "variable_method_extension_support": 1,
+  "data_source_extension_support": 0,
+  "zero_support_result": null,
+  "evidence_overlap_is_semantic_entailment": false,
+  "exhaustive_full_source_gold": false,
+  "previous_dev_gate_overridden": false,
+  "three_seed_eligible": false,
+  "new_training": false,
+  "result_scope": "Two local passages from two sources; limited positive-recovery and path-coverage case study, not complete precision/F1 or broad generalization",
+  "next_adjudication": "Retain all extra outputs for subsequent model-blind human review; do not tune frozen rules or weights against these final cases."
+}
