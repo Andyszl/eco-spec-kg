@@ -1,0 +1,21 @@
+{
+  "files": {
+    ".gitattributes": "cdbe181deee63cd6b76a34f4c3b69bc306a09375c256444c313f7e2e0080521d",
+    "history_audit.json": "f4aa20c489afd2a2d68f6ff51a17b7fca1f4920066f2bb0f6c1b0fac833c4cfc",
+    "ontology_reference.md": "18b734bf9986285fe113a469d55a5f5278544f2ee827330e1203f82c4fca0542",
+    "protocol.json": "c063bcb8927d9108dfe5f855c0b00cd4c3bfc16f8dc71c7743b1150fbcdbb8b7",
+    "received_original/01_source_eligibility.md": "8a52a324eb05546790e46ff852a4d60b80800517717cbd674576db142ef146ec",
+    "received_original/02_HJ1339-2023_review.md": "3209ba4930265f22d83a8fbb3df9d93feeaf71537f906a556924a1d4b8d3aa21",
+    "received_original/03_HJ1300-2023_review.md": "9dd1cd88af15112f5b7ffbc6e6e70ef6c9d7ca1709fc250d699cae9c03254752",
+    "received_original/04_adjudication_and_coverage.md": "7e8a0625aa7880c0708375f53b2b6b12c82d6560c8a88bdd4efbaece113fd3f0",
+    "received_original/review_scope.json": "53e14a728d9b41fc47b923c4063fc84695b149498e4f5a997784d67903c8a006",
+    "received_original/source_manifest.json": "81e58b04699a614b75606c13e25a5d29074c81f566cc51151009ed0082a2f070",
+    "review_scope.json": "53e14a728d9b41fc47b923c4063fc84695b149498e4f5a997784d67903c8a006",
+    "reviewed_annotations.jsonl": "242752c8f769dfc43252aef295a4cb10e51916a475d1014d589e08a06183e63c",
+    "source_manifest.json": "81e58b04699a614b75606c13e25a5d29074c81f566cc51151009ed0082a2f070",
+    "source_units.jsonl": "04644f6d427c360c572cf37032e8f9c0e55ce404f253462fd253a1ca5b9d16b3",
+    "sources/HJ1300-2023.pdf": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "sources/HJ1339-2023.pdf": "9a05b4feeedb2d4a26b419fd461e08cbbc5b48045d665e7688ba722077e01098"
+  },
+  "model_calls": 0
+}

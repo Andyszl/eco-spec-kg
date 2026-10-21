@@ -1,0 +1,23 @@
+{
+  "pipeline_commit": "e69048ac27565f52fe8b06326c7530312de683a0",
+  "pipeline_commit_time_cst": "2026-10-21T15:09:31+08:00",
+  "project_threads_in_metadata": 16,
+  "available_rollout_files_scanned": 3,
+  "available_rollout_records_scanned": 18727,
+  "old_thread_rollouts_not_all_locally_available": true,
+  "project_text_artifacts_searched": true,
+  "prior_matches": [
+    {
+      "timestamp": "2026-10-21T01:14:12.714Z",
+      "record_type": "response_item",
+      "snippets": [
+        "172　全国生态状况调查评估技术规范  生态系统质量评估  \\nHJ 1173　全国生态状况调查评估技术规范  生态系统服务功能评估  \\nHJ 1272　生态保护修复成效评估技术指南（试行）  \\nHJ 1300　海水、海洋沉积物和海洋生物质量评价技术规范  \\nHJ 1311　自然保护地生态环境调查与观测技术规范  \\nLY/T 3189　国家公园资源调查与评价规范  \\nDZ/T 0303　地质遗迹调查规范  \\nTD/T 1010　土地利用动态遥感监测规程  \\n《国家突发环境事件应急预案》（国办函〔",
+        "状况调查评估技术规范  生态系统质量评估  \\nHJ 1173　全国生态状况调查评估技术规范  生态系统服务功能评估  \\nHJ 1272　生态保护修复成效评估技术指南（试行）  \\nHJ 1300　海水、海洋沉积物和海洋生物质量评价技术规范  \\nHJ 1311　自然保护地生态环境调查与观测技术规范  \\nLY/T 3189　国家公园资源调查与评价规范  \\nDZ/T 0303　地质遗迹调查规范  \\nTD/T 1010　土地利用动态遥感监测规程  \\n《国家突发环境事件应急预案》（国办函〔2014〕119号"
+      ]
+    }
+  ],
+  "finding": "No recorded use of either selected source in project training, validation, testing or rule design. HJ1300 appeared only as a bibliographic reference in an unrelated search result at 2026-10-21 09:14:12 CST; its original formulas were not read then. Both selected originals were read after pipeline freeze.",
+  "scope_of_claim": "Project-record-level held-out passages, not a proof of absent private exposure or absent base-model pretraining.",
+  "source_semantic_near_duplicate_exhaustively_checked": false,
+  "weighted_index_family_shared": true
+}

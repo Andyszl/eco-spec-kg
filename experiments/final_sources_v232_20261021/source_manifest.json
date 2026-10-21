@@ -1,0 +1,75 @@
+{
+  "role": "blind_material_pending_human_review",
+  "source_count": 2,
+  "sources": [
+    {
+      "id": "HJ1339-2023",
+      "title": "湿地生态质量评价技术规范",
+      "standard_code": "HJ 1339-2023",
+      "url": "https://www.mee.gov.cn/ywgz/fgbz/bz/bzwb/stzl/202401/W020240125379218559759.pdf",
+      "official_page": "https://www.mee.gov.cn/ywgz/fgbz/bz/bzwb/stzl/202401/t20240125_1064682.shtml",
+      "primary_section": "5.1 计算方法",
+      "primary_pdf_pages": [
+        12
+      ],
+      "primary_printed_pages": [
+        9
+      ],
+      "primary_boundary": "5.1 heading through the last EF variable definition, before 5.2",
+      "context_only": [
+        "section 1 on PDF page 4",
+        "5.2 and Table 9 on PDF pages 12-13; outside primary label scope"
+      ],
+      "included_pdf_pages": [
+        4,
+        12,
+        13
+      ],
+      "printed_equation_numbers": [
+        "1"
+      ],
+      "domain_note": "wetland ecological quality; weighted-index family is not a new mathematical algorithm",
+      "sha256": "9a05b4feeedb2d4a26b419fd461e08cbbc5b48045d665e7688ba722077e01098",
+      "file": "sources/HJ1339-2023.pdf",
+      "pdf_page_count": 21
+    },
+    {
+      "id": "HJ1300-2023",
+      "title": "海水、海洋沉积物和海洋生物质量评价技术规范",
+      "standard_code": "HJ 1300-2023",
+      "url": "https://www.mee.gov.cn/ywgz/fgbz/bz/bzwb/other/qt/202307/W020230718582471471530.pdf",
+      "official_page": "https://www.mee.gov.cn/ywgz/fgbz/bz/bzwb/other/qt/202307/t20230718_1036557.shtml",
+      "primary_section": "4.2.1 单指标评价",
+      "primary_pdf_pages": [
+        5,
+        6
+      ],
+      "primary_printed_pages": [
+        2,
+        3
+      ],
+      "primary_boundary": "4.2.1 heading through Table 1, before 4.2.2",
+      "context_only": [
+        "section 1 on PDF page 4",
+        "4.1.1-4.1.3 on PDF page 5; directly referenced grid/data context",
+        "4.2.2 and later text visible on page 6 is outside primary scope"
+      ],
+      "included_pdf_pages": [
+        4,
+        5,
+        6
+      ],
+      "printed_equation_numbers": [
+        "1",
+        "2"
+      ],
+      "domain_note": "marine environmental quality is a domain shift from terrestrial ecosystem assessment; report separately",
+      "sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+      "file": "sources/HJ1300-2023.pdf",
+      "pdf_page_count": 24
+    }
+  ],
+  "project_exposure_human_confirmation": "pending",
+  "gold_available": false,
+  "inference_ready": false
+}
