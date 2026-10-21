@@ -1,0 +1,45 @@
+{
+  "sources": [
+    {
+      "id": "HJ1272-2022",
+      "file": "HJ1272-2022.pdf",
+      "sha256": "db9f948604d280f5610878878f3222b3675a0a2044cbef36bd57b27cc69d8737",
+      "role": "train",
+      "standard_code": "HJ 1272-2022",
+      "status": "formal_standard",
+      "title": "生态保护修复成效评估技术指南（试行）",
+      "url": "https://www.mee.gov.cn/ywgz/fgbz/bz/bzwb/stzl/202301/W020230104365615108026.pdf"
+    },
+    {
+      "id": "vegetation-quality-draft-202405",
+      "file": "vegetation-quality-draft-202405.pdf",
+      "sha256": "f1804fb16d94b90a4a16ec7b93fa2d36987cfd93ca761a54787e0f0ffcb726fe",
+      "role": "train",
+      "standard_code": "植被质量评价技术指南-征求意见稿-202405",
+      "status": "consultation_draft",
+      "title": "植被质量评价技术指南（征求意见稿）",
+      "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk06/202405/W020240530581850115748.pdf"
+    },
+    {
+      "id": "desert-quality-explanation-202301",
+      "file": "desert-quality-explanation-202301.pdf",
+      "sha256": "0e75216cef1ef745f6c65da1c157f21882b130a3bceb76b629920197dae35931",
+      "role": "validation",
+      "standard_code": "荒漠化地区生态质量评价技术规范-征求意见稿编制说明-202301",
+      "status": "draft_compilation_explanation",
+      "title": "荒漠化地区生态质量评价技术规范（征求意见稿）编制说明",
+      "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk06/202302/W020230206329470056239.pdf"
+    }
+  ],
+  "reviewer": "assistant_visual_review_not_independent_human_gold",
+  "source_role_change": "Final roles match initial screening plan. An unpublished alternative moving vegetation to validation was rejected because that source is needed to develop candidate rules; no model calls or training occurred under that draft.",
+  "source_selection_used_model_predictions": false,
+  "validation_source_used_during_design": true,
+  "independent_final_test": false,
+  "unnumbered_equations": "p23-1/p24-1 are editorial locators for genuinely unnumbered printed equations, not invented printed equation numbers.",
+  "chain_equation_normalization": "Parentheses around A_p-A_r preserve the printed mathematical value and prevent the old suffix parser treating A_r as an extra assigned output. This is visual transcription, not an automatically fixed global parser.",
+  "candidate_rule_sha256": "2085c71a6c0c11eee93a50f59682bb94db5ccba5899adf2e4e89001b3ca9272b",
+  "formula_transcription": "Manually verified PDF images. Machine symbols use underscores/prime suffix; printed subscripts/primes preserved in evidence.",
+  "conditional_boundary": "Vegetation formulas 2 and 4 are alternative primary equations, the latter applies when total cross-section area exceeds BA_prime. Formula 3 is auxiliary for the correction factor, not a primary VQI equation.",
+  "training_ready": false
+}
