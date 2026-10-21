@@ -1,0 +1,44 @@
+{
+  "seed42_pilot_allowed": true,
+  "three_seed_eligible": false,
+  "seed": 42,
+  "max_steps_per_arm": 200,
+  "shared_validation_count": 74,
+  "preflight_code_commit": "1d4e0672cabc9e37ca778354e23766b0dde23a84",
+  "preflight_sha256": "98a7c73f920793ef64c8df5b19f201b44963062b82c7a4cdb3f97538bd769265",
+  "input_manifest_sha256": "554e18400938f9470594f418c78e4e8d7820d5bf3e588ae6feca1cbb719f9581",
+  "verified_max_tokens": {
+    "control_train": 7025,
+    "repair_train": 7025,
+    "validation": 5431
+  },
+  "minimum_supervised_tokens": 12,
+  "launcher_sha256_lf": {
+    "tools/train_source_supplement_pair_20261021.py": "efd7561862823dd9fa4241b5ca0eeb0e3bbd33e40e994fe47cded2cfdef80c04",
+    "tools/run_source_supplement_train_20261021.sh": "91cd2c40171b0bd130b834d50423b91f8708da10264712d46d2652af2faa43c0",
+    "tools/swift_alias_partial_label_plugin_20261020.py": "feb762cd51f7fa894ed9baab19b7cca8e365a6bf68e91b79892638c347edba17",
+    "src/ecospec_kg/alias_partial_label_v227.py": "99876df4862858e594139858d02b901125581f4410a7ca1be119e929d9a02443",
+    "src/ecospec_kg/partial_label_v226.py": "ca5ca027af1bdea6a01c9e7aa1be107329ab835520d6c15b9c218cda9993b2b0",
+    "tools/train_reviewed_pair_20261014.py": "2db7a2f946bf1c1b6b9892c4ff135003aacb2dd87eefcd1bfe1e7dc39fecd295",
+    "tools/train_full_graph_scope_pair_20261019.py": "b36d63465fc58e39fd73836862dc68c90848bebfd56f74ca3bb41602fc8782f5"
+  },
+  "rationale": "Existing user authorization for a single strict-gated seed42 pair after source supervision and actual length/mask preflight. Both arms share all new examples; six prior annotation target differences remain.",
+  "loss_route": "Registered v227 template, labels=-100, binary loss, no logits compression, DFT/channel loss/Liger disabled.",
+  "limitations": [
+    "Old-text candidate additions are masked unknown; existing source annotations are not relabelled.",
+    "No new verified negative sourced_from example; ambiguous provenance remains unknown.",
+    "New validation source is internally reviewed and has a known RUSLE formula family; final unseen source still pending.",
+    "Unknown placeholders still influence teacher-forcing context; only direct loss is masked.",
+    "Internal validation is not final unseen-source evaluation. Previous complete dev strict gate failed nine conditions; no three-seed expansion."
+  ],
+  "strict_dev_gate": {
+    "target_bindings": 3,
+    "entity_f1_non_decreasing": true,
+    "entity_false_positives_non_increasing": true,
+    "relation_micro_f1_non_decreasing": true,
+    "relation_macro_f1_non_decreasing": true,
+    "relation_false_positives_non_increasing": true,
+    "extended_paths_minimum": 1
+  },
+  "actual_new_training_completed": false
+}
