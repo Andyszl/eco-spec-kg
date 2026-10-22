@@ -1,0 +1,1257 @@
+[
+  {
+    "question_id": "Q01",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "Z(B)",
+      "model_variable",
+      "obtained_by",
+      "i的确定方法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "3b0e39e78a82ffc1",
+        "c31cecbf7358a848"
+      ],
+      "head_id": "ae5f5a79d55cd372",
+      "head_name": "Z(B)",
+      "head_type": "model_variable",
+      "relation_id": "4de95fe153c98aa1",
+      "relation_type": "obtained_by",
+      "tail_id": "dfea0b96b3a14b2a",
+      "tail_name": "i的确定方法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "3b0e39e78a82ffc1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)——待赋值网格的浓度值，B为待赋值网格中心点",
+        "raw_text": "式中：Z(B)——待赋值网格的浓度值，B为待赋值网格中心点；",
+        "bbox": [
+          63.84,
+          572.582,
+          366.967,
+          585.421
+        ],
+        "line_ids": [
+          "c566e30aaa3d919f"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "c31cecbf7358a848",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i——实测点X_i的权重，依据区域化变量的相关性，得到权重λ_i的确定方法，见公式（2）",
+        "raw_text": "——实测点X的权重，依据区域化变量的相关性，得到权重的确定方法，见公式（2）：\niii",
+        "bbox": [
+          111.809,
+          624.031,
+          536.65,
+          638.43
+        ],
+        "line_ids": [
+          "53270a8e1738749e",
+          "5012590d08d58fab"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q02",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "Z(B)",
+      "model_variable",
+      "obtained_by",
+      "插值方法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "3b0e39e78a82ffc1",
+        "12e65c3542fd22d1"
+      ],
+      "head_id": "ae5f5a79d55cd372",
+      "head_name": "Z(B)",
+      "head_type": "model_variable",
+      "relation_id": "7b12668a7d3cf3ff",
+      "relation_type": "obtained_by",
+      "tail_id": "43a03aed83d96981",
+      "tail_name": "插值方法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "3b0e39e78a82ffc1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)——待赋值网格的浓度值，B为待赋值网格中心点",
+        "raw_text": "式中：Z(B)——待赋值网格的浓度值，B为待赋值网格中心点；",
+        "bbox": [
+          63.84,
+          572.582,
+          366.967,
+          585.421
+        ],
+        "line_ids": [
+          "c566e30aaa3d919f"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q03",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "λ_i",
+      "model_variable",
+      "obtained_by",
+      "等级判定法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "6b6724144d475263",
+        "c31cecbf7358a848",
+        "f6f1f6f9f55e050f"
+      ],
+      "head_id": "cbe344f9a5dde504",
+      "head_name": "λ_i",
+      "head_type": "model_variable",
+      "relation_id": "6be7105d2e365070",
+      "relation_type": "obtained_by",
+      "tail_id": "56d9bf470ad86e9e",
+      "tail_name": "等级判定法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "c31cecbf7358a848",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i——实测点X_i的权重，依据区域化变量的相关性，得到权重λ_i的确定方法，见公式（2）",
+        "raw_text": "——实测点X的权重，依据区域化变量的相关性，得到权重的确定方法，见公式（2）：\niii",
+        "bbox": [
+          111.809,
+          624.031,
+          536.65,
+          638.43
+        ],
+        "line_ids": [
+          "53270a8e1738749e",
+          "5012590d08d58fab"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "f6f1f6f9f55e050f",
+        "page": 6,
+        "printed_page": "3",
+        "text": "采用等级判定法，对单指标的质量等级进行判定。判定标准采用GB3097，判定原则见表1。",
+        "raw_text": "采用等级判定法，对单指标的质量等级进行判定。判定标准采用GB3097，判定原则见表1。",
+        "bbox": [
+          84.84,
+          117.303,
+          511.45,
+          129.488
+        ],
+        "line_ids": [
+          "2e9b4e313f6a25f6"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q04",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "λ_i",
+      "model_variable",
+      "obtained_by",
+      "使用插值方法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "6b6724144d475263",
+        "c31cecbf7358a848",
+        "12e65c3542fd22d1"
+      ],
+      "head_id": "cbe344f9a5dde504",
+      "head_name": "λ_i",
+      "head_type": "model_variable",
+      "relation_id": "1de0fb3f082b3424",
+      "relation_type": "obtained_by",
+      "tail_id": "089bb083fdb3046c",
+      "tail_name": "使用插值方法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "c31cecbf7358a848",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i——实测点X_i的权重，依据区域化变量的相关性，得到权重λ_i的确定方法，见公式（2）",
+        "raw_text": "——实测点X的权重，依据区域化变量的相关性，得到权重的确定方法，见公式（2）：\niii",
+        "bbox": [
+          111.809,
+          624.031,
+          536.65,
+          638.43
+        ],
+        "line_ids": [
+          "53270a8e1738749e",
+          "5012590d08d58fab"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q05",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "Z(B)",
+      "model_variable",
+      "obtained_by",
+      "使用插值方法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "3b0e39e78a82ffc1",
+        "12e65c3542fd22d1"
+      ],
+      "head_id": "ae5f5a79d55cd372",
+      "head_name": "Z(B)",
+      "head_type": "model_variable",
+      "relation_id": "4c6cc53035c8535c",
+      "relation_type": "obtained_by",
+      "tail_id": "089bb083fdb3046c",
+      "tail_name": "使用插值方法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "3b0e39e78a82ffc1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)——待赋值网格的浓度值，B为待赋值网格中心点",
+        "raw_text": "式中：Z(B)——待赋值网格的浓度值，B为待赋值网格中心点；",
+        "bbox": [
+          63.84,
+          572.582,
+          366.967,
+          585.421
+        ],
+        "line_ids": [
+          "c566e30aaa3d919f"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q06",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "λ_i",
+      "model_variable",
+      "obtained_by",
+      "插值方法采用改进的距离反比例法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "6b6724144d475263",
+        "c31cecbf7358a848",
+        "12e65c3542fd22d1"
+      ],
+      "head_id": "cbe344f9a5dde504",
+      "head_name": "λ_i",
+      "head_type": "model_variable",
+      "relation_id": "48ad252eef90b95a",
+      "relation_type": "obtained_by",
+      "tail_id": "f692e9224fc14bf4",
+      "tail_name": "插值方法采用改进的距离反比例法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "c31cecbf7358a848",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i——实测点X_i的权重，依据区域化变量的相关性，得到权重λ_i的确定方法，见公式（2）",
+        "raw_text": "——实测点X的权重，依据区域化变量的相关性，得到权重的确定方法，见公式（2）：\niii",
+        "bbox": [
+          111.809,
+          624.031,
+          536.65,
+          638.43
+        ],
+        "line_ids": [
+          "53270a8e1738749e",
+          "5012590d08d58fab"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q07",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "λ_i",
+      "model_variable",
+      "obtained_by",
+      "改进的距离反比例法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "6b6724144d475263",
+        "c31cecbf7358a848",
+        "12e65c3542fd22d1"
+      ],
+      "head_id": "cbe344f9a5dde504",
+      "head_name": "λ_i",
+      "head_type": "model_variable",
+      "relation_id": "c014f121f6223703",
+      "relation_type": "obtained_by",
+      "tail_id": "09536c77bf7057d8",
+      "tail_name": "改进的距离反比例法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "c31cecbf7358a848",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i——实测点X_i的权重，依据区域化变量的相关性，得到权重λ_i的确定方法，见公式（2）",
+        "raw_text": "——实测点X的权重，依据区域化变量的相关性，得到权重的确定方法，见公式（2）：\niii",
+        "bbox": [
+          111.809,
+          624.031,
+          536.65,
+          638.43
+        ],
+        "line_ids": [
+          "53270a8e1738749e",
+          "5012590d08d58fab"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q08",
+    "kind": "entities",
+    "strict_key": [
+      "687cddd586cff77a",
+      "i的确定方法",
+      "method"
+    ],
+    "claim": {
+      "entity_id": "dfea0b96b3a14b2a",
+      "entity_type": "method",
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "c31cecbf7358a848",
+        "6b6724144d475263"
+      ],
+      "name": "i的确定方法"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "c31cecbf7358a848",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i——实测点X_i的权重，依据区域化变量的相关性，得到权重λ_i的确定方法，见公式（2）",
+        "raw_text": "——实测点X的权重，依据区域化变量的相关性，得到权重的确定方法，见公式（2）：\niii",
+        "bbox": [
+          111.809,
+          624.031,
+          536.65,
+          638.43
+        ],
+        "line_ids": [
+          "53270a8e1738749e",
+          "5012590d08d58fab"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q09",
+    "kind": "entities",
+    "strict_key": [
+      "687cddd586cff77a",
+      "插值方法",
+      "method"
+    ],
+    "claim": {
+      "entity_id": "43a03aed83d96981",
+      "entity_type": "method",
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "12e65c3542fd22d1",
+        "6b6724144d475263"
+      ],
+      "name": "插值方法"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      },
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q10",
+    "kind": "entities",
+    "strict_key": [
+      "687cddd586cff77a",
+      "插值方法采用改进的距离反比例法",
+      "method"
+    ],
+    "claim": {
+      "entity_id": "f692e9224fc14bf4",
+      "entity_type": "method",
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "12e65c3542fd22d1",
+        "6b6724144d475263"
+      ],
+      "name": "插值方法采用改进的距离反比例法"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      },
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q11",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "λ_i",
+      "model_variable",
+      "obtained_by",
+      "插值方法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "6b6724144d475263",
+        "c31cecbf7358a848",
+        "12e65c3542fd22d1"
+      ],
+      "head_id": "cbe344f9a5dde504",
+      "head_name": "λ_i",
+      "head_type": "model_variable",
+      "relation_id": "88e4b596c5fb32a5",
+      "relation_type": "obtained_by",
+      "tail_id": "43a03aed83d96981",
+      "tail_name": "插值方法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "c31cecbf7358a848",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i——实测点X_i的权重，依据区域化变量的相关性，得到权重λ_i的确定方法，见公式（2）",
+        "raw_text": "——实测点X的权重，依据区域化变量的相关性，得到权重的确定方法，见公式（2）：\niii",
+        "bbox": [
+          111.809,
+          624.031,
+          536.65,
+          638.43
+        ],
+        "line_ids": [
+          "53270a8e1738749e",
+          "5012590d08d58fab"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q12",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "λ_i",
+      "model_variable",
+      "obtained_by",
+      "i的确定方法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "c31cecbf7358a848"
+      ],
+      "head_id": "cbe344f9a5dde504",
+      "head_name": "λ_i",
+      "head_type": "model_variable",
+      "relation_id": "665d0b7d6e1781ef",
+      "relation_type": "obtained_by",
+      "tail_id": "dfea0b96b3a14b2a",
+      "tail_name": "i的确定方法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "c31cecbf7358a848",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i——实测点X_i的权重，依据区域化变量的相关性，得到权重λ_i的确定方法，见公式（2）",
+        "raw_text": "——实测点X的权重，依据区域化变量的相关性，得到权重的确定方法，见公式（2）：\niii",
+        "bbox": [
+          111.809,
+          624.031,
+          536.65,
+          638.43
+        ],
+        "line_ids": [
+          "53270a8e1738749e",
+          "5012590d08d58fab"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q13",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "Z(B)",
+      "model_variable",
+      "obtained_by",
+      "等级判定法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "3b0e39e78a82ffc1",
+        "f6f1f6f9f55e050f"
+      ],
+      "head_id": "ae5f5a79d55cd372",
+      "head_name": "Z(B)",
+      "head_type": "model_variable",
+      "relation_id": "ad3a5d0e18672931",
+      "relation_type": "obtained_by",
+      "tail_id": "56d9bf470ad86e9e",
+      "tail_name": "等级判定法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "3b0e39e78a82ffc1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)——待赋值网格的浓度值，B为待赋值网格中心点",
+        "raw_text": "式中：Z(B)——待赋值网格的浓度值，B为待赋值网格中心点；",
+        "bbox": [
+          63.84,
+          572.582,
+          366.967,
+          585.421
+        ],
+        "line_ids": [
+          "c566e30aaa3d919f"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "f6f1f6f9f55e050f",
+        "page": 6,
+        "printed_page": "3",
+        "text": "采用等级判定法，对单指标的质量等级进行判定。判定标准采用GB3097，判定原则见表1。",
+        "raw_text": "采用等级判定法，对单指标的质量等级进行判定。判定标准采用GB3097，判定原则见表1。",
+        "bbox": [
+          84.84,
+          117.303,
+          511.45,
+          129.488
+        ],
+        "line_ids": [
+          "2e9b4e313f6a25f6"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q14",
+    "kind": "entities",
+    "strict_key": [
+      "687cddd586cff77a",
+      "使用插值方法",
+      "method"
+    ],
+    "claim": {
+      "entity_id": "089bb083fdb3046c",
+      "entity_type": "method",
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "12e65c3542fd22d1",
+        "6b6724144d475263"
+      ],
+      "name": "使用插值方法"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      },
+      {
+        "span_id": "6b6724144d475263",
+        "page": 5,
+        "printed_page": "2",
+        "text": "λ_i=(1/d_i^4)/sum(1/d_i^4,i,1,n) （2）",
+        "raw_text": "1n1\n∑\n（2）\nid4d4\nii1i",
+        "bbox": [
+          270.825,
+          652.249,
+          531.49,
+          686.457
+        ],
+        "line_ids": [
+          "db0b3da3ff9d0065",
+          "49525d92cfa5c200",
+          "84e440d11bd43fe9",
+          "d1323e622b37a8af",
+          "08dcfcb42e00f0b7"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  },
+  {
+    "question_id": "Q15",
+    "kind": "relations",
+    "strict_key": [
+      "687cddd586cff77a",
+      "Z(B)",
+      "model_variable",
+      "obtained_by",
+      "插值方法采用改进的距离反比例法",
+      "method"
+    ],
+    "claim": {
+      "evidence_span_ids": [
+        "01dc717e2be233bb",
+        "3b0e39e78a82ffc1",
+        "12e65c3542fd22d1"
+      ],
+      "head_id": "ae5f5a79d55cd372",
+      "head_name": "Z(B)",
+      "head_type": "model_variable",
+      "relation_id": "1e613d0727289ba8",
+      "relation_type": "obtained_by",
+      "tail_id": "f692e9224fc14bf4",
+      "tail_name": "插值方法采用改进的距离反比例法",
+      "tail_type": "method"
+    },
+    "evidence": [
+      {
+        "span_id": "01dc717e2be233bb",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)=sum(Z(X_i)*λ_i,i,1,n) （1）",
+        "raw_text": "n\n∑)（1）\nZ(B)Z(X\nii\ni1",
+        "bbox": [
+          266.23,
+          523.012,
+          531.49,
+          551.448
+        ],
+        "line_ids": [
+          "5777c87107486226",
+          "12fe38000e55a9a9",
+          "619f6474b66bfed9",
+          "46b364b854d2711d",
+          "bb483f3649fcfb94"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "3b0e39e78a82ffc1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "Z(B)——待赋值网格的浓度值，B为待赋值网格中心点",
+        "raw_text": "式中：Z(B)——待赋值网格的浓度值，B为待赋值网格中心点；",
+        "bbox": [
+          63.84,
+          572.582,
+          366.967,
+          585.421
+        ],
+        "line_ids": [
+          "c566e30aaa3d919f"
+        ],
+        "transcription": "original_pdf_visually_checked_math_or_layout_transcription"
+      },
+      {
+        "span_id": "12e65c3542fd22d1",
+        "page": 5,
+        "printed_page": "2",
+        "text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "raw_text": "依据4.1.3的要求确定评价网格，使用插值方法对网格进行赋值。\n插值方法采用改进的距离反比例法，见公式（1）：",
+        "bbox": [
+          84.84,
+          476.103,
+          383.882,
+          503.888
+        ],
+        "line_ids": [
+          "00be39c58077236a",
+          "b25aa775d656cc3b"
+        ]
+      }
+    ],
+    "source_sha256": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042",
+    "standard_code": "HJ 1300-2023",
+    "section": "4.2.1"
+  }
+]

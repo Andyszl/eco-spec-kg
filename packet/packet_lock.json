@@ -1,0 +1,14 @@
+{
+  "result_commit": "13df9114b04766e12fc85324933a3ccc7e26fab8",
+  "evaluation_code_commit": "5e1dfed5d36c765ae13f8b2e2e723f378ab15f7c",
+  "question_count": 15,
+  "entity_questions": 4,
+  "relation_questions": 11,
+  "model_identity_hidden": true,
+  "complete_source_gold": false,
+  "files": {
+    "questions.json": "2a78ab6893c91c0cb4588060dbed478148d182f9cf1e9c64c17753aa36d4fb47",
+    "review_template.md": "4b689c632689ce0109666bab389d5b8c6308d2a4c645446f9e2ee2bc2f3c6cdc",
+    "sources/HJ1300-2023.pdf": "c9f30d0bf043b5c22407d68919f481ae0f43cdb1574cb2357d0db5d3f13ff042"
+  }
+}
